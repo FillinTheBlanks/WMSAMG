@@ -1,0 +1,131 @@
+﻿@*@model IEnumerable<AngularwithBootstrapProj.Models.Department>*@
+@*@model AngularwithBootstrapProj.Models.Department;*@
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/js/angular.js"></script>
+<script src="~/js/AngularCode.js"></script>
+
+<h2>Index</h2>
+<div ng-app="myApp">
+
+    <div ng-controller="myCtrl" ng-init="GetAllData()" class="divList">
+        <p>List of Employee</p>
+        <div class="table-responsive-lg">
+            <table cellpadding="12" class="table table-bordered table-condensed table-striped table-hover sortable">
+                @*@if (@model.Count() == 0)
+                    {
+                        <tr>
+                            <td colspan="10">No Record's found</td>
+                        </tr>
+                    }
+                    else {*@
+                <thead>
+                    <tr class="alert-danger">
+                        <th data-defaultsign="_19">
+                            ID
+                        </th>
+                        <th data-defaultsign="AZ" data-firstsort="asc">
+                            Name
+                        </th>
+                        <th data-defaultsign="AZ">
+                            City
+                        </th>
+                        <th data-defaultsign="_19">
+                            Age
+                        </th>
+                        <th data-defaultsign="AZ">
+                            Dept
+                        </th>
+                        <th data-defaultsort="disabled">
+                            Actions
+                        </th>
+
+                    </tr>
+                </thead>
+                <tr ng-repeat="Emp in Employee">
+                    <td>
+                        {{Emp.EmpId}}
+                    </td>
+                    <td>
+                        {{Emp.EmpName}}
+                    </td>
+                    <td>
+                        {{Emp.EmpCity}}
+                    </td>
+                    <td>
+                        {{Emp.EmpAge}}
+                    </td>
+                    <td>
+                        {{Emp.DeptName}}
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-warning" value="Update" ng-click="UpdateEmp(Emp)" />
+                        <input type="button" class="btn btn-danger" value="Delete" ng-click="DeleteEmp(Emp)" />
+                    </td>
+                </tr>
+                @*}*@
+            </table>
+        </div>
+        <form name="empForm">
+            <div class="form-horizontal" role="form">
+
+                <div class="container">
+                    <div class="row">
+                        <h2><span id="spn">Add New Employee</span></h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Name:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="inputEmail" placeholder="Name" name="Name" required ng-required="true" ng-minlength="3" ng-maxlength="100" ng-model="EmpName">
+                                    <span class="error" ng-show="empForm.Name.$error.minlength">Required!</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">City:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="inputPassword" placeholder="City" name="City" required ng-required="true" ng-minlength="3" ng-maxlength="100" ng-model="EmpCity">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Age:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" id="inputLabel3" placeholder="Age" name="Age" value="0" required ng-required="true" ng-model="EmpAge">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Department:</label>
+                                <div class="col-md-8">
+                                    <select ng-model="selectedDept" ng-change="getDepartments()" class="form-control" id="dept" ng-options="dt.DeptName for dt in Department track by dt.DeptCode">
+
+                                        @*<option ng-modeloption data-ng-repeat="dt in Department" value="{{dt.DeptCode}}">{{dt.DeptName}}</option>*@
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <input type="button" id="btnSave" class="form-control btn-space" value="Submit" ng-click="InsertData()" style="background-color:cornflowerblue" />
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <input type="button" id="btnCancel" class="form-control btn-space" value="Cancel" ng-click="CancelData()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @Html.Hidden("EmpID_")
+</div>
