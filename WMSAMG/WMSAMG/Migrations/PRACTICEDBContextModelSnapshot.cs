@@ -39,7 +39,7 @@ namespace WMSAMG.Migrations
                     b.ToTable("Department");
                 });
 
-            modelBuilder.Entity("WMSAMG.Models.PRACTICEDB.Employee", b =>
+            modelBuilder.Entity("WMSAMG.Models.PRACTICEDB.employees", b =>
                 {
                     b.Property<int>("EmpId")
                         .ValueGeneratedOnAdd()
@@ -69,15 +69,15 @@ namespace WMSAMG.Migrations
 
                     b.HasIndex("DeptCode");
 
-                    b.ToTable("Employee");
+                    b.ToTable("employees");
                 });
 
-            modelBuilder.Entity("WMSAMG.Models.PRACTICEDB.Employee", b =>
+            modelBuilder.Entity("WMSAMG.Models.PRACTICEDB.employees", b =>
                 {
                     b.HasOne("WMSAMG.Models.PRACTICEDB.Department", "DeptCodeNavigation")
-                        .WithMany("Employee")
+                        .WithMany("employees")
                         .HasForeignKey("DeptCode")
-                        .HasConstraintName("FK_Employee_ToDepartment");
+                        .HasConstraintName("FK_employees_ToDepartment");
                 });
 #pragma warning restore 612, 618
         }

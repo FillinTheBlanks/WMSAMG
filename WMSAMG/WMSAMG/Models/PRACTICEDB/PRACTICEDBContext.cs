@@ -15,9 +15,9 @@ namespace WMSAMG.Models.PRACTICEDB
         {
         }
 
-        public virtual DbSet<Department> Department { get; set; }
-        public virtual DbSet<Employee> Employee { get; set; }
-        public virtual DbSet<EmployeeView> EmployeeView { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<EmployeeView> EmployeeViews { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -47,14 +47,14 @@ namespace WMSAMG.Models.PRACTICEDB
                 entity.HasOne(d => d.DeptCodeNavigation)
                     .WithMany(p => p.Employee)
                     .HasForeignKey(d => d.DeptCode)
-                    .HasConstraintName("FK_Employee_ToDepartment");
+                    .HasConstraintName("FK_employees_ToDepartment");
             });
 
             modelBuilder.Entity<EmployeeView>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToView("EmployeeView");
+                entity.ToView("employeesView");
 
                 entity.Property(e => e.DeptName).IsUnicode(false);
 

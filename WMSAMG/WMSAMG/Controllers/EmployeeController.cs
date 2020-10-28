@@ -27,10 +27,9 @@ namespace WMSAMG.Controllers
         public JsonResult Get_AllEmployee()
         {
             
-            //using (PRACTICEDBContext Obj = new PRACTICEDBContext())
             using (PRACTICEDBContext Obj = new PRACTICEDBContext())
             {
-                List<EmployeeView> Emp = Obj.EmployeeView.ToList();
+                List<EmployeeView> Emp = Obj.EmployeeViews.ToList();
 
                 return Json(Emp, new System.Text.Json.JsonSerializerOptions());
             }
@@ -42,7 +41,7 @@ namespace WMSAMG.Controllers
             using(PRACTICEDBContext Obj = new PRACTICEDBContext())
             {
                 int EmpId = int.Parse(Id);
-                return Json(Obj.Employee.Find(EmpId), new System.Text.Json.JsonSerializerOptions());
+                return Json(Obj.Employees.Find(EmpId), new System.Text.Json.JsonSerializerOptions());
             }
         }
 
@@ -53,7 +52,7 @@ namespace WMSAMG.Controllers
             {
                 using(PRACTICEDBContext Obj = new PRACTICEDBContext())
                 {
-                    Obj.Employee.Add(employee);
+                    Obj.Employees.Add(employee);
                     Obj.SaveChanges();
                     return "Employee Added Successfully";
                 }
@@ -74,8 +73,8 @@ namespace WMSAMG.Controllers
                     var Emp_ = Obj.Entry(employee);
                     if(Emp_.State == Microsoft.EntityFrameworkCore.EntityState.Detached)
                     {
-                        Obj.Employee.Attach(employee);
-                        Obj.Employee.Remove(employee);
+                        Obj.Employees.Attach(employee);
+                        Obj.Employees.Remove(employee);
                     }
                     Obj.SaveChanges();
                     return "Employee Deleted Successfully";
@@ -94,7 +93,8 @@ namespace WMSAMG.Controllers
                 using(PRACTICEDBContext Obj = new PRACTICEDBContext())
                 {
                     var Emp_ = Obj.Entry(employee);
-                    Employee EmpObj = Obj.Employee.Where(x => x.EmpId == employee.EmpId).FirstOrDefault();
+                    Employee EmpObj = Obj.Employees.Where(x => x.EmpId == employee.EmpId).FirstOrDefault();
+
                     EmpObj.EmpAge = employee.EmpAge;
                     EmpObj.EmpCity = employee.EmpCity;
                     EmpObj.EmpName = employee.EmpName;

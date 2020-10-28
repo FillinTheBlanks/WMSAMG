@@ -20,7 +20,7 @@ namespace WMSAMG.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employee",
+                name: "employees",
                 columns: table => new
                 {
                     Emp_Id = table.Column<int>(nullable: false)
@@ -32,9 +32,9 @@ namespace WMSAMG.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employee", x => x.Emp_Id);
+                    table.PrimaryKey("PK_employees", x => x.Emp_Id);
                     table.ForeignKey(
-                        name: "FK_Employee_ToDepartment",
+                        name: "FK_employees_ToDepartment",
                         column: x => x.Dept_Code,
                         principalTable: "Department",
                         principalColumn: "Dept_Code",
@@ -42,15 +42,15 @@ namespace WMSAMG.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employee_Dept_Code",
-                table: "Employee",
+                name: "IX_employees_Dept_Code",
+                table: "employees",
                 column: "Dept_Code");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Employee");
+                name: "employees");
 
             migrationBuilder.DropTable(
                 name: "Department");

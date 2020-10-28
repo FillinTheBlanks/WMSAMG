@@ -20,7 +20,7 @@ app.controller("myCtrl", function ($scope, $http) {
                 $scope.EmpName = "";
                 $scope.EmpCity = "";
                 $scope.EmpAge = "";
-                $scope.Dept_Code = null;
+                $scope.DeptCode = null;
                 document.getElementById("btnSave").setAttribute("value", "Submit");
                 document.getElementById("btnSave").style.backgroundColor = "cornflowerblue";
                 document.getElementById("spn").innerHTML = "Add New Employee";
@@ -35,10 +35,10 @@ app.controller("myCtrl", function ($scope, $http) {
        
         if (Action == "Submit" && !!$scope.EmpName && !!$scope.EmpCity) {
             $scope.employee = {};
-            $scope.employee.Emp_Name = $scope.EmpName;
-            $scope.employee.Emp_City = $scope.EmpCity;
-            $scope.employee.Emp_Age = $scope.EmpAge;
-            $scope.employee.Dept_Code = $scope.DeptCode;
+            $scope.employee.EmpName = $scope.EmpName;
+            $scope.employee.EmpCity = $scope.EmpCity;
+            $scope.employee.EmpAge = $scope.EmpAge;
+            $scope.employee.DeptCode = $scope.DeptCode;
             $http({
                 method: "post",
                 url: "https://localhost:44336/Employee/Insert_Employee",
@@ -50,16 +50,16 @@ app.controller("myCtrl", function ($scope, $http) {
                 $scope.EmpName = "";
                 $scope.EmpCity = "";
                 $scope.EmpAge = "0";
-                $scope.Dept_Code = null;
+                $scope.DeptCode = null;
 
             })
         } else if (!!$scope.EmpName && !!$scope.EmpCity){
             $scope.employee = {};
-            $scope.employee.Emp_Name = $scope.EmpName;
-            $scope.employee.Emp_City = $scope.EmpCity;
-            $scope.employee.Emp_Age = $scope.EmpAge;
-            $scope.employee.Dept_Code = $scope.selectedDept.Dept_Code;
-            $scope.employee.Emp_Id = document.getElementById("EmpID_").value;
+            $scope.employee.EmpName = $scope.EmpName;
+            $scope.employee.EmpCity = $scope.EmpCity;
+            $scope.employee.EmpAge = $scope.EmpAge;
+            $scope.employee.DeptCode = $scope.selectedDept.DeptCode;
+            $scope.employee.EmpId = document.getElementById("EmpID_").value;
 
             $http({
                 method: "post",
@@ -72,7 +72,7 @@ app.controller("myCtrl", function ($scope, $http) {
                 $scope.EmpName = "";
                 $scope.EmpCity = "";
                 $scope.EmpAge = "0";
-                $scope.Dept_Code = null;
+                $scope.DeptCode = null;
                 document.getElementById("btnSave").setAttribute("value", "Submit");
                 document.getElementById("btnSave").style.backgroundColor = "cornflowerblue";
                 document.getElementById("spn").innerHTML = "Add New Employee";
@@ -86,15 +86,15 @@ app.controller("myCtrl", function ($scope, $http) {
             method: "post",
             url: "https://localhost:44336/Employee/Get_AllEmployee"
         }).then(function (response) {
-            $scope.Employee = response.data;
+            $scope.Employees = response.data;
         }, function () {
             alert("Error Occur");
         })
 
         $http.get('https://localhost:44336/Department/Get_AllDepartment').then(function (response) {
-            $scope.Department = response.data;
-            if ($scope.Department.length > 0) {
-                $scope.selectedDept = $scope.Department[0];
+            $scope.Departments = response.data;
+            if ($scope.Departments.length > 0) {
+                $scope.selectedDept = $scope.Departments[0];
             }
         });
     };
@@ -182,7 +182,7 @@ deptapp.controller("myCtrl", function ($scope, $http) {
 
         if (Action == "Submit" && !!$scope.DeptName) {
             $scope.department = {};
-            $scope.department.Dept_Name = $scope.DeptName;
+            $scope.department.DeptName = $scope.DeptName;
            
             $http({
                 method: "post",
@@ -196,8 +196,8 @@ deptapp.controller("myCtrl", function ($scope, $http) {
             })
         } else if (!!$scope.DeptName) {
             $scope.department = {};
-            $scope.department.Dept_Name = $scope.DeptName;
-            $scope.department.Dept_Code = document.getElementById("DeptCode_").value;
+            $scope.department.DeptName = $scope.DeptName;
+            $scope.department.DeptCode = document.getElementById("DeptCode_").value;
 
             $http({
                 method: "post",
@@ -242,7 +242,7 @@ deptapp.controller("myCtrl", function ($scope, $http) {
 
     //Set Department Information for Update
     $scope.UpdateDept = function (department) {
-        document.getElementById("DeptCode_").value = department.Dept_Code;
+        document.getElementById("DeptCode_").value = department.DeptCode;
         $scope.DeptName = department.Dept_Name;
         document.getElementById("btnSave").setAttribute("value", "Update");
         document.getElementById("btnSave").style.backgroundColor = "Yellow";

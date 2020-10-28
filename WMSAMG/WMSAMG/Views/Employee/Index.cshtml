@@ -43,7 +43,7 @@
 
                     </tr>
                 </thead>
-                <tr ng-repeat="Emp in Employee">
+                <tr ng-repeat="Emp in Employees">
                     <td>
                         {{Emp.EmpId}}
                     </td>
@@ -104,7 +104,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Department:</label>
                                 <div class="col-md-8">
-                                    <select ng-model="selectedDept" ng-change="getDepartments()" class="form-control" id="dept" ng-options="dt.DeptName for dt in Department track by dt.DeptCode">
+                                    <select ng-model="selectedDept" ng-change="getDepartments()" class="form-control" id="dept" ng-options="dt.DeptName for dt in Departments track by dt.DeptCode">
 
                                         @*<option ng-modeloption data-ng-repeat="dt in Department" value="{{dt.DeptCode}}">{{dt.DeptName}}</option>*@
                                     </select>
