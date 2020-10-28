@@ -25,6 +25,7 @@
       "WMSAMG/1.0.0": {
         "dependencies": {
           "AngularJS.Core": "1.8.0",
+          "AngularJS.Route": "1.8.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.9",
           "Microsoft.EntityFrameworkCore.Tools": "3.1.9",
           "Twitter.Bootstrap": "3.0.1.1",
@@ -310,6 +311,11 @@
       },
       "angularjs/1.7.8.1": {},
       "AngularJS.Core/1.8.0": {},
+      "AngularJS.Route/1.8.0": {
+        "dependencies": {
+          "AngularJS.Core": "1.8.0"
+        }
+      },
       "bootstrap/4.5.3": {
         "dependencies": {
           "jQuery": "3.0.0",
@@ -3059,6 +3065,13 @@
       "sha512": "sha512-StzfBqVlaMzvRQOAxShY3mVJKZxnkPahHR8/jJTj3LTG4IraRhex1c228Xd0VBDESdqW9phbgGLnvbIBpvxIyA==",
       "path": "angularjs.core/1.8.0",
       "hashPath": "angularjs.core.1.8.0.nupkg.sha512"
+    },
+    "AngularJS.Route/1.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-k8TaIQDZBGeDOidj8KgCnOD5+UEfQNLbkFWpJPm+IXmVLQji9Cvaxz/K2PFlZaY0N1Ggu7zdSYgPr2fOTzeAWg==",
+      "path": "angularjs.route/1.8.0",
+      "hashPath": "angularjs.route.1.8.0.nupkg.sha512"
     },
     "bootstrap/4.5.3": {
       "type": "package",

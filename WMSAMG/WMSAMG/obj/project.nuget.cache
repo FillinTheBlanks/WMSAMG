@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "mrm5f57Enf+i3WMTHUWclOWkRWrupgwb8NgMpqcRY5+X/uqbq5NvxscuvrRpXJ5vwmcd+yAI47zvhyXj8hkFtA==",
+  "dgSpecHash": "RSHdB0mIpIMDSd+PjrArFNBerQKdgchkpLUGYaOHL7EVwepWtQ8DwIEw9bFIuPBw9hYYffsegZisE+t9htrlCw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Administrator\\source\\repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Administrator\\.nuget\\packages\\angularjs\\1.7.8.1\\angularjs.1.7.8.1.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\angularjs.core\\1.8.0\\angularjs.core.1.8.0.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\angularjs.route\\1.8.0\\angularjs.route.1.8.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\bootstrap\\4.5.3\\bootstrap.4.5.3.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\jquery\\3.0.0\\jquery.3.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\jquery.validation\\1.19.2\\jquery.validation.1.19.2.nupkg.sha512",

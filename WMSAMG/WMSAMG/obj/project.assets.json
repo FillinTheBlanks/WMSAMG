@@ -8,6 +8,12 @@
       "AngularJS.Core/1.8.0": {
         "type": "package"
       },
+      "AngularJS.Route/1.8.0": {
+        "type": "package",
+        "dependencies": {
+          "AngularJS.Core": "1.8.0"
+        }
+      },
       "bootstrap/4.5.3": {
         "type": "package",
         "dependencies": {
@@ -2444,6 +2450,20 @@
         "content/Scripts/angular.js",
         "content/Scripts/angular.min.js",
         "content/Scripts/angular.min.js.map"
+      ]
+    },
+    "AngularJS.Route/1.8.0": {
+      "sha512": "k8TaIQDZBGeDOidj8KgCnOD5+UEfQNLbkFWpJPm+IXmVLQji9Cvaxz/K2PFlZaY0N1Ggu7zdSYgPr2fOTzeAWg==",
+      "type": "package",
+      "path": "angularjs.route/1.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "angularjs.route.1.8.0.nupkg.sha512",
+        "angularjs.route.nuspec",
+        "content/Scripts/angular-route.js",
+        "content/Scripts/angular-route.min.js",
+        "content/Scripts/angular-route.min.js.map"
       ]
     },
     "bootstrap/4.5.3": {
@@ -6867,6 +6887,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "AngularJS.Core >= 1.8.0",
+      "AngularJS.Route >= 1.8.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.9",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.9",
       "Twitter.Bootstrap >= 3.0.1.1",
@@ -6918,6 +6939,10 @@
       "netcoreapp3.1": {
         "dependencies": {
           "AngularJS.Core": {
+            "target": "Package",
+            "version": "[1.8.0, )"
+          },
+          "AngularJS.Route": {
             "target": "Package",
             "version": "[1.8.0, )"
           },

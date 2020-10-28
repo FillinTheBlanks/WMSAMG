@@ -2,7 +2,6 @@ C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\WMSAMG.exe
-C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.AssemblyInfoInputs.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.AssemblyInfo.cs
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.RazorAssemblyInfo.cache
@@ -74,5 +73,7 @@ C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Employee\Index.cshtml.g.cs
+C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Employee\Index-old.cshtml.g.cs

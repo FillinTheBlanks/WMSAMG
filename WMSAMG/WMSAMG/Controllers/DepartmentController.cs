@@ -21,7 +21,7 @@ namespace WMSAMG.Controllers
         {
             using (PRACTICEDBContext Obj = new PRACTICEDBContext())
             {
-                List<Department> Dept = Obj.Departments.ToList();
+                List<Department> Dept = Obj.Department.ToList();
 
                 return Json(Dept, new System.Text.Json.JsonSerializerOptions());
             }
@@ -33,7 +33,7 @@ namespace WMSAMG.Controllers
             using (PRACTICEDBContext Obj = new PRACTICEDBContext())
             {
                 int DeptCode = int.Parse(Id);
-                return Json(Obj.Departments.Find(DeptCode), new System.Text.Json.JsonSerializerOptions());
+                return Json(Obj.Department.Find(DeptCode), new System.Text.Json.JsonSerializerOptions());
             }
         }
 
@@ -44,7 +44,7 @@ namespace WMSAMG.Controllers
             {
                 using (PRACTICEDBContext Obj = new PRACTICEDBContext())
                 {
-                    Obj.Departments.Add(department);
+                    Obj.Department.Add(department);
                     Obj.SaveChanges();
                     return "Department Added Successfully";
                 }
@@ -66,8 +66,8 @@ namespace WMSAMG.Controllers
                     var Emp_ = Obj.Entry(department);
                     if (Emp_.State == Microsoft.EntityFrameworkCore.EntityState.Detached)
                     {
-                        Obj.Departments.Attach(department);
-                        Obj.Departments.Remove(department);
+                        Obj.Department.Attach(department);
+                        Obj.Department.Remove(department);
                     }
                     Obj.SaveChanges();
                     return "Department Deleted Successfully";
@@ -87,7 +87,7 @@ namespace WMSAMG.Controllers
                 using (PRACTICEDBContext Obj = new PRACTICEDBContext())
                 {
                     var Dept_ = Obj.Entry(department);
-                    Department DeptObj = Obj.Departments.Where(x => x.DeptCode == department.DeptCode).FirstOrDefault();
+                    Department DeptObj = Obj.Department.Where(x => x.DeptCode == department.DeptCode).FirstOrDefault();
                     DeptObj.DeptName = department.DeptName;
                    
                     Obj.SaveChanges();
