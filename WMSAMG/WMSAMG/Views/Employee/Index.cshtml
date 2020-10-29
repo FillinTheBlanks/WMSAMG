@@ -103,7 +103,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Department:</label>
                                 <div class="col-md-12">
-                                    <select ng-model="selectedDept" class="form-control" id="dept" ng-options="dt.DeptName for dt in Department track by dt.DeptCode">
+                                    <select ng-model="selectedDept" class="form-control" id="dept" ng-options="dt.DeptName for dt in departments track by dt.DeptCode">
 
                                         @*ng-change="getDepartments()" <option ng-modeloption data-ng-repeat="dt in Department" value="{{dt.DeptCode}}">{{dt.DeptName}}</option>*@
                                     </select>
@@ -130,50 +130,69 @@
 </div>
 
 <script>
+    
     var app = angular.module('myApp', []);
 
-    angular.controller('myCtrl', function ($scope, $http) {
-
+    app.controller('myCtrl', function ($scope, $http) {
+        GetAllData();
         //Get All Employees
         function GetAllData() {
-            $http.get('/Employee/Get_AllEmployee').success(function (data) {
-                $scope.employees = data;
-            });
+            $http.get('/Employee/Get_AllEmployee')
+                .then(function (response) {
+                $scope.employees = response.data;
+                });
+
+            $http.get('/Department/Get_AllDepartment')
+                .then(function (response) {
+                    $scope.departments= response.data;
+                    if ($scope.departments.length > 0) {
+                        $scope.selectedDept = $scope.departments[0];
+                    }
+                });
         };
 
         //Insert Employee
-        $scope.InsertData = function () {
-            debugger
+        $scope.InsertData = function (EmpModel) {
 
             var Action = document.getElementById("btnSave").getAttribute("value");
-
+            $scope.EmpModel.DeptCode = $scope.selectedDept.DeptCode;
             if (Action == "Submit") {
-                $http({
-                    method: 'POST',
-                    url: '/Employee/InsertEmployee',
-                    data: $scope.EmpModel
-                }).success(function () {
+                var url = '/Employee/InsertEmployee'
+                    , data = JSON.stringify($scope.EmpModel)
+                    , config = 'application/json';
+
+                $http.post(url, data, config)
+                //$http({
+                //    method: 'POST',
+                //    url: '/Employee/InsertEmployee',
+                //    contentType: 'application/json',
+                //    data: JSON.stringify($scope.EmpModel)
+                //    //data: $scope.EmpModel.data
+
+                //})
+                    .then(function () {
                     GetAllData();
                     $scope.EmpModel = null;
                     alert("Added Successful");
-                }).error(function () {
-                    alert(data.errors);
                 });
+                
             } else {
+
                 $http({
-                    method: 'POST',
-                    url: '/Employee/UpdateEmployee',
-                    data: $scope.EmpModel
-                }).success(function () {
+                    method: 'PUT',
+                    url: '/Employee/UpdateEmployee/',
+                    data: $scope.EmpModel.data
+                }).then(function () {
                     GetAllData();
                     $scope.EmpModel = null;
                     document.getElementById("btnSave").setAttribute("value", "Submit");
                     document.getElementById("btnSave").style.backgroundColor = "cornflowerblue";
                     document.getElementById("spn").innerHTML = "Add New Employee";
                     alert("Updated Successful");
-                }).error(function () {
-                    alert(data.errors);
                 });
+                //    .error(function () {
+                //    alert(data.errors);
+                //});
 
             }
             GetAllData();
@@ -181,31 +200,38 @@
 
         //Delete Employee
         $scope.DeleteEmp = function (EmpModel) {
-            debugger
-            varIsConf = confirm('Want to delete' + EmpModel.EmpName + '. Are you sure?');
+
+            varIsConf = confirm('Want to delete ' + EmpModel.EmpId + '. Are you sure?');
             if (varIsConf) {
-                $http.delete('/Employee/DeleteEmployee' + EmpModel.EmpId)
-                    .success(function () {
+                $http.delete('/Employee/DeleteEmployee/' + EmpModel.EmpId)
+                    .then(function () {
                         $scope.errors = [];
                         GetAllData();
-                        alert(EmpModel.EmpName + "Deleted Successfully!!");
-                    }).error(function () {
-                        alert(data.errors);
+                        alert(EmpModel.EmpName + " Deleted Successfully!!");
                     });
+                    //.error(function () {
+                    //    alert(data.errors);
+                    //});
             }
         };
 
         //Get Employee by id to edit
         $scope.getEmployee = function (EmpModel) {
-            $http.get('/Employee/getByid/' + EmpModel.Id)
-                .success(function (data, status, headers, config) {
-                    //debugger;
-                    $scope.EmpModel = data;
-                    GetAllData();
-                })
-                .error(function () {
-                    alert(data.errors);
+            $http.get('/Employee/getById/' + EmpModel.EmpId)
+                .then(function (response, status, headers, config) {
+                    //GetAllData();
+
+                    $scope.EmpModel = response.data;
+                    $scope.EmpModel.DeptCode = response.data.DeptCode;
+                    $scope.selectedDept.DeptCode = response.data.DeptCode;
+
+                    document.getElementById("btnSave").setAttribute("value", "Update");
+                    document.getElementById("btnSave").style.backgroundColor = "Yellow";
+                    document.getElementById("spn").innerHTML = "Update Employee Information";
                 });
+                //.error(function () {
+                //    alert(data.errors);
+                //});
         };
     })
 </script>

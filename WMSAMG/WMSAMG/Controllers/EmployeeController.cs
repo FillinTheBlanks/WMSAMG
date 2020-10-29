@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using WMSAMG.Models;
 using Microsoft.AspNetCore.Mvc;
 using WMSAMG.Models.PRACTICEDB;
-using Newtonsoft.Json;
 
 namespace WMSAMG.Controllers
 {
@@ -18,14 +15,9 @@ namespace WMSAMG.Controllers
             return View();
         }
 
-        //public ActionResult Index()
-        //{
-        //    var repo = new EmployeeRepository();
-        //    var employeeList = new repo.CreateEmployee();
-        //    return View(employeeList);
-        //}
-
         //Get All Employee
+        [HttpGet]
+        [Route("Employee/Get_AllEmployee")]
         public JsonResult Get_AllEmployee()
         {
             
@@ -37,6 +29,8 @@ namespace WMSAMG.Controllers
             }
             
         }
+        [HttpGet]
+        [Route("Employee/Get_EmployeeById/{Id}")]
         //Get Employee with Id
         public JsonResult Get_EmployeeById(string Id)
         {
@@ -48,39 +42,53 @@ namespace WMSAMG.Controllers
         }
 
         [HttpPost]
+        [Route("Employee/InsertEmployee")]
         public JsonResult InsertEmployee(Employee employee)
         {
-            Obj.Employee.Add(employee);
-            Obj.SaveChanges();
-            string message = "Insert Success!";
-            return Json ( message, new System.Text.Json.JsonSerializerOptions() );
+            Console.WriteLine(employee);
+            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
+            {
+                Obj.Employee.Add(employee);
+                Obj.SaveChanges();
+                string message = "Insert Success!";
+                return Json(message, new System.Text.Json.JsonSerializerOptions());
+            }
         }
 
-        [HttpPost]
-        public JsonResult UpdateEmployee(int EmpId,string EmpName,string EmpCity,int EmpAge,int DeptCode)
+        [HttpPut]
+        [Route("Employee/UpdateEmployee")]
+        public JsonResult UpdateEmployee( Employee employee)
         {
-            var employee = Obj.Employee.Where(x => x.EmpId == EmpId).FirstOrDefault();
-            employee.EmpName = EmpName;
-            employee.EmpCity = EmpCity;
-            employee.EmpAge = EmpAge;
-            employee.DeptCode = DeptCode;
-            Obj.SaveChanges();
-            return Json(employee, new System.Text.Json.JsonSerializerOptions());
+            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
+            {
+                var emp = Obj.Employee.Where(x => x.EmpId == employee.EmpId).FirstOrDefault();
+                emp.EmpName = employee.EmpName;
+                emp.EmpCity = employee.EmpCity;
+                emp.EmpAge = employee.EmpAge;
+                emp.DeptCode = employee.DeptCode;
+                Obj.SaveChanges();
+                return Json(emp, new System.Text.Json.JsonSerializerOptions());
+            }
         }
 
         [HttpDelete]
-        public JsonResult DeleteEmployee(int id)
+        [Route("Employee/DeleteEmployee/{EmpId}")]
+        public JsonResult DeleteEmployee(int EmpId)
         {
-            Employee employee = Obj.Employee.Find(id);
-            Obj.Employee.Remove(employee);
-            Obj.SaveChanges();
-            return Json(employee, new System.Text.Json.JsonSerializerOptions());
+            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
+            {
+                Employee employee = Obj.Employee.Find(EmpId);
+                Obj.Employee.Remove(employee);
+                Obj.SaveChanges();
+                return Json(employee, new System.Text.Json.JsonSerializerOptions());
+            }
         }
 
         [HttpGet]
-        public JsonResult getById(int id)
+        [Route("Employee/getById/{Id}")]
+        public JsonResult getById(int Id)
         {
-            Employee employee = Obj.Employee.Find(id);
+            Employee employee = Obj.Employee.Find(Id);
             return Json(employee, new System.Text.Json.JsonSerializerOptions());
         }
 
