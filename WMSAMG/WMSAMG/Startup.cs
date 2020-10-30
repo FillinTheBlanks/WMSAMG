@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WMSAMG.Models.PRACTICEDB;
 
 namespace WMSAMG
 {
@@ -26,12 +28,26 @@ namespace WMSAMG
             services.AddControllersWithViews();
             //services.AddCors(options =>
             //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials());
+            //    options.AddPolicy("AllowOrigin",
+            //        builder => {
+            //            builder.WithOrigins("http://localhost:44336")
+            //           .AllowAnyHeader()
+            //           .AllowAnyMethod();
+            //            });
             //});
+
+            services.AddDbContext<PRACTICEDBContext>(options =>
+                        options.UseSqlServer(Configuration.GetConnectionString("PRACTICEDBContext")));
+
+            //remove default json selialize
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.DictionaryKeyPolicy = null;
+            });
+            // add cors package
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,9 +63,16 @@ namespace WMSAMG
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors(options =>
+                options.WithOrigins("http://localhost:44336")
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                );
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseCors("CorsPolicy");
+            
             app.UseRouting();
 
             app.UseAuthorization();

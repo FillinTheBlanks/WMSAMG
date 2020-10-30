@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using WMSAMG.Models.PRACTICEDB;
 
 namespace WMSAMG.Controllers
 {
+    
     public class EmployeeController : Controller
     {
         PRACTICEDBContext Obj = new PRACTICEDBContext();
-        // GET: Employee
+        //[EnableCors("AllowOrigin")]
         public ActionResult Index()
         {
             return View();
@@ -43,23 +45,28 @@ namespace WMSAMG.Controllers
 
         [HttpPost]
         [Route("Employee/InsertEmployee")]
-        public JsonResult InsertEmployee(Employee employee)
+        public JsonResult InsertEmployee([FromBody] Employee employees)
         {
-            Console.WriteLine(employee);
-            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
+
+            if (ModelState.IsValid)
             {
-                Obj.Employee.Add(employee);
+                Obj.Employee.Add(employees);
                 Obj.SaveChanges();
-                string message = "Insert Success!";
+                string message = " Insert Success!";
+                return Json(message, new System.Text.Json.JsonSerializerOptions());
+            }
+            else
+            {
+                string message = "Error on Model!";
                 return Json(message, new System.Text.Json.JsonSerializerOptions());
             }
         }
 
         [HttpPut]
         [Route("Employee/UpdateEmployee")]
-        public JsonResult UpdateEmployee( Employee employee)
+        public JsonResult UpdateEmployee([FromBody] Employee employee)
         {
-            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
+            if (ModelState.IsValid)
             {
                 var emp = Obj.Employee.Where(x => x.EmpId == employee.EmpId).FirstOrDefault();
                 emp.EmpName = employee.EmpName;
@@ -69,18 +76,28 @@ namespace WMSAMG.Controllers
                 Obj.SaveChanges();
                 return Json(emp, new System.Text.Json.JsonSerializerOptions());
             }
+            else
+            {
+                string message = "Error on Model!";
+                return Json(message, new System.Text.Json.JsonSerializerOptions());
+            }
         }
 
         [HttpDelete]
         [Route("Employee/DeleteEmployee/{EmpId}")]
         public JsonResult DeleteEmployee(int EmpId)
         {
-            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
+            if (ModelState.IsValid)
             {
                 Employee employee = Obj.Employee.Find(EmpId);
                 Obj.Employee.Remove(employee);
                 Obj.SaveChanges();
                 return Json(employee, new System.Text.Json.JsonSerializerOptions());
+            }
+            else
+            {
+                string message = "Error on Model!";
+                return Json(message, new System.Text.Json.JsonSerializerOptions());
             }
         }
 

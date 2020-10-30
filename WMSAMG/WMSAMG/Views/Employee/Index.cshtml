@@ -4,7 +4,8 @@
     ViewBag.Title = "Index";
 }
 <script src="~/js/angular.js"></script>
-
+<script src="~/js/bootstrap-sortable.js"></script>
+<link rel="stylesheet" href="~/css/bootstrap-sortable.css" />
 <h2>Index</h2>
 <div ng-app="myApp">
 
@@ -72,6 +73,7 @@
                 <div class="container">
                     <div class="row">
                         <h2><span id="spn">Add New Employee</span></h2>
+
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-lg-4">
@@ -95,7 +97,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Age:</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="inputLabel3" placeholder="Age" name="Age" value="0" required ng-required="true" ng-model="EmpModel.EmpAge">
+                                    <input type="number" class="form-control" id="inputLabel3" placeholder="Age" name="Age" value=0 required ng-required="true" ng-model="EmpModel.EmpAge">
                                 </div>
                             </div>
                         </div>
@@ -104,8 +106,6 @@
                                 <label class="col-md-4 control-label">Department:</label>
                                 <div class="col-md-12">
                                     <select ng-model="selectedDept" class="form-control" id="dept" ng-options="dt.DeptName for dt in departments track by dt.DeptCode">
-
-                                        @*ng-change="getDepartments()" <option ng-modeloption data-ng-repeat="dt in Department" value="{{dt.DeptCode}}">{{dt.DeptName}}</option>*@
                                     </select>
                                 </div>
                             </div>
@@ -118,19 +118,21 @@
                         </div>
                         <div class="col-sm-6 col-lg-4">
                             <div class="form-group">
-                                <input type="button" id="btnCancel" class="form-control btn-space" value="Cancel" ng-click="CancelData()" />
+                                <input type="button" id="btnCancel" class="form-control btn-space" value="Cancel" ng-click="GetAllData()" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            @*Html.Hidden("{ { EmpModel.DeptCodeNavigation} }")
+                @Html.Hidden("{ { EmpModel.EmpId} }")*@
         </form>
     </div>
-    @*Html.Hidden("EmpID_")*@
+
 </div>
 
 <script>
-    
+
     var app = angular.module('myApp', []);
 
     app.controller('myCtrl', function ($scope, $http) {
@@ -139,61 +141,58 @@
         function GetAllData() {
             $http.get('/Employee/Get_AllEmployee')
                 .then(function (response) {
-                $scope.employees = response.data;
+                    $scope.employees = response.data;
                 });
+
 
             $http.get('/Department/Get_AllDepartment')
                 .then(function (response) {
-                    $scope.departments= response.data;
+                    $scope.departments = response.data;
                     if ($scope.departments.length > 0) {
                         $scope.selectedDept = $scope.departments[0];
                     }
                 });
+
         };
 
         //Insert Employee
-        $scope.InsertData = function (EmpModel) {
+        $scope.InsertData = function () {
 
             var Action = document.getElementById("btnSave").getAttribute("value");
             $scope.EmpModel.DeptCode = $scope.selectedDept.DeptCode;
+
             if (Action == "Submit") {
-                var url = '/Employee/InsertEmployee'
-                    , data = JSON.stringify($scope.EmpModel)
-                    , config = 'application/json';
 
-                $http.post(url, data, config)
-                //$http({
-                //    method: 'POST',
-                //    url: '/Employee/InsertEmployee',
-                //    contentType: 'application/json',
-                //    data: JSON.stringify($scope.EmpModel)
-                //    //data: $scope.EmpModel.data
-
-                //})
-                    .then(function () {
-                    GetAllData();
-                    $scope.EmpModel = null;
-                    alert("Added Successful");
+                $.ajax({
+                    type: 'POST',
+                    url: '/Employee/InsertEmployee',
+                    data: JSON.stringify($scope.EmpModel),
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (data) {
+                        GetAllData();
+                        $scope.EmpModel = null;
+                        console.log(data)
+                    }
                 });
-                
+
             } else {
 
-                $http({
-                    method: 'PUT',
-                    url: '/Employee/UpdateEmployee/',
-                    data: $scope.EmpModel.data
-                }).then(function () {
-                    GetAllData();
-                    $scope.EmpModel = null;
-                    document.getElementById("btnSave").setAttribute("value", "Submit");
-                    document.getElementById("btnSave").style.backgroundColor = "cornflowerblue";
-                    document.getElementById("spn").innerHTML = "Add New Employee";
-                    alert("Updated Successful");
+                $.ajax({
+                    type: 'PUT',
+                    url: '/Employee/UpdateEmployee',
+                    data: JSON.stringify($scope.EmpModel),
+                    contentType: "application/json",
+                    dataType: 'json',
+                    success: function (data) {
+                        GetAllData();
+                        $scope.EmpModel = null;
+                        document.getElementById("btnSave").setAttribute("value", "Submit");
+                        document.getElementById("btnSave").style.backgroundColor = "cornflowerblue";
+                        document.getElementById("spn").innerHTML = "Add New Employee";
+                        console.log(data)
+                    }
                 });
-                //    .error(function () {
-                //    alert(data.errors);
-                //});
-
             }
             GetAllData();
         };
@@ -209,9 +208,7 @@
                         GetAllData();
                         alert(EmpModel.EmpName + " Deleted Successfully!!");
                     });
-                    //.error(function () {
-                    //    alert(data.errors);
-                    //});
+
             }
         };
 
@@ -229,9 +226,23 @@
                     document.getElementById("btnSave").style.backgroundColor = "Yellow";
                     document.getElementById("spn").innerHTML = "Update Employee Information";
                 });
-                //.error(function () {
-                //    alert(data.errors);
-                //});
+
         };
     })
+
+    //$http({
+                //    method: 'POST',
+                //    url: '/Employee/InsertEmployee',
+                //    //contentType: 'application/json',
+                //   //data: JSON.stringify($scope.EmpModel)
+                //    data: $scope.EmpModel.data
+                //})
+                //    .then(function successCallback(response) {
+
+                //    GetAllData();
+                //    $scope.EmpModel = null;
+                //    alert("Added Successful");
+
+                //});
 </script>
+
