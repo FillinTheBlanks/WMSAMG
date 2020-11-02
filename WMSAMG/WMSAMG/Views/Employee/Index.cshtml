@@ -25,17 +25,32 @@
                         <th data-defaultsign="_19">
                             ID
                         </th>
+                        <th data-defaultsign="AZ">
+                            EnrollNo
+                        </th>
                         <th data-defaultsign="AZ" data-firstsort="asc">
                             Name
                         </th>
                         <th data-defaultsign="AZ">
-                            City
+                            Gender
                         </th>
                         <th data-defaultsign="_19">
-                            Age
+                            Birthdate
                         </th>
                         <th data-defaultsign="AZ">
-                            Dept
+                            Email
+                        </th>
+                        <th data-defaultsign="AZ">
+                            Position
+                        </th>
+                        <th data-defaultsign="AZ">
+                            Department
+                        </th>
+                        <th data-defaultsign="AZ">
+                            Company
+                        </th>
+                        <th data-defaultsign="AZ">
+                            Att Group
                         </th>
                         <th data-defaultsort="disabled">
                             Actions
@@ -45,19 +60,34 @@
                 </thead>
                 <tr ng-repeat="EmpModel in employees">
                     <td>
-                        {{EmpModel.EmpId}}
+                        {{EmpModel.EmployeeId}}
                     </td>
                     <td>
-                        {{EmpModel.EmpName}}
+                        {{EmpModel.EnrollNo}}
                     </td>
                     <td>
-                        {{EmpModel.EmpCity}}
+                        {{EmpModel.FullName}}
                     </td>
                     <td>
-                        {{EmpModel.EmpAge}}
+                        {{EmpModel.EmployeeGender}}
                     </td>
                     <td>
-                        {{EmpModel.DeptName}}
+                        {{EmpModel.EmployeeBdate}}
+                    </td>
+                    <td>
+                        {{EmpModel.EmployeeEmail}}
+                    </td>
+                    <td>
+                        {{EmpModel.EmployeePosition}}
+                    </td>
+                    <td>
+                        {{EmpModel.DepartmentName}}
+                    </td>
+                    <td>
+                        {{EmpModel.CompanyInitial}}
+                    </td>
+                    <td>
+                        {{EmpModel.Attgroup}}
                     </td>
                     <td>
                         <input type="button" class="btn btn-warning" value="Update" ng-click="getEmployee(EmpModel)" />
@@ -80,24 +110,34 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Name:</label>
                                 <div class="col-md-8">
+                                    <input type="number" class="form-control" id="EnrollNo" placeholder="EnrollNo" name="EnrollNo" required ng-required="true" ng-model="EmpModel.EnrollNo">
+                                    @*<span class="error" ng-show="empForm.Name.$error.minlength">Required!</span>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Name:</label>
+                                <div class="col-md-8">
                                     <input type="text" class="form-control" id="inputEmail" placeholder="Name" name="Name" required ng-required="true" ng-minlength="3" ng-maxlength="100" ng-model="EmpModel.EmpName">
-                                    <span class="error" ng-show="empForm.Name.$error.minlength">Required!</span>
+                                    @*<span class="error" ng-show="empForm.Name.$error.minlength">Required!</span>*@
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6 col-lg-4">
                             <div class="form-group">
-                                <label class="col-md-4 control-label">City:</label>
+                                <label class="col-md-4 control-label">Gender:</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="inputPassword" placeholder="City" name="City" required ng-required="true" ng-minlength="3" ng-maxlength="100" ng-model="EmpModel.EmpCity">
+                                    <input type="radio" value="Male" name="gender" ng-model=EmpModel.EmployeeGender> Male
+                                    <input type="radio" value="Female" name="gender" ng-model=EmpModel.EmployeeGender> Female
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6 col-lg-4">
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Age:</label>
+                                <label class="col-md-4 control-label">Birthdate:</label>
                                 <div class="col-md-8">
-                                    <input type="number" class="form-control" id="inputLabel3" placeholder="Age" name="Age" value=0 required ng-required="true" ng-model="EmpModel.EmpAge">
+                                   
                                 </div>
                             </div>
                         </div>

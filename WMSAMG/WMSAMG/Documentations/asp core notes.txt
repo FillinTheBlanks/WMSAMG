@@ -1,12 +1,11 @@
 Install Package: Microsoft.EntityFrameworkCore.Tools Microsoft.EntityFrameworkCore.SqlServer
 
 Add EF Model default
-Scaffold-DbContext "Server=.\SQLExpress;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir CSISControlModels
+Scaffold-DbContext "Server=.;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir CSISControlModels
 
 Overwrite EF Model
-Scaffold-DbContext "Server=.\SQLExpress;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir CSISControlModels -Context "CSISControlContext" -DataAnnotations -force
-
-add-migration -Context "PRACTICEDBContext"
+Scaffold-DbContext "Server=.;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/CSISControlModels -Context "CSISControlContext" -DataAnnotations -force
+add-migration -Context "CSISControlContext"
 
 
 

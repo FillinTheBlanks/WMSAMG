@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using WMSAMG.Models.PRACTICEDB;
+using WMSAMG.Models.CSISControlModels;
 
 namespace WMSAMG.Controllers
 {
     
     public class EmployeeController : Controller
     {
-        PRACTICEDBContext Obj = new PRACTICEDBContext();
+        CSISControlContext Obj = new CSISControlContext();
         //[EnableCors("AllowOrigin")]
         public ActionResult Index()
         {
@@ -21,65 +21,68 @@ namespace WMSAMG.Controllers
         [HttpGet]
         [Route("Employee/Get_AllEmployee")]
         public JsonResult Get_AllEmployee()
-        {
-            
-            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
-            {
-                List<EmployeeView> Emp = Obj.EmployeeView.ToList();
-
+        {    
+            using(CSISControlContext Obj = new CSISControlContext())
+            { 
+                List<VwEmployeetoDepartmentandCompany> Emp = Obj.VwEmployeetoDepartmentandCompany.ToList();
                 return Json(Emp, new System.Text.Json.JsonSerializerOptions());
             }
-            
         }
+
         [HttpGet]
         [Route("Employee/Get_EmployeeById/{Id}")]
         //Get Employee with Id
         public JsonResult Get_EmployeeById(string Id)
         {
-            using(PRACTICEDBContext Obj = new PRACTICEDBContext())
+            using(CSISControlContext Obj = new CSISControlContext())
             {
-                int EmpId = int.Parse(Id);
-                return Json(Obj.Employee.Find(EmpId), new System.Text.Json.JsonSerializerOptions());
+                Guid EmployeeId = Guid.Parse(Id);
+                return Json(Obj.VwEmployeetoDepartmentandCompany.Find(EmployeeId), new System.Text.Json.JsonSerializerOptions());
             }
         }
 
         [HttpPost]
         [Route("Employee/InsertEmployee")]
-        public JsonResult InsertEmployee([FromBody] Employee employees)
+        public JsonResult InsertEmployee([FromBody] TblEmployee employees)
         {
-
-            if (ModelState.IsValid)
+            using (CSISControlContext Obj = new CSISControlContext())
             {
-                Obj.Employee.Add(employees);
-                Obj.SaveChanges();
-                string message = " Insert Success!";
-                return Json(message, new System.Text.Json.JsonSerializerOptions());
-            }
-            else
-            {
-                string message = "Error on Model!";
-                return Json(message, new System.Text.Json.JsonSerializerOptions());
+                if (ModelState.IsValid)
+                {
+                    Obj.TblEmployee.Add(employees);
+                    Obj.SaveChanges();
+                    string message = " Insert Success!";
+                    return Json(message, new System.Text.Json.JsonSerializerOptions());
+                }
+                else
+                {
+                    string message = "Error on Model!";
+                    return Json(message, new System.Text.Json.JsonSerializerOptions());
+                }
             }
         }
 
         [HttpPut]
         [Route("Employee/UpdateEmployee")]
-        public JsonResult UpdateEmployee([FromBody] Employee employee)
+        public JsonResult UpdateEmployee([FromBody] TblEmployee employee)
         {
-            if (ModelState.IsValid)
+            using (CSISControlContext Obj = new CSISControlContext())
             {
-                var emp = Obj.Employee.Where(x => x.EmpId == employee.EmpId).FirstOrDefault();
-                emp.EmpName = employee.EmpName;
-                emp.EmpCity = employee.EmpCity;
-                emp.EmpAge = employee.EmpAge;
-                emp.DeptCode = employee.DeptCode;
-                Obj.SaveChanges();
-                return Json(emp, new System.Text.Json.JsonSerializerOptions());
-            }
-            else
-            {
-                string message = "Error on Model!";
-                return Json(message, new System.Text.Json.JsonSerializerOptions());
+                if (ModelState.IsValid)
+                {
+                    var emp = Obj.VwEmployeetoDepartmentandCompany.Where(x => x.EmployeeId == employee.EmployeeId).FirstOrDefault();
+                    //emp.EmpName = employee.EmpName;
+                    //emp.EmpCity = employee.EmpCity;
+                    //emp.EmpAge = employee.EmpAge;
+                    //emp.DeptCode = employee.DeptCode;
+                    Obj.SaveChanges();
+                    return Json(emp, new System.Text.Json.JsonSerializerOptions());
+                }
+                else
+                {
+                    string message = "Error on Model!";
+                    return Json(message, new System.Text.Json.JsonSerializerOptions());
+                }
             }
         }
 
@@ -87,26 +90,32 @@ namespace WMSAMG.Controllers
         [Route("Employee/DeleteEmployee/{EmpId}")]
         public JsonResult DeleteEmployee(int EmpId)
         {
-            if (ModelState.IsValid)
+            using (CSISControlContext Obj = new CSISControlContext())
             {
-                Employee employee = Obj.Employee.Find(EmpId);
-                Obj.Employee.Remove(employee);
-                Obj.SaveChanges();
-                return Json(employee, new System.Text.Json.JsonSerializerOptions());
-            }
-            else
-            {
-                string message = "Error on Model!";
-                return Json(message, new System.Text.Json.JsonSerializerOptions());
+                if (ModelState.IsValid)
+                {
+                    TblEmployee employee = Obj.TblEmployee.Find(EmpId);
+                    Obj.TblEmployee.Remove(employee);
+                    Obj.SaveChanges();
+                    return Json(employee, new System.Text.Json.JsonSerializerOptions());
+                }
+                else
+                {
+                    string message = "Error on Model!";
+                    return Json(message, new System.Text.Json.JsonSerializerOptions());
+                }
             }
         }
 
         [HttpGet]
         [Route("Employee/getById/{Id}")]
-        public JsonResult getById(int Id)
+        public JsonResult getById(int EmployeeId)
         {
-            Employee employee = Obj.Employee.Find(Id);
-            return Json(employee, new System.Text.Json.JsonSerializerOptions());
+            using (CSISControlContext Obj = new CSISControlContext())
+            {
+                VwEmployeetoDepartmentandCompany employee = Obj.VwEmployeetoDepartmentandCompany.Find(EmployeeId);
+                return Json(employee, new System.Text.Json.JsonSerializerOptions());
+            }
         }
 
 
