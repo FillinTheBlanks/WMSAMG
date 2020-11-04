@@ -4,9 +4,14 @@ Add EF Model default
 Scaffold-DbContext "Server=.;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir CSISControlModels
 
 Overwrite EF Model
-Scaffold-DbContext "Server=.;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/CSISControlModels -Context "CSISControlContext" -DataAnnotations -force
+Scaffold-DbContext "Server=localhost\SQLEXPRESS;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/CSISControlModels -Context "CSISControlContext" -DataAnnotations -force
 add-migration -Context "CSISControlContext"
 
 
 
 Scaffold-DbContext "Server=(localdb)\MSSQLLocalDB;Database=PRACTICEDB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/PRACTICEDB -Context "PRACTICEDBContext" -DataAnnotations -force
+
+
+
+Add-Migration -Context "AuthContext"
+Update-Database -Context "AuthContext"

@@ -9,12 +9,16 @@
     <PackageReference Include="AngularJS.Core" Version="1.8.0" />
     <PackageReference Include="AngularJS.Route" Version="1.8.0" />
     <PackageReference Include="bootstrap" Version="4.5.3" />
+    <PackageReference Include="bootstrap-select" Version="1.13.18" />
     <PackageReference Include="jQuery.Validation" Version="1.19.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Twitter.Bootstrap" Version="3.0.1.1" />
   </ItemGroup>
 
