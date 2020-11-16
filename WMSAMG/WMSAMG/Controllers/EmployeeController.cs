@@ -47,20 +47,20 @@ namespace WMSAMG.Controllers
         [Route("Employee/InsertEmployee")]
         public JsonResult InsertEmployee([FromBody] TblEmployee employees)
         {
+            string message = string.Empty;
             using (CSISControlContext Obj = new CSISControlContext())
             {
                 if (ModelState.IsValid)
                 {
                     Obj.TblEmployee.Add(employees);
                     Obj.SaveChanges();
-                    string message = " Insert Success!";
-                    return Json(message, new System.Text.Json.JsonSerializerOptions());
+                    message = " Insert Success!";
                 }
                 else
                 {
-                    string message = "Error on Model!";
-                    return Json(message, new System.Text.Json.JsonSerializerOptions());
+                    message = "Error on Model!";
                 }
+                return Json(message, new System.Text.Json.JsonSerializerOptions());
             }
         }
 
