@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WMSAMG.Models.CSISControlModels;
 
 namespace WMSAMG.Controllers
 {
-    
+    [Authorize]
     public class EmployeeController : Controller
     {
         CSISControlContext Obj = new CSISControlContext();
-        //[EnableCors("AllowOrigin")]
+       
         public ActionResult Index()
         {
             return View();

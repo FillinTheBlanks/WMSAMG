@@ -24,7 +24,7 @@
                     else {*@
                 <thead>
                     <tr class="alert-danger">
-                        <th data-defaultsort="disabled">
+                        <th data-defaultsort="disabled" hidden>
                             ID
                         </th>
                         <th data-defaultsign="_19">
@@ -61,7 +61,7 @@
                     </tr>
                 </thead>
                 <tr ng-repeat="EmpModel in employees">
-                    <td>
+                    <td hidden>
                         {{EmpModel.EmployeeId}}
                     </td>
                     <td>

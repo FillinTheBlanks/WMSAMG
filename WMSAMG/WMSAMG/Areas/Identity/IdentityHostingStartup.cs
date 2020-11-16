@@ -20,8 +20,15 @@ namespace WMSAMG.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("AuthContextConnection")));
 
-                services.AddDefaultIdentity<WMSAMGUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<AuthContext>();
+                services.AddDefaultIdentity<WMSAMGUser>(options => {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 0;
+                })
+
+                .AddEntityFrameworkStores<AuthContext>();
             });
         }
     }
