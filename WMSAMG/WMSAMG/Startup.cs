@@ -25,19 +25,12 @@ namespace WMSAMG
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCaching();
             services.AddControllersWithViews();
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("AllowOrigin",
-            //        builder => {
-            //            builder.WithOrigins("http://localhost:44336")
-            //           .AllowAnyHeader()
-            //           .AllowAnyMethod();
-            //            });
-            //});
+            services.AddRazorPages();
 
-            services.AddDbContext<PRACTICEDBContext>(options =>
-                        options.UseSqlServer(Configuration.GetConnectionString("PRACTICEDBContext")));
+            //services.AddDbContext<PRACTICEDBContext>(options =>
+            //            options.UseSqlServer(Configuration.GetConnectionString("PRACTICEDBContext")));
 
             //remove default json selialize
             services.AddControllers().AddJsonOptions(options =>
@@ -74,7 +67,7 @@ namespace WMSAMG
             app.UseStaticFiles();
             
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -82,6 +75,7 @@ namespace WMSAMG
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

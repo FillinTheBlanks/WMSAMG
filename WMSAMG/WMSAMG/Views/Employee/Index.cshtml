@@ -4,8 +4,10 @@
     ViewBag.Title = "Index";
 }
 <script src="~/js/angular.js"></script>
-<script src="~/js/bootstrap-sortable.js"></script>
-<link rel="stylesheet" href="~/css/bootstrap-sortable.css" />
+@*<script src="~/js/bootstrap-sortable.js"></script>
+<link rel="stylesheet" href="~/css/bootstrap-sortable.css" />*@
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 <h2>Index</h2>
 <div ng-app="myApp">
 
@@ -13,7 +15,7 @@
         <p>List of Employee</p>
         <div class="table-responsive-lg">
             <table cellpadding="12" class="table table-bordered table-condensed table-striped table-hover sortable">
-                @*@if (@model.Count() == 0)
+                @*@if (EmpModel in employees.Count() == 0)
                     {
                         <tr>
                             <td colspan="10">No Record's found</td>
@@ -22,10 +24,10 @@
                     else {*@
                 <thead>
                     <tr class="alert-danger">
-                        <th data-defaultsign="_19">
+                        <th data-defaultsort="disabled" hidden>
                             ID
                         </th>
-                        <th data-defaultsign="AZ">
+                        <th data-defaultsign="_19">
                             EnrollNo
                         </th>
                         <th data-defaultsign="AZ" data-firstsort="asc">
@@ -34,7 +36,7 @@
                         <th data-defaultsign="AZ">
                             Gender
                         </th>
-                        <th data-defaultsign="_19">
+                        <th data-defaultsort="disabled">
                             Birthdate
                         </th>
                         <th data-defaultsign="AZ">
@@ -59,7 +61,7 @@
                     </tr>
                 </thead>
                 <tr ng-repeat="EmpModel in employees">
-                    <td>
+                    <td hidden>
                         {{EmpModel.EmployeeId}}
                     </td>
                     <td>
@@ -119,7 +121,9 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Name:</label>
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" id="inputEmail" placeholder="Name" name="Name" required ng-required="true" ng-minlength="3" ng-maxlength="100" ng-model="EmpModel.EmpName">
+                                    <input type="text" class="form-control" id="FirstName" placeholder="FirstName" name="FirstName" required ng-required="true" ng-minlength="3" ng-maxlength="100" ng-model="EmpModel.EmployeeFname">
+                                    <input type="text" class="form-control" id="MiddleName" placeholder="MiddleName" name="MiddleName" required ng-required="true" ng-minlength="1" ng-maxlength="100" ng-model="EmpModel.EmployeeMname">
+                                    <input type="text" class="form-control" id="LastName" placeholder="LastName" name="LastName" required ng-required="true" ng-minlength="3" ng-maxlength="100" ng-model="EmpModel.EmployeeLname">
                                     @*<span class="error" ng-show="empForm.Name.$error.minlength">Required!</span>*@
                                 </div>
                             </div>
@@ -128,7 +132,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Gender:</label>
                                 <div class="col-md-8">
-                                    <input type="radio" value="Male" name="gender" ng-model=EmpModel.EmployeeGender> Male
+                                    <input type="radio" value="Male" name="gender" selected ng-model=EmpModel.EmployeeGender> Male
                                     <input type="radio" value="Female" name="gender" ng-model=EmpModel.EmployeeGender> Female
                                 </div>
                             </div>
@@ -137,7 +141,15 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Birthdate:</label>
                                 <div class="col-md-8">
-                                   
+                                    <input type="date" class="form-control" id="BirthDate" value={{myDate | date: 'shortDate' }} min="1950-01-01" max={{myDate | date: 'shortDate' }} ng-model="EmpModel.EmployeeBdate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Email Address:</label>
+                                <div class="col-md-8">
+                                    <input type="email" class="form-control" id="EmployeeEmail" name="EmployeeEmail" required ng-model="EmpModel.EmployeeEmail">
                                 </div>
                             </div>
                         </div>
@@ -145,7 +157,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Department:</label>
                                 <div class="col-md-12">
-                                    <select ng-model="selectedDept" class="form-control" id="dept" ng-options="dt.DeptName for dt in departments track by dt.DeptCode">
+                                    <select ng-model="selectedDept" class="selectpicker" data-live-search="true" data-style="btn-primary" id="dept" ng-options="dt.DepartmentName for dt in departments | filter: {DepartmentStatus:true,CompanyInitial:'AMG'} track by dt.DepartmentId">
                                     </select>
                                 </div>
                             </div>
