@@ -13,8 +13,11 @@ namespace WMSAMG.Models.CSISControlModels
         public Guid StockId { get; set; }
         [Column("StockSKU")]
         [StringLength(100)]
+        [Required]
+        //[Range(3,200,ErrorMessage ="Should be more than 3 characters")]
         public string StockSku { get; set; }
         [StringLength(200)]
+        [Required]
         public string StockDescription { get; set; }
         [Column("StockGroupID")]
         public Guid? StockGroupId { get; set; }
