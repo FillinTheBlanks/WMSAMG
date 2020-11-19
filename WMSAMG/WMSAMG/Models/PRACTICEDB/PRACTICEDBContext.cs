@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using WMSAMG.Models.CSISControlModels;
 
 namespace WMSAMG.Models.PRACTICEDB
 {
@@ -67,5 +68,7 @@ namespace WMSAMG.Models.PRACTICEDB
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+
     }
 }

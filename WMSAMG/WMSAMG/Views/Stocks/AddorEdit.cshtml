@@ -1,0 +1,84 @@
+﻿@model WMSAMG.Models.CSISControlModels.TblStock
+
+@{
+    ViewData["Title"] = Model.StockId==Guid.Empty? "Create Stock":"Update Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddorEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StockId" />
+            <div class="form-group">
+                <label asp-for="StockSku" class="control-label"></label>
+                <input asp-for="StockSku" class="form-control" />
+                <span asp-validation-for="StockSku" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockDescription" class="control-label"></label>
+                <input asp-for="StockDescription" class="form-control" />
+                <span asp-validation-for="StockDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockGroupId" class="control-label"></label>
+                <input asp-for="StockGroupId" class="form-control" />
+                <span asp-validation-for="StockGroupId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockPcsperPack" class="control-label"></label>
+                <input asp-for="StockPcsperPack" class="form-control" />
+                <span asp-validation-for="StockPcsperPack" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockPackperCase" class="control-label"></label>
+                <input asp-for="StockPackperCase" class="form-control" />
+                <span asp-validation-for="StockPackperCase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockWeightinKilosperPack" class="control-label"></label>
+                <input asp-for="StockWeightinKilosperPack" class="form-control" />
+                <span asp-validation-for="StockWeightinKilosperPack" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockWeightinKilosperCase" class="control-label"></label>
+                <input asp-for="StockWeightinKilosperCase" class="form-control" />
+                <span asp-validation-for="StockWeightinKilosperCase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShelfLifeinDays" class="control-label"></label>
+                <input asp-for="ShelfLifeinDays" class="form-control" />
+                <span asp-validation-for="ShelfLifeinDays" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerId" class="control-label"></label>
+                <input asp-for="CustomerId" class="form-control" />
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompanyId" class="control-label"></label>
+                <input asp-for="CompanyId" class="form-control" />
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockStatus" class="control-label"></label>
+                <input asp-for="StockStatus" class="form-control" />
+                <span asp-validation-for="StockStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

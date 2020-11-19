@@ -1,0 +1,97 @@
+﻿@*@model IEnumerable<WMSAMG.Models.CSISControlModels.TblStock>*@
+@model System.Data.DataTable
+@{
+    ViewData["Title"] = "List of Stocks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron">
+    <h1 class="text-center">@ViewData["Title"]</h1>
+</div>
+
+
+<table class="table table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th>
+                SKU
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Groups
+            </th>
+            <th>
+                StockPcsperPack
+            </th>
+            <th>
+                StockPackperCase
+            </th>
+            <th>
+                StockWeightinKilosperPack
+            </th>
+            <th>
+                StockWeightinKilosperCase
+            </th>
+            <th>
+                ShelfLifeinDays
+            </th>
+            <th>
+                Customer
+            </th>
+            <th>
+                Company
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                <a asp-action="AddorEdit">Create New</a>
+            </th>
+          
+        </tr>
+    </thead>
+    <tbody>
+@for (int i=0; i < Model.Rows.Count; i++) {
+        <tr>
+            <td>
+                @Model.Rows[i]["StockSKU"]
+            </td>
+            <td>
+                @Model.Rows[i]["StockDescription"]
+            </td>
+            <td>
+                @Model.Rows[i]["StockGroupCategory"]
+            </td>
+            <td>
+                @Model.Rows[i]["StockPcsperPack"]
+            </td>
+            <td>
+                @Model.Rows[i]["StockPackperCase"]
+            </td>
+            <td>
+                @Model.Rows[i]["StockWeightinKilosperPack"]
+            </td>
+            <td>
+                @Model.Rows[i]["StockWeightinKilosperCase"]
+            </td>
+            <td>
+                @Model.Rows[i]["ShelfLifeinDays"]
+            </td>
+            <td>
+                @Model.Rows[i]["CustomerName"]
+            </td>
+            <td>
+                @Model.Rows[i]["CompanyInitial"]
+            </td>
+            <td>
+                @Model.Rows[i]["StockStatus"]
+            </td>
+            <td>
+                <a asp-action="AddorEdit" asp-route-id="@Model.Rows[i]["StockID"]">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@Model.Rows[i]["StockID"]">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
