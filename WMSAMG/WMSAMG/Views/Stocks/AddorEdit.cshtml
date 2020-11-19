@@ -1,7 +1,6 @@
 ﻿@model WMSAMG.Models.CSISControlModels.TblStock
-
 @{
-    ViewData["Title"] = Model.StockId==Guid.Empty? "Create Stock":"Update Stock";
+    ViewData["Title"] = Model.StockId == Guid.Empty ? "Create Stock" : "Update Stock";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -26,6 +25,7 @@
             <div class="form-group">
                 <label asp-for="StockGroupId" class="control-label"></label>
                 <input asp-for="StockGroupId" class="form-control" />
+
                 <span asp-validation-for="StockGroupId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -59,9 +59,10 @@
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CompanyId" class="control-label"></label>
-                <input asp-for="CompanyId" class="form-control" />
-                <span asp-validation-for="CompanyId" class="text-danger"></span>
+                @Html.LabelFor(m => m.CompanyId, new { @class = "control-label" })
+                @Html.DropDownListFor(c => c.CompanyId, Model.Companies,"Please select", new { @class = "form-control" })
+
+                @*<span asp-validation-for="CompanyId" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="StockStatus" class="control-label"></label>
@@ -79,6 +80,29 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<script type="text/javascript">
+    function FillCompany() {
+        $.ajax({
+            url: '/Company/Get_AllCompany',
+            type: "GET",
+            dataType: "JSON",
+            data: "",
+            success: function (result) {
+                $.each(result, function (i) {
+                    $("#Company").empty().append(
+                        $('<option></option>').val(result[i].CompanyID).html(result[i].CompanyInitial));
+                    
+                });
+            }
+        })
+    };
+</script>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
 }
+
+
+    

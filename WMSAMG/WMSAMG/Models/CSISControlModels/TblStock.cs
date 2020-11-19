@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,8 @@ namespace WMSAMG.Models.CSISControlModels
     [Table("tblStock")]
     public partial class TblStock
     {
+        public List<SelectListItem> Companies { get; set; }
+        public List<SelectListItem> Customers { get; set; }
         [Key]
         [Column("StockID")]
         public Guid StockId { get; set; }

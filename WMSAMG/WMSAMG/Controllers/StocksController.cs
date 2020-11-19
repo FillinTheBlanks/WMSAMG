@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,15 +21,16 @@ namespace WMSAMG.Controllers
         public StocksController(IConfiguration configuration)
         {
             this._configuration = configuration;
+            
         }
 
         // GET: Stocks
         public IActionResult Index()
         {
+            
             DataTable dt = new DataTable();
-            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DevConnection")))
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
             {
-                
                 sqlConnection.Open();
                 SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_StocksbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
@@ -43,11 +46,16 @@ namespace WMSAMG.Controllers
         // GET: Stocks/AddorEdit/Guid
         public IActionResult AddorEdit(Guid? id)
         {
+            string strid = id.ToString();
             TblStock tblStock = new TblStock();
-            if (id != Guid.Empty)
+
+            tblStock.Companies = PopulateCompany();
+            
+            if (strid != string.Empty)
             {
                 tblStock = FetchStockByID(id);
             }
+           
             return View(tblStock);
         }
 
@@ -61,15 +69,15 @@ namespace WMSAMG.Controllers
             
             if (ModelState.IsValid)
             {
-                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DevConnection")))
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
                 {
                     sqlConnection.Open();
                     SqlCommand sqlCmd = new SqlCommand("spInsert_Stocks", sqlConnection);
                     sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlCmd.Parameters.AddWithValue("StockID", tblStock.StockId);
                     sqlCmd.Parameters.AddWithValue("StockSKU", tblStock.StockSku);
-                    sqlCmd.Parameters.AddWithValue("StockDescription", tblStock.StockDescription);
-                    sqlCmd.Parameters.AddWithValue("StockPackperCase", tblStock.StockPackperCase);
+                    sqlCmd.Parameters.AddWithValue("StockDescription", tblStock.StockDescription); 
+                    sqlCmd.Parameters.AddWithValue("StockPackperCase", tblStock.StockPackperCase); 
                     sqlCmd.Parameters.AddWithValue("StockPcsperPack", tblStock.StockPcsperPack);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperCase", tblStock.StockWeightinKilosperCase);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperPack", tblStock.StockWeightinKilosperPack);
@@ -108,9 +116,10 @@ namespace WMSAMG.Controllers
         [NonAction]
         public TblStock FetchStockByID(Guid? id)
         {
+            
             DataTable dt = new DataTable();
             TblStock tblStock = new TblStock();
-            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DevConnection")))
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
             {
                 sqlConnection.Open();
                 SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_StocksbyFilter", sqlConnection);
@@ -135,6 +144,31 @@ namespace WMSAMG.Controllers
                 }
             }
             return tblStock;
+        }
+
+
+        public List<SelectListItem> PopulateCompany()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new SqlCommand("spSelect_CompanybyFilter", sqlConnection);
+                sqlCmd.Parameters.AddWithValue("TextFilter", "");
+                sqlCmd.Parameters.AddWithValue("ColumnName", "CompanyInitial");
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sqlDr = sqlCmd.ExecuteReader();
+
+                while(sqlDr.Read())
+                {
+                    items.Add(new SelectListItem
+                    {
+                        Text = sqlDr["CompanyInitial"].ToString(),
+                        Value = sqlDr["CompanyID"].ToString()
+                    });
+                }
+            }
+            return items;
         }
     }
 }
