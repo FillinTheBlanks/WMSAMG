@@ -50,7 +50,9 @@ namespace WMSAMG.Controllers
             TblStock tblStock = new TblStock();
 
             tblStock.Companies = PopulateCompany();
-            
+            tblStock.Customers = PopulateCustomer();
+            tblStock.StockGroup = PopulateStockGroup();
+
             if (strid != string.Empty)
             {
                 tblStock = FetchStockByID(id);
@@ -119,6 +121,11 @@ namespace WMSAMG.Controllers
             
             DataTable dt = new DataTable();
             TblStock tblStock = new TblStock();
+
+            tblStock.Companies = PopulateCompany();
+            tblStock.Customers = PopulateCustomer();
+            tblStock.StockGroup = PopulateStockGroup();
+
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
             {
                 sqlConnection.Open();
@@ -131,15 +138,18 @@ namespace WMSAMG.Controllers
                 {
                     tblStock.StockId = (Guid)dt.Rows[0]["StockID"];
                     tblStock.StockSku = dt.Rows[0]["StockSKU"].ToString();
-                    tblStock.StockGroupId = (Guid)dt.Rows[0]["StockGroupID"];
+                    //tblStock.StockGroupId = (Guid)dt.Rows[0]["StockGroupID"];
+                    tblStock.StockGroup.Find(a => a.Value == dt.Rows[0]["StockGroupID"].ToString()).Selected = true;
                     tblStock.StockDescription = dt.Rows[0]["StockDescription"].ToString();
                     tblStock.StockPcsperPack = Convert.ToDecimal(dt.Rows[0]["StockPcsperPack"].ToString());
                     tblStock.StockPackperCase = Convert.ToDecimal(dt.Rows[0]["StockPackperCase"].ToString());
                     tblStock.StockWeightinKilosperPack = Convert.ToDecimal(dt.Rows[0]["StockWeightinKilosperPack"].ToString());
                     tblStock.StockWeightinKilosperCase = Convert.ToDecimal(dt.Rows[0]["StockWeightinKilosperCase"].ToString());
                     tblStock.ShelfLifeinDays = Convert.ToInt32(dt.Rows[0]["ShelfLifeinDays"].ToString());
-                    tblStock.CustomerId = dt.Rows[0]["CustomerID"].ToString();
+                    //tblStock.CustomerId = dt.Rows[0]["CustomerID"].ToString();
                     tblStock.CompanyId = (Guid)dt.Rows[0]["CompanyID"];
+                    tblStock.Customers.Find(a => a.Value == dt.Rows[0]["CustomerID"].ToString()).Selected = true;
+                    tblStock.Companies.Find(a => a.Value == dt.Rows[0]["CompanyID"].ToString()).Selected = true;
                     tblStock.StockStatus = Convert.ToBoolean(dt.Rows[0]["StockStatus"].ToString());
                 }
             }
@@ -166,7 +176,61 @@ namespace WMSAMG.Controllers
                         Text = sqlDr["CompanyInitial"].ToString(),
                         Value = sqlDr["CompanyID"].ToString()
                     });
+                   
                 }
+               
+            }
+            return items;
+        }
+
+        public List<SelectListItem> PopulateCustomer()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new SqlCommand("spSelect_CustomerbyFilter", sqlConnection);
+                sqlCmd.Parameters.AddWithValue("TextFilter", "");
+                sqlCmd.Parameters.AddWithValue("ColumnName", "CustomerName");
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sqlDr = sqlCmd.ExecuteReader();
+
+                while (sqlDr.Read())
+                {
+                    items.Add(new SelectListItem
+                    {
+                        Text = sqlDr["CustomerName"].ToString(),
+                        Value = sqlDr["CustomerID"].ToString()
+                    });
+
+                }
+
+            }
+            return items;
+        }
+
+        public List<SelectListItem> PopulateStockGroup()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new SqlCommand("spSelect_StockGroupbyFilter", sqlConnection);
+                sqlCmd.Parameters.AddWithValue("TextFilter", "");
+                sqlCmd.Parameters.AddWithValue("ColumnName", "StockGroupCategory");
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sqlDr = sqlCmd.ExecuteReader();
+
+                while (sqlDr.Read())
+                {
+                    items.Add(new SelectListItem
+                    {
+                        Text = sqlDr["StockGroupCategory"].ToString(),
+                        Value = sqlDr["StockGroupID"].ToString()
+                    });
+
+                }
+
             }
             return items;
         }

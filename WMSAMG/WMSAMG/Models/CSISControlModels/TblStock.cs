@@ -11,6 +11,7 @@ namespace WMSAMG.Models.CSISControlModels
     {
         public List<SelectListItem> Companies { get; set; }
         public List<SelectListItem> Customers { get; set; }
+        public List<SelectListItem> StockGroup { get; set; }
         [Key]
         [Column("StockID")]
         public Guid StockId { get; set; }
