@@ -4,8 +4,8 @@ Add EF Model default
 Scaffold-DbContext "Server=.;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir CSISControlModels
 
 Overwrite EF Model
-Scaffold-DbContext "Server=localhost\SQLEXPRESS;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/CSISControlModels -Context "CSISControlContext" -DataAnnotations -force
-add-migration -Context "CSISControlContext"
+Scaffold-DbContext "Server=localhost\SQLEXPRESS;Database=CSIS2017;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/CSIS2017Models -Context "CSIS2017Context" -DataAnnotations -force
+add-migration -Context "CSIS2017Context"
 
 
 
