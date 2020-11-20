@@ -459,9 +459,6 @@ C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Companies\Details.cshtml.g.cs
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Companies\Edit.cshtml.g.cs
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Companies\Index.cshtml.g.cs
-C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\System.Net.Http.Extensions.dll
-C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
-C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\System.Net.Http.Primitives.dll
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.MvcApplicationPartsAssemblyInfo.cache
