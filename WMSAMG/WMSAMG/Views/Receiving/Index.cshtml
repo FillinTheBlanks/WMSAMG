@@ -1,0 +1,210 @@
+﻿@model IEnumerable<WMSAMG.Models.CSIS2017Models.TblReceivingDetail>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Rrcode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CarrierReferenceCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PayTypeInitial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockSku)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockGroupId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockPcsperPack)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockPackperCase)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Qty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Uom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockWeightinKilosperPack)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockWeightinKilosperCase)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PalletNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompanyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StorageLocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StorageId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StorageTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nature)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Source)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApprovedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsSaved)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rrcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CarrierReferenceCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayTypeInitial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockSku)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockGroupId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockPcsperPack)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockPackperCase)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActualWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceivingTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockWeightinKilosperPack)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockWeightinKilosperCase)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PalletNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CompanyId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StorageLocationId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StorageId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StorageTypeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocationId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nature)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Source)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApprovedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSaved)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ReferenceCode">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ReferenceCode">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ReferenceCode">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

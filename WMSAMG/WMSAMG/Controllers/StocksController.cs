@@ -99,7 +99,8 @@ namespace WMSAMG.Controllers
         public IActionResult Delete(Guid? id)
         {
             TblStock tblStock = new TblStock();
-            if (id != Guid.Empty)
+            string strid = id.ToString();
+            if (strid != string.Empty)
             {
                 tblStock = FetchStockByID(id);
             }
