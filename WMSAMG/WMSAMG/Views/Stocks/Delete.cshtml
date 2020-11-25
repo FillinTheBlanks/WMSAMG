@@ -12,25 +12,25 @@
     <h4>TblStock</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StockSku)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StockSku)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StockDescription)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StockDescription)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StockGroupId)
+        <dt class="col-sm-2">
+            StockGroup
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StockGroupId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StockGroup.Find(a => a.Value == model.StockGroupId.ToString()).Text)
         </dd>
-        <dt class = "col-sm-2">
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.StockPcsperPack)
         </dt>
         <dd class = "col-sm-10">
@@ -53,29 +53,29 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.StockWeightinKilosperCase)
-        </dd>
-        <dt class = "col-sm-2">
+        </dd>*@
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ShelfLifeinDays)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ShelfLifeinDays)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CustomerId)
+        <dt class="col-sm-2">
+            Customer
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CustomerId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customers.Find(a => a.Value == model.CustomerId.ToString()).Text)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CompanyId)
+        <dt class="col-sm-2">
+            Company
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CompanyId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Companies.Find(a => a.Value == model.CompanyId.ToString()).Text)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StockStatus)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StockStatus)
         </dd>
     </dl>
