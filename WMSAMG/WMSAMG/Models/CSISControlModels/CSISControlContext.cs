@@ -11,10 +11,10 @@ namespace WMSAMG.Models.CSISControlModels
         {
             
         }
-        //public CSISControlContext(IConfiguration configuration)
-        //{
-        //    this._configuration = configuration;
-        //}
+        public CSISControlContext(IConfiguration configuration)
+        {
+            this._configuration = configuration;
+        }
 
         public CSISControlContext(DbContextOptions<CSISControlContext> options)
             : base(options)
@@ -79,8 +79,8 @@ namespace WMSAMG.Models.CSISControlModels
 
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=CSISControl;Trusted_Connection=True;");
-                optionsBuilder.UseSqlServer("Server=(local);Database=CSISControl;Trusted_Connection=True;");
-                //optionsBuilder.UseSqlServer(_configuration.GetConnectionString("AuthContextConnection"));
+                //optionsBuilder.UseSqlServer("Server=(local);Database=CSISControl;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("AuthContextConnection"));
             }
         }
 

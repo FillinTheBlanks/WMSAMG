@@ -1,11 +1,11 @@
 ﻿@model WMSAMG.Models.CSIS2017Models.TblReceivingDetail
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "Receive Stocks" : "Edit Received";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>@ViewData["Title"]</h1>
 
 <h4>TblReceivingDetail</h4>
 <hr />
@@ -18,11 +18,6 @@
                 <label asp-for="Rrcode" class="control-label"></label>
                 <input asp-for="Rrcode" class="form-control" />
                 <span asp-validation-for="Rrcode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CarrierReferenceCode" class="control-label"></label>
-                <input asp-for="CarrierReferenceCode" class="form-control" />
-                <span asp-validation-for="CarrierReferenceCode" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CustomerId" class="control-label"></label>

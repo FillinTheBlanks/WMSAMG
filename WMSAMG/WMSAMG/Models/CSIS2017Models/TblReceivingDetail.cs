@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,6 +9,9 @@ namespace WMSAMG.Models.CSIS2017Models
     [Table("tblReceivingDetail")]
     public partial class TblReceivingDetail
     {
+        public List<SelectListItem> Stocks { get; set; }
+        public List<SelectListItem> Customers { get; set; }
+
         [Key]
         public Guid ReferenceCode { get; set; }
         [Column("RRCode")]

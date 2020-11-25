@@ -466,3 +466,6 @@ C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\W
 C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.dll
 C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.pdb
 C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.genruntimeconfig.cache
+C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Receiving\Delete.cshtml.g.cs
+C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Receiving\Index.cshtml.g.cs
+C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Receiving\AddorEdit.cshtml.g.cs
