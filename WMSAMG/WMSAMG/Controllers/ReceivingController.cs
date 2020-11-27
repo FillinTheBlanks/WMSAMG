@@ -25,7 +25,7 @@ namespace WMSAMG.Controllers
         public IActionResult Index()
         {
             DataTable dt = new DataTable();
-            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
                 SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
@@ -41,14 +41,20 @@ namespace WMSAMG.Controllers
         // GET: Receiving/Details/5
         public IActionResult AddorEdit(Guid? id)
         {
-            if (id == null)
+            string strid = id.ToString();
+            TblReceivingDetail tblReceiving = new TblReceivingDetail();
+
+            tblReceiving.Customers = PopulateCustomers();
+
+
+
+            if (strid != string.Empty)
             {
-                return NotFound();
+                tblReceiving = FetchStockByID(id);
             }
 
-           
 
-            return View();
+            return View(tblReceiving);
         }
 
         // GET: Receiving/Create
@@ -121,5 +127,93 @@ namespace WMSAMG.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [NonAction]
+        public TblReceivingDetail FetchStockByID(Guid? id)
+        {
+
+            DataTable dt = new DataTable();
+            TblReceivingDetail tblReceiving = new TblReceivingDetail();
+
+            tblReceiving.Customers = PopulateCustomers();
+
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingbyFilter", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", id);
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "ReferenceCode");
+                sqlDa.Fill(dt);
+                if (dt.Rows.Count == 1)
+                {
+                    tblReceiving.Rrcode = dt.Rows[0]["RRCode"].ToString();
+                    
+                    tblReceiving.Stocks.Find(a => a.Value == dt.Rows[0]["StockSku"].ToString()).Selected = true;
+                    //tblReceiving.StockDescription = dt.Rows[0]["StockDescription"].ToString();
+                    //tblReceiving.StockPcsperPack = Convert.ToDecimal(dt.Rows[0]["StockPcsperPack"].ToString());
+                    //tblReceiving.StockPackperCase = Convert.ToDecimal(dt.Rows[0]["StockPackperCase"].ToString());
+                    //tblReceiving.StockWeightinKilosperPack = Convert.ToDecimal(dt.Rows[0]["StockWeightinKilosperPack"].ToString());
+                    //tblReceiving.StockWeightinKilosperCase = Convert.ToDecimal(dt.Rows[0]["StockWeightinKilosperCase"].ToString());
+                    //tblReceiving.ShelfLifeinDays = Convert.ToInt32(dt.Rows[0]["ShelfLifeinDays"].ToString());
+                    //tblReceiving.CompanyId = (Guid)dt.Rows[0]["CompanyID"];
+                    tblReceiving.Customers.Find(a => a.Value == dt.Rows[0]["CustomerID"].ToString()).Selected = true;
+                    //tblReceiving.Companies.Find(a => a.Value == dt.Rows[0]["CompanyID"].ToString()).Selected = true;
+                    //tblReceiving.StockStatus = Convert.ToBoolean(dt.Rows[0]["StockStatus"].ToString());
+                }
+            }
+            return tblReceiving;
+        }
+
+        public List<SelectListItem> PopulateCustomers()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new SqlCommand("spSelect_CustomerbyFilter", sqlConnection);
+                sqlCmd.Parameters.AddWithValue("TextFilter", "");
+                sqlCmd.Parameters.AddWithValue("ColumnName", "CustomerName");
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sqlDr = sqlCmd.ExecuteReader();
+
+                while (sqlDr.Read())
+                {
+                    items.Add(new SelectListItem
+                    {
+                        Text = sqlDr["CustomerName"].ToString(),
+                        Value = sqlDr["CustomerID"].ToString()
+                    });
+
+                }
+
+            }
+            return items;
+        }
+
+        public List<SelectListItem> PopulateStocks(Guid? id)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new SqlCommand("spSelect_StocksbyFilter", sqlConnection);
+                sqlCmd.Parameters.AddWithValue("TextFilter", id);
+                sqlCmd.Parameters.AddWithValue("ColumnName", "CustomerID");
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sqlDr = sqlCmd.ExecuteReader();
+
+                while (sqlDr.Read())
+                {
+                    items.Add(new SelectListItem
+                    {
+                        Text = sqlDr["CustomerName"].ToString(),
+                        Value = sqlDr["CustomerID"].ToString()
+                    });
+
+                }
+
+            }
+            return items;
+        }
     }
 }
