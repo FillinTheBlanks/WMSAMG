@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WMSAMG.Models.CSISControlModels;
+using Newtonsoft.Json;
 
 namespace WMSAMG.Controllers
 {
@@ -41,7 +42,39 @@ namespace WMSAMG.Controllers
             return View(dt);
         }
 
-        
+        public JsonResult GetStockBySKU(string Id)
+        {
+            
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_StocksbyFilter", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", Id);
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "StockSKU");
+                sqlDa.Fill(dt);
+            }
+            List<VwStocktoStockGrouptoCustomerandCompany> Stocks = dt.AsEnumerable().Select(row =>
+                new VwStocktoStockGrouptoCustomerandCompany
+                {
+                    StockId = row.Field<Guid>("StockID"),
+                    StockSku = row.Field<string>("StockSKU"),
+                    StockDescription = row.Field<string>("StockDescription"),
+                    CustomerId = row.Field<string>("CustomerID"),
+                    CustomerName = row.Field<string>("CustomerName"),
+                    CompanyId = row.Field<Guid>("CompanyId"),
+                    CompanyName = row.Field<string>("CompanyName"),
+                    LocationId = row.Field<Guid>("LocationId"),
+                    LocationInitial = row.Field<string>("LocationInitial")
+                }).ToList();
+            //string JSONString = string.Empty;
+            //JSONString = JsonConvert.SerializeObject(dt);
+            
+            return Json(Stocks, new System.Text.Json.JsonSerializerOptions());
+            
+        }
+
 
         // GET: Stocks/AddorEdit/Guid
         public IActionResult AddorEdit(Guid? id)
