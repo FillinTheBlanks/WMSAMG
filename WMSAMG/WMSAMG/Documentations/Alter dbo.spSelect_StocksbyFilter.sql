@@ -1,12 +1,13 @@
 ﻿USE [CSISControl]
 GO
 
-/****** Object: SqlProcedure [dbo].[spSelect_StocksbyFilter] Script Date: 11/30/2020 9:32:42 PM ******/
+/****** Object: SqlProcedure [dbo].[spSelect_StocksbyFilter] Script Date: 12/1/2020 9:55:27 AM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 -- =============================================
 -- Author:		kevin llupar
@@ -48,6 +49,7 @@ BEGIN TRY
 		, StockStatus
 		, LocationID
 		, LocationInitial
+		, PayTypeInitial
 	FROM vw_StocktoStockGrouptoCustomerandCompany WHERE CAST(' + @ColumnName + ' as nvarchar(200)) LIKE ''' + @TextFilter + '%' + '''
 
 

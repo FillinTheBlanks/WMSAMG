@@ -24,6 +24,12 @@ namespace WMSAMG.Controllers
         // GET: Receiving
         public IActionResult Index()
         {
+            List<object> DataRange = new List<object>();
+            DataRange.Add(new { Text = "1,000 Rows 11 Columns", Value = "1000" });
+            DataRange.Add(new { Text = "10,000 Rows 11 Columns", Value = "10000" });
+            DataRange.Add(new { Text = "1,00,000 Rows 11 Columns", Value = "100000" });
+            ViewBag.Data = DataRange;
+
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {

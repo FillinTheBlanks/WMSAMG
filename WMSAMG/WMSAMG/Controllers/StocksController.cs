@@ -66,7 +66,8 @@ namespace WMSAMG.Controllers
                     CompanyId = row.Field<Guid>("CompanyId"),
                     CompanyName = row.Field<string>("CompanyName"),
                     LocationId = row.Field<Guid>("LocationId"),
-                    LocationInitial = row.Field<string>("LocationInitial")
+                    LocationInitial = row.Field<string>("LocationInitial"),
+                    PayTypeInitial = row.Field<string>("PayTypeInitial")
                 }).ToList();
             //string JSONString = string.Empty;
             //JSONString = JsonConvert.SerializeObject(dt);
