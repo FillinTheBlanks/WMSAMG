@@ -46,5 +46,12 @@ namespace WMSAMG.Models.CSISControlModels
         public string CompanyInitial { get; set; }
         [StringLength(200)]
         public string CompanyAddress { get; set; }
+        [Column("LocationID")]
+        public Guid LocationId { get; set; }
+        [StringLength(10)]
+        public string LocationInitial { get; set; }
+        [StringLength(5)]
+        public string PayTypeInitial { get; set; }
+
     }
 }

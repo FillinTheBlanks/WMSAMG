@@ -12,6 +12,9 @@ namespace WMSAMG.Models.CSIS2017Models
         public List<SelectListItem> Stocks { get; set; }
         public List<SelectListItem> Customers { get; set; }
 
+        public string CustomerName { get; set; }
+        public string CompanyName { get; set; }
+
         [Key]
         public Guid ReferenceCode { get; set; }
         [Column("RRCode")]
@@ -28,6 +31,9 @@ namespace WMSAMG.Models.CSIS2017Models
         [Column("StockSKU")]
         [StringLength(100)]
         public string StockSku { get; set; }
+        [Column("StockDescription")]
+        [StringLength(200)]
+        public string StockDescription { get; set; }
         [Column("StockGroupID")]
         public Guid? StockGroupId { get; set; }
         [Column(TypeName = "money")]

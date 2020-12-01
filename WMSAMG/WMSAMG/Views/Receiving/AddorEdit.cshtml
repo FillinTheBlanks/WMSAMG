@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="AddorEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReferenceCode" />
             <div class="form-group">
@@ -20,9 +20,14 @@
                 <span asp-validation-for="Rrcode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
+                <label asp-for="CustomerId" class="control-label" ></label>
                 <input asp-for="CustomerId" class="form-control" />
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomerName" class="control-label"></label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PayTypeInitial" class="control-label"></label>
@@ -30,30 +35,21 @@
                 <span asp-validation-for="PayTypeInitial" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StockId" class="control-label"></label>
-                <input asp-for="StockId" class="form-control" />
+                <label asp-for="StockId" class="control-label" hidden></label>
+                <input asp-for="StockId" class="form-control" hidden/>
                 <span asp-validation-for="StockId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StockSku" class="control-label"></label>
-                <input asp-for="StockSku" class="form-control" />
+                <input asp-for="StockSku" class="form-control" onkeypress="keypresshandle(event);" />
                 <span asp-validation-for="StockSku" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StockGroupId" class="control-label"></label>
-                <input asp-for="StockGroupId" class="form-control" />
-                <span asp-validation-for="StockGroupId" class="text-danger"></span>
+                <label asp-for="StockDescription" class="control-label"></label>
+                <input asp-for="StockDescription" class="form-control" />
+                <span asp-validation-for="StockDescription" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StockPcsperPack" class="control-label"></label>
-                <input asp-for="StockPcsperPack" class="form-control" />
-                <span asp-validation-for="StockPcsperPack" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StockPackperCase" class="control-label"></label>
-                <input asp-for="StockPackperCase" class="form-control" />
-                <span asp-validation-for="StockPackperCase" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Qty" class="control-label"></label>
                 <input asp-for="Qty" class="form-control" />
@@ -79,60 +75,26 @@
                 <input asp-for="EndTime" class="form-control" />
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StockWeightinKilosperPack" class="control-label"></label>
-                <input asp-for="StockWeightinKilosperPack" class="form-control" />
-                <span asp-validation-for="StockWeightinKilosperPack" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StockWeightinKilosperCase" class="control-label"></label>
-                <input asp-for="StockWeightinKilosperCase" class="form-control" />
-                <span asp-validation-for="StockWeightinKilosperCase" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="PalletNo" class="control-label"></label>
                 <input asp-for="PalletNo" class="form-control" />
                 <span asp-validation-for="PalletNo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CompanyId" class="control-label"></label>
-                <input asp-for="CompanyId" class="form-control" />
-                <span asp-validation-for="CompanyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StorageLocationId" class="control-label"></label>
-                <input asp-for="StorageLocationId" class="form-control" />
-                <span asp-validation-for="StorageLocationId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StorageId" class="control-label"></label>
-                <input asp-for="StorageId" class="form-control" />
-                <span asp-validation-for="StorageId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StorageTypeId" class="control-label"></label>
-                <input asp-for="StorageTypeId" class="form-control" />
-                <span asp-validation-for="StorageTypeId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TransactionDate" class="control-label"></label>
-                <input asp-for="TransactionDate" class="form-control" />
-                <span asp-validation-for="TransactionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LocationId" class="control-label"></label>
-                <input asp-for="LocationId" class="form-control" />
+                <label asp-for="LocationId" class="control-label" hidden></label>
+                <input asp-for="LocationId" class="form-control" hidden />
                 <span asp-validation-for="LocationId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Nature" class="control-label"></label>
-                <input asp-for="Nature" class="form-control" />
-                <span asp-validation-for="Nature" class="text-danger"></span>
+                <label asp-for="CompanyId" class="control-label" hidden></label>
+                <input asp-for="CompanyId" class="form-control" hidden/>
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Source" class="control-label"></label>
-                <input asp-for="Source" class="form-control" />
-                <span asp-validation-for="Source" class="text-danger"></span>
+                <label asp-for="CompanyName" class="control-label" hidden></label>
+                <input asp-for="CompanyName" class="form-control" hidden/>
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Remarks" class="control-label"></label>
@@ -155,11 +117,6 @@
                 <span asp-validation-for="EmployeeDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsSaved" class="control-label"></label>
-                <input asp-for="IsSaved" class="form-control" />
-                <span asp-validation-for="IsSaved" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -169,6 +126,43 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script>
+    function keypresshandle(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            var str = $("#StockSku").val();
+           
+            $('#StockDescription').ready(function () {
+                var options = {};
+                options.url = '/Stocks/GetStockBySKU/' + str;
+                options.type = "GET";
+                options.dataType = "json";
+                options.success = function (data) {
+                    console.log(data);
+                    data.forEach(function (element) {
+                        
+                        $('#StockDescription').val(element.StockDescription);
+                        $('#StockId').val(element.StockId);
+                        $('#CustomerId').val(element.CustomerId);
+                        $('#CustomerName').val(element.CustomerName);
+                        $('#CompanyId').val(element.CompanyId);
+                        $('#CompanyName').val(element.CompanyName);
+                        $('#LocationId').val(element.LocationId);
+                    });
+                };
+                options.error = function () {
+                    $("#msg").html("Error while calling the Web API!");
+                };
+                $.ajax(options);
+            });
+            
+        }
+    }
+
+ 
+
+</script>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

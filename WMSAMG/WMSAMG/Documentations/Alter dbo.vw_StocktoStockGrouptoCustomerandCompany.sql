@@ -1,12 +1,14 @@
 ﻿USE [CSISControl]
 GO
 
-/****** Object: View [dbo].[vw_StocktoStockGrouptoCustomerandCompany] Script Date: 11/20/2020 10:45:53 AM ******/
+/****** Object: View [dbo].[vw_StocktoStockGrouptoCustomerandCompany] Script Date: 11/30/2020 9:51:53 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+
 
 
 
@@ -31,14 +33,16 @@ SELECT st.StockID,
        st.CustomerID,
        cs.CustomerName,
        cs.CustomerAddress,
+	   cs.PayTypeInitial,
        st.CompanyID,
-       co.CompanyName,
-       co.CompanyInitial,
-       co.CompanyAddress
+       cs.CompanyName,
+       cs.CompanyInitial,
+       cs.CompanyAddress,
+	   cs.LocationID,
+	   cs.LocationDescription,
+	   cs.LocationInitial
 FROM tblStock st
     LEFT JOIN tblStockGroup sg
         ON st.StockGroupID = sg.StockGroupID
-    LEFT JOIN tblCustomer cs
-        ON st.CustomerID = cs.CustomerID
-    LEFT JOIN tblCompany co
-        ON st.CompanyID = co.CompanyID;
+    LEFT JOIN vw_CustomertoCompanyandLocation cs
+        ON st.CustomerID = cs.CustomerID AND st.CompanyID = cs.CompanyID
