@@ -470,8 +470,8 @@ C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Syncfusion.EJ2.dll
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Syncfusion.Licensing.dll
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\WMSAMG.Views.pdb
+C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.Views.pdb
+C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.Views.pdb
-C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache

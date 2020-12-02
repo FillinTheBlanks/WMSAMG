@@ -24,12 +24,6 @@ namespace WMSAMG.Controllers
         // GET: Receiving
         public IActionResult Index()
         {
-            List<object> DataRange = new List<object>();
-            DataRange.Add(new { Text = "1,000 Rows 11 Columns", Value = "1000" });
-            DataRange.Add(new { Text = "10,000 Rows 11 Columns", Value = "10000" });
-            DataRange.Add(new { Text = "1,00,000 Rows 11 Columns", Value = "100000" });
-            ViewBag.Data = DataRange;
-
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
@@ -47,18 +41,26 @@ namespace WMSAMG.Controllers
         // GET: Receiving/Details/5
         public IActionResult AddorEdit(Guid? id)
         {
-            string strid = id.ToString();
+            List<object> DataRange = new List<object>();
+            DataRange.Add(new { Text = "1,000 Rows", Value = "1000" });
+            DataRange.Add(new { Text = "10,000 Rows", Value = "10000" });
+            DataRange.Add(new { Text = "100,000 Rows", Value = "100000" });
+            ViewBag.Data = DataRange;
+            String strid = id.ToString();
+
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
-
-            tblReceiving.Customers = PopulateCustomers();
-
-
-
+            
+            //tblReceiving.Customers = PopulateCustomers();
+            
             if (strid != string.Empty)
             {
-                tblReceiving = FetchStockByID(id);
+                tblReceiving = FetchStockByID(strid);
+            } else
+            {
+                tblReceiving.Nature = "RR";
+                tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                tblReceiving.Rrcode = GetReferenceNo(tblReceiving.Nature, tblReceiving.LocationId);
             }
-
 
             return View(tblReceiving);
         }
@@ -85,11 +87,7 @@ namespace WMSAMG.Controllers
         }
 
         // GET: Receiving/Edit/5
-        public IActionResult AddoEdit(Guid? id)
-        {
-           
-            return View();
-        }
+        
 
         // POST: Receiving/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
@@ -134,39 +132,51 @@ namespace WMSAMG.Controllers
         }
 
         [NonAction]
-        public TblReceivingDetail FetchStockByID(Guid? id)
+        public TblReceivingDetail FetchStockByID(string id)
         {
 
             DataTable dt = new DataTable();
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
 
-            tblReceiving.Customers = PopulateCustomers();
+            //tblReceiving.Customers = PopulateCustomers();
 
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingbyFilter", sqlConnection);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", id);
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "ReferenceCode");
                 sqlDa.Fill(dt);
-                if (dt.Rows.Count == 1)
+                if (dt.Rows.Count >= 1)
                 {
+                    tblReceiving.ReferenceCode = (Guid)dt.Rows[0]["ReferenceCode"];
                     tblReceiving.Rrcode = dt.Rows[0]["RRCode"].ToString();
+                    tblReceiving.CustomerId = dt.Rows[0]["CustomerID"].ToString();
+                    tblReceiving.CustomerName = dt.Rows[0]["CustomerName"].ToString();
+                    tblReceiving.PayTypeInitial = dt.Rows[0]["PayTypeInitial"].ToString();
+                    tblReceiving.StockId = (Guid)dt.Rows[0]["StockID"];
+                    tblReceiving.StockSku = dt.Rows[0]["StockSKU"].ToString();
+                    tblReceiving.StockDescription = dt.Rows[0]["StockDescription"].ToString();
+                    tblReceiving.Qty = Convert.ToInt64(dt.Rows[0]["Qty"]);
+                    tblReceiving.ActualWeight = Convert.ToDecimal(dt.Rows[0]["ActualWeight"]);
+                    tblReceiving.Uom = dt.Rows[0]["UOM"].ToString();
+                    tblReceiving.PalletNo = dt.Rows[0]["PalletNo"].ToString();
+                    tblReceiving.CompanyId = (Guid)dt.Rows[0]["CompanyId"];
+                    tblReceiving.CompanyName = dt.Rows[0]["CompanyName"].ToString();
+                    tblReceiving.LocationId = (Guid)dt.Rows[0]["LocationID"];
+                    tblReceiving.LocationInitial = dt.Rows[0]["LocationInitial"].ToString();
+                    tblReceiving.ReceivingTime = Convert.ToDateTime(dt.Rows[0]["ReceivingTime"]);
+                    if (!String.IsNullOrEmpty(dt.Rows[0]["EndTime"].ToString()))
+                    {
+                        tblReceiving.EndTime = Convert.ToDateTime(dt.Rows[0]["EndTime"]);
+                    }
                     
-                    tblReceiving.Stocks.Find(a => a.Value == dt.Rows[0]["StockSku"].ToString()).Selected = true;
-                    //tblReceiving.StockDescription = dt.Rows[0]["StockDescription"].ToString();
-                    //tblReceiving.StockPcsperPack = Convert.ToDecimal(dt.Rows[0]["StockPcsperPack"].ToString());
-                    //tblReceiving.StockPackperCase = Convert.ToDecimal(dt.Rows[0]["StockPackperCase"].ToString());
-                    //tblReceiving.StockWeightinKilosperPack = Convert.ToDecimal(dt.Rows[0]["StockWeightinKilosperPack"].ToString());
-                    //tblReceiving.StockWeightinKilosperCase = Convert.ToDecimal(dt.Rows[0]["StockWeightinKilosperCase"].ToString());
-                    //tblReceiving.ShelfLifeinDays = Convert.ToInt32(dt.Rows[0]["ShelfLifeinDays"].ToString());
-                    //tblReceiving.CompanyId = (Guid)dt.Rows[0]["CompanyID"];
-                    tblReceiving.Customers.Find(a => a.Value == dt.Rows[0]["CustomerID"].ToString()).Selected = true;
-                    //tblReceiving.Companies.Find(a => a.Value == dt.Rows[0]["CompanyID"].ToString()).Selected = true;
-                    //tblReceiving.StockStatus = Convert.ToBoolean(dt.Rows[0]["StockStatus"].ToString());
+                    tblReceiving.Remarks = dt.Rows[0]["Remarks"].ToString();
+                    
                 }
             }
+           
             return tblReceiving;
         }
 
@@ -220,6 +230,65 @@ namespace WMSAMG.Controllers
 
             }
             return items;
+        }
+
+        public string GetReferenceNo(string nature, Guid? locationid)
+        {
+            string RrCode = String.Empty;
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new SqlCommand("spSelect_AvailableRRCode", sqlConnection);
+                sqlCmd.Parameters.AddWithValue("LocationID", locationid);
+                sqlCmd.Parameters.AddWithValue("Nature", nature);
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sqlDr = sqlCmd.ExecuteReader();
+
+                while (sqlDr.Read())
+                {
+                    RrCode = sqlDr[2].ToString();
+                }
+            }
+            return RrCode;
+        }
+
+        public JsonResult GetRecordsbyRRNo(string? Id)
+        {
+            if (Id is null)
+            {
+                Id = "";
+            }
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", Id);
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "RRCode");
+                sqlDa.Fill(dt);
+            }
+            List<VwReceivingDetail> vwReceivingDetails = dt.AsEnumerable().Select(row =>
+                new VwReceivingDetail
+                {
+                    ReferenceCode = row.Field<Guid>("ReferenceCode"),
+                    Rrcode = row.Field<string>("RRCode"),
+                    CustomerId = row.Field<string>("CustomerID"),
+                    CustomerName = row.Field<string>("CustomerName"),
+                    PayTypeInitial = row.Field<string>("PayTypeInitial"),
+                    StockId = row.Field<Guid>("StockID"),
+                    StockSku = row.Field<string>("StockSKU"),
+                    StockDescription = row.Field<string>("StockDescription"),
+                    Qty = row.Field<decimal>("Qty"),
+                    ActualWeight = row.Field<decimal>("ActualWeight"),
+                    ReceivingTime = row.Field<Nullable<DateTime>>("ReceivingTime"),
+                    EndTime = row.Field<Nullable<DateTime>>("EndTime")
+                    
+                }).ToList();
+            
+
+            return Json(vwReceivingDetails, new System.Text.Json.JsonSerializerOptions());
+
         }
     }
 }
