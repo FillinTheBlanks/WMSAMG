@@ -1,5 +1,5 @@
 ﻿@model WMSAMG.Models.CSIS2017Models.TblReceivingDetail
-
+@using Syncfusion.EJ2
 @{
     ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "Receive Stocks" : "Edit Received";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,7 +7,6 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<h4>TblReceivingDetail</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,109 +14,101 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReferenceCode" />
             <div class="form-group">
-                <label asp-for="Rrcode" class="control-label"></label>
-                <input asp-for="Rrcode" class="form-control" />
+                
+                
+                <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Rrcode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CustomerId" class="control-label" ></label>
-                <input asp-for="CustomerId" class="form-control" />
+                <ejs-textbox id="CustomerId" ejs-for="CustomerId" readonly="true" cssClass="e-outline" placeholder="Account No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CustomerName" class="control-label"></label>
-                <input asp-for="CustomerName" class="form-control" />
+                <ejs-textbox id="CustomerName" ejs-for="CustomerName" readonly="true" cssClass="e-outline" placeholder="Account Name" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PayTypeInitial" class="control-label"></label>
-                <input asp-for="PayTypeInitial" class="form-control" />
+                <ejs-textbox id="PayTypeInitial" ejs-for="PayTypeInitial" readonly="true" cssClass="e-outline" placeholder="Pay Type" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="PayTypeInitial" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StockId" class="control-label" hidden></label>
-                <input asp-for="StockId" class="form-control" hidden/>
+            <div class="form-group" hidden>
+                <label asp-for="StockId" class="control-label"></label>
+                <input asp-for="StockId" class="form-control" readonly />
                 <span asp-validation-for="StockId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StockSku" class="control-label"></label>
-                <input asp-for="StockSku" class="form-control" onkeypress="keypresshandle(event);" />
+                <ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);"></ejs-textbox>
                 <span asp-validation-for="StockSku" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StockDescription" class="control-label"></label>
-                <input asp-for="StockDescription" class="form-control" />
+                <ejs-textbox id="StockDescription" ejs-for="StockDescription" readonly="true" cssClass="e-outline" placeholder="Description" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="StockDescription" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Qty" class="control-label"></label>
-                <input asp-for="Qty" class="form-control" />
+                <ejs-numerictextbox id="Qty" ejs-for="Qty" cssClass="e-outline" placeholder="Quantity" floatLabelType="Auto"></ejs-numerictextbox>
                 <span asp-validation-for="Qty" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ActualWeight" class="control-label"></label>
-                <input asp-for="ActualWeight" class="form-control" />
+                <ejs-numerictextbox id="ActualWeight" ejs-for="ActualWeight" cssClass="e-outline" placeholder="Actual Weight" floatLabelType="Auto"></ejs-numerictextbox>
                 <span asp-validation-for="ActualWeight" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Uom" class="control-label"></label>
-                <input asp-for="Uom" class="form-control" />
+                <ejs-textbox id="Uom" ejs-for="Uom" cssClass="e-outline" placeholder="UoM" floatLabelType="Auto"></ejs-textbox>
                 <span asp-validation-for="Uom" class="text-danger"></span>
             </div>
+            </hr>
             <div class="form-group">
-                <label asp-for="ReceivingTime" class="control-label"></label>
-                <input asp-for="ReceivingTime" class="form-control" />
+                <ejs-datetimepicker id="ReceivingTime" ejs-for="ReceivingTime" placeholder="Receiving date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="ReceivingTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
+                <ejs-datetimepicker id="EndTime" ejs-for="EndTime" placeholder="End date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
-
+            </hr>
             <div class="form-group">
-                <label asp-for="PalletNo" class="control-label"></label>
-                <input asp-for="PalletNo" class="form-control" />
+                <ejs-textbox id="PalletNo" ejs-for="PalletNo" cssClass="e-outline" placeholder="Pallet Name" floatLabelType="Auto"></ejs-textbox>
                 <span asp-validation-for="PalletNo" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="LocationId" class="control-label" hidden></label>
-                <input asp-for="LocationId" class="form-control" hidden />
+            <div class="form-group" hidden>
+                <label asp-for="LocationId" class="control-label"></label>
+                <input asp-for="LocationId" class="form-control" readonly />
                 <span asp-validation-for="LocationId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompanyId" class="control-label" hidden></label>
-                <input asp-for="CompanyId" class="form-control" hidden/>
+            <div class="form-group" hidden>
+                <label asp-for="LocationInitial" class="control-label"></label>
+                <input asp-for="LocationInitial" class="form-control" readonly />
+                <span asp-validation-for="LocationInitial" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="CompanyId" class="control-label"></label>
+                <input asp-for="CompanyId" class="form-control" />
                 <span asp-validation-for="CompanyId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CompanyName" class="control-label" hidden></label>
-                <input asp-for="CompanyName" class="form-control" hidden/>
+            <div class="form-group" hidden>
+                <label asp-for="CompanyName" class="control-label"></label>
+                <input asp-for="CompanyName" class="form-control" />
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Remarks" class="control-label"></label>
-                <input asp-for="Remarks" class="form-control" />
+                <ejs-textbox id="Remarks" ejs-for="Remarks" cssClass="e-outline" placeholder="Remarks" floatLabelType="Auto"></ejs-textbox>
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ApprovedBy" class="control-label"></label>
-                <input asp-for="ApprovedBy" class="form-control" />
+                <ejs-textbox id="ApprovedBy" ejs-for="ApprovedBy" cssClass="e-outline" placeholder="Approver" floatLabelType="Auto"></ejs-textbox>
                 <span asp-validation-for="ApprovedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <input asp-for="EmployeeId" class="form-control" />
+                <ejs-textbox id="EmployeeId" ejs-for="EmployeeId" readonly="true" cssClass="e-outline" placeholder="Encoder" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EmployeeDate" class="control-label"></label>
-                <input asp-for="EmployeeDate" class="form-control" />
+                <ejs-datetimepicker id="EmployeeDate" ejs-for="EmployeeDate" placeholder="Encoded date and time" cssClass="e-outline" readonly="true" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="EmployeeDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" id="Save" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -126,12 +117,51 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<ejs-grid id="Grid" allowFiltering="true" allowSorting="true" height="600" rowHeight="38" enableHover="false">
+    <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+    <e-grid-columns>
+        <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="CustomerId" headerText="Customer ID" type="string" width="120"></e-grid-column>
+        <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="180"></e-grid-column>
+        <e-grid-column field="StockId" headerText="StockId" type="string" width="140" visible="false"></e-grid-column>
+        <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140"></e-grid-column>
+        <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
+        <e-grid-column field="Qty" headerText="Qty" type="number" width="140"></e-grid-column>
+        <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
+        <e-grid-column field="ReceivingTime" headerText="Receiving Date" format='dd/MM/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
+        <e-grid-column field="EndTime" headerText="End Date" format='dd/MM/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+<script type="text/javascript">
+    
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            grid.dataSource = JSON.parse(data);
+            grid.hideSpinner();
+        };
+    }, false);
+
+</script>
+
 <script>
     function keypresshandle(e) {
         if (e.keyCode === 13) {
             e.preventDefault();
             var str = $("#StockSku").val();
-           
+
+            if ($("#EmployeeDate").val() == '') {
+                $("#ReceivingTime").val(getDateTime(0));
+                $("#EndTime").val(getDateTime(1));
+                $("#EmployeeDate").val(getDateTime(0));
+            }
+
+
             $('#StockDescription').ready(function () {
                 var options = {};
                 options.url = '/Stocks/GetStockBySKU/' + str;
@@ -140,14 +170,16 @@
                 options.success = function (data) {
                     console.log(data);
                     data.forEach(function (element) {
-                        
+
                         $('#StockDescription').val(element.StockDescription);
                         $('#StockId').val(element.StockId);
                         $('#CustomerId').val(element.CustomerId);
                         $('#CustomerName').val(element.CustomerName);
                         $('#CompanyId').val(element.CompanyId);
                         $('#CompanyName').val(element.CompanyName);
+                        $('#PayTypeInitial').val(element.PayTypeInitial);
                         $('#LocationId').val(element.LocationId);
+                        $('#LocationInitial').val(element.LocationInitial);
                     });
                 };
                 options.error = function () {
@@ -155,12 +187,102 @@
                 };
                 $.ajax(options);
             });
-            
+
+            var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+            var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
+            ajax.send();
+            ajax.onSuccess = function (data) {
+                grid.dataSource = JSON.parse(data);
+                grid.hideSpinner();
+            };
+
         }
     }
 
- 
+    function getDateTime(addHour) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours() + addHour;
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            second = '0' + second;
+        }
+        var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        return dateTime;
+    }
 
+    var dReady = false;
+    var theme;
+    var dtTime = false;
+    var isDataBound = false;
+    var isDataChanged = true;
+    var intervalFun;
+    var clrIntervalFun;
+    var clrIntervalFun1;
+    var clrIntervalFun2;
+    var dropSlectedIndex = null;
+    var stTime;
+    stTime = performance.now();
+
+    function startTimer(args) {
+        clearTimeout(clrIntervalFun);
+        clearInterval(intervalFun);
+        dtTime = true;
+    }
+    function valueChange() {
+        var grid = document.getElementById("Grid").ej2_instances[0];
+        this.closePopup();
+        grid.showSpinner();
+        dropSlectedIndex = null;
+        var index = this.value;
+        clearTimeout(clrIntervalFun2);
+
+        var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
+        ajax.send();
+
+        clrIntervalFun2 = setTimeout(function () {
+            isDataChanged = true;
+            stTime = null;
+            var contentElement = grid.contentModule.getPanel().firstChild;
+            contentElement.scrollLeft = 0;
+            contentElement.scrollTop = 0;
+            grid.pageSettings.currentPage = 1;
+            stTime = performance.now();
+            ajax.onSuccess = function (data) {
+                grid.dataSource = JSON.parse(data);
+                grid.hideSpinner();
+            };
+        }, 100);
+    }
+
+    document.getElementById('Grid').addEventListener('DOMSubtreeModified', function () {
+        if (dReady && stTime && isDataChanged) {
+            var msgEle = document.getElementById('msg');
+            var val = (performance.now() - stTime).toFixed(0);
+            stTime = null;
+            dtTime = false;
+            dReady = false;
+            isDataChanged = false;
+            msgEle.innerHTML = 'Load Time: ' + "<b>" + val + "</b>" + '<b>ms</b>';
+            msgEle.classList.remove('e-hide');
+        }
+    });
 </script>
 
 

@@ -14,6 +14,7 @@ namespace WMSAMG.Models.CSIS2017Models
 
         public string CustomerName { get; set; }
         public string CompanyName { get; set; }
+        public string LocationInitial { get; set; }
 
         [Key]
         public Guid ReferenceCode { get; set; }

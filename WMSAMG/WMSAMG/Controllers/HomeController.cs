@@ -26,6 +26,7 @@ namespace WMSAMG.Controllers
 
         public IActionResult Index()
         {
+            
             return View();
         }
 
