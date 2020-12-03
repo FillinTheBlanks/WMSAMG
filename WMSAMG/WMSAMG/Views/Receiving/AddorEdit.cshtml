@@ -1,5 +1,10 @@
 ﻿@model WMSAMG.Models.CSIS2017Models.TblReceivingDetail
 @using Syncfusion.EJ2
+@using Microsoft.AspNetCore.Identity
+@using WMSAMG.Areas.Identity.Data
+
+@inject SignInManager<WMSAMGUser> SignInManager
+@inject UserManager<WMSAMGUser> UserManager
 @{
     ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "Receive Stocks" : "Edit Received";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,9 +18,19 @@
         <form asp-action="AddorEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReferenceCode" />
+            <input type="hidden" asp-for="CarrierReferenceCode" />
+            <input type="hidden" asp-for="StockGroupId" />
+            <input type="hidden" asp-for="StockPcsperPack" />
+            <input type="hidden" asp-for="StockPackperCase" />
+            <input type="hidden" asp-for="StockWeightinKilosperPack" />
+            <input type="hidden" asp-for="StockWeightinKilosperCase" />
+            <input type="hidden" asp-for="TransactionDate" />
+            <input type="hidden" asp-for="Nature" />
+            <input type="hidden" asp-for="Source" />
+            <input type="hidden" asp-for="IsSaved" />
             <div class="form-group">
-                
-                
+
+
                 <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Rrcode" class="text-danger"></span>
             </div>
@@ -63,7 +78,7 @@
                 <span asp-validation-for="ReceivingTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-datetimepicker id="EndTime" ejs-for="EndTime" placeholder="End date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
+                <ejs-datetimepicker id="EndTime" ejs-for="EndTime" placeholder="End date and time" cssClass="e-outline" floatLabelType="Always" ></ejs-datetimepicker>
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
             </hr>
@@ -96,11 +111,11 @@
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-textbox id="ApprovedBy" ejs-for="ApprovedBy" cssClass="e-outline" placeholder="Approver" floatLabelType="Auto"></ejs-textbox>
+                <input asp-for="ApprovedBy" class="form-control" />
                 <span asp-validation-for="ApprovedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-textbox id="EmployeeId" ejs-for="EmployeeId" readonly="true" cssClass="e-outline" placeholder="Encoder" floatLabelType="Always"></ejs-textbox>
+                <input asp-for="EmployeeId" class="form-control" />
                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -108,7 +123,7 @@
                 <span asp-validation-for="EmployeeDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" id="Save" value="Save" class="btn btn-primary" />
+                <input type="submit" id="Save" value="Submit" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -118,7 +133,15 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-<ejs-grid id="Grid" allowFiltering="true" allowSorting="true" height="600" rowHeight="38" enableHover="false">
+<ejs-grid id="Grid" allowPaging="true" allowFiltering="true" allowSorting="true" height="300" rowHeight="38" enableHover="false">
+    <e-grid-aggregates>
+        <e-grid-aggregate>
+            <e-aggregate-columns>
+                <e-aggregate-column field="Qty" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+                <e-aggregate-column field="ActualWeight" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+            </e-aggregate-columns>
+        </e-grid-aggregate>
+    </e-grid-aggregates>
     <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
     <e-grid-columns>
         <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
@@ -129,13 +152,13 @@
         <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
         <e-grid-column field="Qty" headerText="Qty" type="number" width="140"></e-grid-column>
         <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
-        <e-grid-column field="ReceivingTime" headerText="Receiving Date" format='dd/MM/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
-        <e-grid-column field="EndTime" headerText="End Date" format='dd/MM/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
+        <e-grid-column field="ReceivingTime" headerText="Receiving Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
+        <e-grid-column field="EndTime" headerText="End Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
 
 <script type="text/javascript">
-    
+
     document.addEventListener('DOMContentLoaded', function () {
 
         var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
@@ -159,6 +182,7 @@
                 $("#ReceivingTime").val(getDateTime(0));
                 $("#EndTime").val(getDateTime(1));
                 $("#EmployeeDate").val(getDateTime(0));
+                $("#TransactionDate").val(getDateTime(0));
             }
 
 
@@ -173,7 +197,7 @@
 
                         $('#StockDescription').val(element.StockDescription);
                         $('#StockId').val(element.StockId);
-                        $('#StockId').val(element.StockGroupId);
+                        $('#StockGroupId').val(element.StockGroupId);
                         $('#CustomerId').val(element.CustomerId);
                         $('#CustomerName').val(element.CustomerName);
                         $('#CompanyId').val(element.CompanyId);
@@ -181,6 +205,11 @@
                         $('#PayTypeInitial').val(element.PayTypeInitial);
                         $('#LocationId').val(element.LocationId);
                         $('#LocationInitial').val(element.LocationInitial);
+                        $('#StockPcsperPack').val(element.StockPcsperPack);
+                        $('#StockPackperCase').val(element.StockPackperCase);
+                        $('#StockWeightinKilosperCase').val(element.StockWeightinKilosperCase);
+                        $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
+                        
                     });
                 };
                 options.error = function () {

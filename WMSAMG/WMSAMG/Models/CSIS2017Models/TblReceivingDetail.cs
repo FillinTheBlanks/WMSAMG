@@ -49,8 +49,10 @@ namespace WMSAMG.Models.CSIS2017Models
         [StringLength(3)]
         public string Uom { get; set; }
         [Column(TypeName = "datetime")]
+        [Required]
         public DateTime? ReceivingTime { get; set; }
         [Column(TypeName = "datetime")]
+        [Required]
         public DateTime? EndTime { get; set; }
         [Column(TypeName = "money")]
         public decimal? StockWeightinKilosperPack { get; set; }

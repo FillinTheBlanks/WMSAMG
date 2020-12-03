@@ -68,7 +68,11 @@ namespace WMSAMG.Controllers
                     CompanyName = row.Field<string>("CompanyName"),
                     LocationId = row.Field<Guid>("LocationId"),
                     LocationInitial = row.Field<string>("LocationInitial"),
-                    PayTypeInitial = row.Field<string>("PayTypeInitial")
+                    PayTypeInitial = row.Field<string>("PayTypeInitial"),
+                    StockPcsperPack = row.Field<decimal>("StockPcsperPack"),
+                    StockPackperCase = row.Field<decimal>("StockPackperCase"),
+                    StockWeightinKilosperCase = row.Field<decimal>("StockWeightinKilosperCase"),
+                    StockWeightinKilosperPack = row.Field<decimal>("StockWeightinKilosperPack")
                 }).ToList();
             //string JSONString = string.Empty;
             //JSONString = JsonConvert.SerializeObject(dt);
@@ -191,7 +195,6 @@ namespace WMSAMG.Controllers
             }
             return tblStock;
         }
-
 
         public List<SelectListItem> PopulateCompany()
         {
