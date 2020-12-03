@@ -59,6 +59,7 @@ namespace WMSAMG.Controllers
                 new VwStocktoStockGrouptoCustomerandCompany
                 {
                     StockId = row.Field<Guid>("StockID"),
+                    StockGroupId = row.Field<Guid>("StockGroupID"),
                     StockSku = row.Field<string>("StockSKU"),
                     StockDescription = row.Field<string>("StockDescription"),
                     CustomerId = row.Field<string>("CustomerID"),

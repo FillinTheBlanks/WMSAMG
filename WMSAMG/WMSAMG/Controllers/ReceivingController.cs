@@ -41,11 +41,13 @@ namespace WMSAMG.Controllers
         // GET: Receiving/Details/5
         public IActionResult AddorEdit(Guid? id)
         {
-            List<object> DataRange = new List<object>();
-            DataRange.Add(new { Text = "1,000 Rows", Value = "1000" });
-            DataRange.Add(new { Text = "10,000 Rows", Value = "10000" });
-            DataRange.Add(new { Text = "100,000 Rows", Value = "100000" });
-            ViewBag.Data = DataRange;
+            //List<object> DataRange = new List<object>();
+            //DataRange.Add(new { Text = "1,000 Rows", Value = "1000" });
+            //DataRange.Add(new { Text = "10,000 Rows", Value = "10000" });
+            //DataRange.Add(new { Text = "100,000 Rows", Value = "100000" });
+            //ViewBag.Data = DataRange;
+
+
             String strid = id.ToString();
 
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
@@ -59,7 +61,7 @@ namespace WMSAMG.Controllers
             {
                 tblReceiving.Nature = "RR";
                 tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
-                tblReceiving.Rrcode = GetReferenceNo(tblReceiving.Nature, tblReceiving.LocationId);
+                tblReceiving.Rrcode = "GSC" + tblReceiving.Nature + GetReferenceNo(tblReceiving.Nature, tblReceiving.LocationId);
             }
 
             return View(tblReceiving);
@@ -80,8 +82,38 @@ namespace WMSAMG.Controllers
         {
             if (ModelState.IsValid)
             {
-               
-                return RedirectToAction(nameof(Index));
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+                {
+                    sqlConnection.Open();
+                    SqlCommand sqlCmd = new SqlCommand("spInsert_Stocks", sqlConnection);
+                    sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCmd.Parameters.AddWithValue("ReferenceCode", tblReceivingDetail.ReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("RRCode", tblReceivingDetail.Rrcode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CustomerID", tblReceivingDetail.CustomerId);
+                    sqlCmd.Parameters.AddWithValue("PayTypeInitial", tblReceivingDetail.PayTypeInitial);
+                    sqlCmd.Parameters.AddWithValue("StockID", tblReceivingDetail.StockId);
+                    sqlCmd.Parameters.AddWithValue("StockSKU", tblReceivingDetail.StockSku);
+                    sqlCmd.Parameters.AddWithValue("StockGroupID", tblReceivingDetail.StockGroupId);
+                    sqlCmd.Parameters.AddWithValue("StockPcsperPack", tblReceivingDetail.StockPcsperPack);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("CarrierReferenceCode", tblReceivingDetail.CarrierReferenceCode);
+
+                }
+                    return RedirectToAction(nameof(Index));
             }
             return View(tblReceivingDetail);
         }
