@@ -44,7 +44,7 @@ namespace WMSAMG.Controllers
         }
 
         // GET: Receiving/Details/5
-        public IActionResult AddorEdit(Guid? id)
+        public IActionResult AddorEdit(string? id)
         {
             //List<object> DataRange = new List<object>();
             //DataRange.Add(new { Text = "1,000 Rows", Value = "1000" });
@@ -52,25 +52,35 @@ namespace WMSAMG.Controllers
             //DataRange.Add(new { Text = "100,000 Rows", Value = "100000" });
             //ViewBag.Data = DataRange;
             
-            String strid = id.ToString();
-
+            
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
             
             //tblReceiving.Customers = PopulateCustomers();
             
-            if (strid != string.Empty)
+            if (!string.IsNullOrEmpty(id))
             {
-                tblReceiving = FetchRecordByID(strid);
-            } else
+                if(id.Substring(0,3) == "GSC")
+                {
+                    tblReceiving.Rrcode = id;
+                    tblReceiving.Nature = "RR";
+                    tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                    tblReceiving.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceiving.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceiving.ReferenceCode = Guid.Empty;
+                    tblReceiving.CarrierReferenceCode = Guid.Empty;
+                } else
+                {
+                    tblReceiving = FetchRecordByID(id);
+                } 
+            }
+            else
             {
-               
                 tblReceiving.Nature = "RR";           
                 tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
                 tblReceiving.Rrcode = "GSC" + tblReceiving.Nature + GetReferenceNo(tblReceiving.Nature, tblReceiving.LocationId);
                 tblReceiving.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ",""));
                 tblReceiving.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceiving.CarrierReferenceCode = Guid.Empty;
-                //ViewBag.UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
 
             return View(tblReceiving);
@@ -120,12 +130,19 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("isSaved", 1);
                     sqlCmd.ExecuteNonQuery();
                 }
-                    return RedirectToAction(nameof(Index));
-            }
-            
-            //tblReceivingDetail = new TblReceivingDetail();
-            //tblReceivingDetail.Rrcode = Rrcode;
+                    //if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
+                    //{
+                    TblReceivingDetail tblReceiving = new TblReceivingDetail();
+                    return RedirectToAction("AddorEdit", new { id = tblReceivingDetail.Rrcode });
+                    //}
+                    //else
+                    //{
+                    //    return RedirectToAction(nameof(Index));
+                    //}
+                }
+
             return View();
+            
         }
 
         // GET: Receiving/Delete/5
@@ -197,10 +214,8 @@ namespace WMSAMG.Controllers
                     tblReceiving.TransactionDate = Convert.ToDateTime(dt.Rows[0]["TransactionDate"]);
                     tblReceiving.Nature = dt.Rows[0]["Nature"].ToString();
                     tblReceiving.Source = dt.Rows[0]["Source"].ToString();
-
                     tblReceiving.EmployeeId = GetNullable<Guid>(dt.Rows[0]["EmployeeID"]);
                     tblReceiving.ApprovedBy = GetNullable<Guid>(dt.Rows[0]["ApprovedBy"]);
-                    
                     tblReceiving.EmployeeDate = Convert.ToDateTime(dt.Rows[0]["EmployeeDate"]);
                     tblReceiving.IsSaved = (Boolean)dt.Rows[0]["IsSaved"];
                 }

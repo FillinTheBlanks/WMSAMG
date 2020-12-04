@@ -42,11 +42,14 @@ namespace WMSAMG.Models.CSIS2017Models
         [Column(TypeName = "money")]
         public decimal? StockPackperCase { get; set; }
         [Column(TypeName = "money")]
+        [Required]
         public decimal? Qty { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
+        [Required]
         public decimal? ActualWeight { get; set; }
         [Column("UOM")]
         [StringLength(3)]
+        [Required]
         public string Uom { get; set; }
         [Column(TypeName = "datetime")]
         [Required]
@@ -59,6 +62,7 @@ namespace WMSAMG.Models.CSIS2017Models
         [Column(TypeName = "money")]
         public decimal? StockWeightinKilosperCase { get; set; }
         [StringLength(10)]
+        [Required]
         public string PalletNo { get; set; }
         [Column("CompanyID")]
         public Guid? CompanyId { get; set; }
@@ -78,6 +82,7 @@ namespace WMSAMG.Models.CSIS2017Models
         [StringLength(10)]
         public string Source { get; set; }
         [StringLength(500)]
+        [Required]
         public string Remarks { get; set; }
         public Guid? ApprovedBy { get; set; }
         [Column("EmployeeID")]
