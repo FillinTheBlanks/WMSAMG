@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KamoteGamer\\source\\repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj": {}
+    "C:\\Users\\KamoteGamer\\Source\\Repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KamoteGamer\\source\\repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj": {
+    "C:\\Users\\KamoteGamer\\Source\\Repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KamoteGamer\\source\\repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj",
+        "projectUniqueName": "C:\\Users\\KamoteGamer\\Source\\Repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj",
         "projectName": "WMSAMG",
-        "projectPath": "C:\\Users\\KamoteGamer\\source\\repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj",
+        "projectPath": "C:\\Users\\KamoteGamer\\Source\\Repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj",
         "packagesPath": "C:\\Users\\KamoteGamer\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KamoteGamer\\source\\repos\\WMSAMG\\WMSAMG\\WMSAMG\\obj\\",
+        "outputPath": "C:\\Users\\KamoteGamer\\Source\\Repos\\WMSAMG\\WMSAMG\\WMSAMG\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"

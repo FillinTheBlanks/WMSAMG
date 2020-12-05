@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r3w3J+TqrihTzqgfo3yhrwpmzkV2RLWic/2MDCBU1uzzQxEgAWxWzWtwp0q0KzsrYzrwtmnL+9UltJ3BDM6P4Q==",
+  "dgSpecHash": "4aAcA7LOJI125YD0tXNR3Tft5lJYtHDpMPdM4SzZucTla8jZuWivILCQdWCJffz/1qc3S/+1V8QKd/Y+Ni8sww==",
   "success": true,
-  "projectFilePath": "C:\\Users\\KamoteGamer\\source\\repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj",
+  "projectFilePath": "C:\\Users\\KamoteGamer\\Source\\Repos\\WMSAMG\\WMSAMG\\WMSAMG\\WMSAMG.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\KamoteGamer\\.nuget\\packages\\angularjs\\1.7.8.1\\angularjs.1.7.8.1.nupkg.sha512",
     "C:\\Users\\KamoteGamer\\.nuget\\packages\\angularjs.core\\1.8.0\\angularjs.core.1.8.0.nupkg.sha512",
