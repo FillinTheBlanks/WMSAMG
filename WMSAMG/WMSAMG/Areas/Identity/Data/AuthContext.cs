@@ -11,6 +11,7 @@ namespace WMSAMG.Data
 {
     public class AuthContext : IdentityDbContext<WMSAMGUser>
     {
+      
         public AuthContext(DbContextOptions<AuthContext> options)
             : base(options)
         {
