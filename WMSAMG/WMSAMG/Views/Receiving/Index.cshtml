@@ -154,6 +154,7 @@
         <e-grid-pagesettings pageSize="15"></e-grid-pagesettings>
         <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
         <e-grid-columns>
+            <e-grid-column field="ReferenceCode" headerText="Manage" template="<a href='/Receiving/AddorEdit/${ReferenceCode}'>Update</a> | <a href='/Receiving/Delete/${ReferenceCode}'>Delete</a>" textAlign="Center" type="string" width="160"></e-grid-column>
             <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
             <e-grid-column field="RRCode" headerText="RR No." type="string" textAlign="Left" width="120"></e-grid-column>
             <e-grid-column field="CustomerID" headerText="Customer ID" type="string" width="140"></e-grid-column>
@@ -164,7 +165,7 @@
             <e-grid-column field="Qty" headerText="Qty" type="number" width="80"></e-grid-column>
             <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="150"></e-grid-column>
             <e-grid-column field="TransactionDate" headerText="Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
-            <e-grid-column field="ReferenceCode" headerText="Manage" template="<a href='/Receiving/AddorEdit/${ReferenceCode}'>Update</a> | <a href='/Receiving/Delete/${ReferenceCode}'>Delete</a>" textAlign="Center" type="string" width="180"></e-grid-column>
+
         </e-grid-columns>
 
 </ejs-grid>
