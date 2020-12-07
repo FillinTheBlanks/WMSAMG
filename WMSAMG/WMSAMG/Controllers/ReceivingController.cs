@@ -61,6 +61,7 @@ namespace WMSAMG.Controllers
             {
                 if(id.Substring(0,3) == "GSC")
                 {
+                   
                     tblReceiving.Rrcode = id;
                     tblReceiving.Nature = "RR";
                     tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
@@ -94,6 +95,7 @@ namespace WMSAMG.Controllers
         public IActionResult AddorEdit(Guid id, [Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,PayTypeInitial,StockId,StockSku,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
         {
             string Rrcode = tblReceivingDetail.Rrcode;
+            int successindx = 0;
             if (ModelState.IsValid)
             {
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
@@ -128,18 +130,21 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("ApprovedBy", tblReceivingDetail.EmployeeId);
                     sqlCmd.Parameters.AddWithValue("EmployeeID", tblReceivingDetail.EmployeeId);
                     sqlCmd.Parameters.AddWithValue("isSaved", 1);
-                    sqlCmd.ExecuteNonQuery();
+                    successindx = sqlCmd.ExecuteNonQuery();
                 }
-                    //if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
-                    //{
-                    TblReceivingDetail tblReceiving = new TblReceivingDetail();
-                    return RedirectToAction("AddorEdit", new { id = tblReceivingDetail.Rrcode });
+                //if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
+                //{
+                if (successindx == 1)
+                {
+                    //TblReceivingDetail tblReceiving = new TblReceivingDetail();
+                    //return RedirectToAction("AddorEdit", new { id = tblReceivingDetail.Rrcode });
+                    //}
                     //}
                     //else
                     //{
-                    //    return RedirectToAction(nameof(Index));
-                    //}
+                    return RedirectToAction(nameof(Index));
                 }
+            }
 
             return View();
             
