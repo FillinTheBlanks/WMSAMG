@@ -6,12 +6,12 @@
 @inject SignInManager<WMSAMGUser> SignInManager
 @inject UserManager<WMSAMGUser> UserManager
 @{
-    //ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "Receive Stocks" : "Edit Received";
+    ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "Receive Stocks" : "Edit Received";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<h1>@ViewData["Title"]</h1>*@
-
+<h1>@ViewData["Title"]</h1>
+<p>@ViewBag.ErrorMsg</p>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,7 +24,7 @@
             <input type="hidden" asp-for="StockPackperCase" />
             <input type="hidden" asp-for="StockWeightinKilosperPack" />
             <input type="hidden" asp-for="StockWeightinKilosperCase" />
-            <input asp-for="TransactionDate" />
+            <input type="hidden" asp-for="TransactionDate" />
             <input type="hidden" asp-for="Nature" />
             <input type="hidden" asp-for="Source" />
             <input type="hidden" asp-for="IsSaved" />
@@ -161,7 +161,7 @@
 <script type="text/javascript">
 
     document.addEventListener('DOMContentLoaded', function () {
-
+        
         var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
         var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
         ajax.send();
@@ -183,7 +183,7 @@
                 $("#ReceivingTime").val(getDateTime(0));
                 $("#EndTime").val(getDateTime(1));
                 $("#EmployeeDate").val(getDateTime(0));
-                $("#TransactionDate").val(getDateTime(0));
+                //$("#TransactionDate").val(getDateTime(0));
             }
 
 

@@ -59,9 +59,9 @@ namespace WMSAMG.Controllers
             
             if (!string.IsNullOrEmpty(id))
             {
-                if(id.Substring(0,3) == "GSC")
+                if(id.Substring(0,3) == "GSC" && ModelState.IsValid)
                 {
-                   
+                    
                     tblReceiving.Rrcode = id;
                     tblReceiving.Nature = "RR";
                     tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
@@ -69,6 +69,7 @@ namespace WMSAMG.Controllers
                     tblReceiving.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                     tblReceiving.ReferenceCode = Guid.Empty;
                     tblReceiving.CarrierReferenceCode = Guid.Empty;
+                    tblReceiving.TransactionDate = DateTime.Now;
                 } else
                 {
                     tblReceiving = FetchRecordByID(id);
@@ -92,10 +93,19 @@ namespace WMSAMG.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddorEdit(Guid id, [Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,PayTypeInitial,StockId,StockSku,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
+        public IActionResult AddorEdit([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,PayTypeInitial,StockId,StockSku,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
         {
             string Rrcode = tblReceivingDetail.Rrcode;
-            int successindx = 0;
+            //int successindx = 0;
+            if (!ModelState.IsValid)
+            {
+                //var query = from state in ModelState.Values
+                //            from error in state.Errors
+                //            select error.ErrorMessage;
+                var errors = ModelState.ErrorCount.ToString();
+                ViewBag.ErrorMsg = errors;
+            }
+
             if (ModelState.IsValid)
             {
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
@@ -122,7 +132,7 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperCase", tblReceivingDetail.StockWeightinKilosperCase);
                     sqlCmd.Parameters.AddWithValue("PalletNo", tblReceivingDetail.PalletNo);
                     sqlCmd.Parameters.AddWithValue("CompanyID", tblReceivingDetail.CompanyId);
-                    sqlCmd.Parameters.AddWithValue("TransactionDate", tblReceivingDetail.TransactionDate);
+                    sqlCmd.Parameters.AddWithValue("TransactionDate", DateTime.Now);
                     sqlCmd.Parameters.AddWithValue("LocationID", tblReceivingDetail.LocationId);
                     sqlCmd.Parameters.AddWithValue("Nature", tblReceivingDetail.Nature);
                     sqlCmd.Parameters.AddWithValue("Source", tblReceivingDetail.Nature);
@@ -130,23 +140,37 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("ApprovedBy", tblReceivingDetail.EmployeeId);
                     sqlCmd.Parameters.AddWithValue("EmployeeID", tblReceivingDetail.EmployeeId);
                     sqlCmd.Parameters.AddWithValue("isSaved", 1);
-                    successindx = sqlCmd.ExecuteNonQuery();
+                    sqlCmd.ExecuteNonQuery();
                 }
-                //if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
-                //{
-                if (successindx == 1)
+                if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
                 {
-                    //TblReceivingDetail tblReceiving = new TblReceivingDetail();
-                    //return RedirectToAction("AddorEdit", new { id = tblReceivingDetail.Rrcode });
-                    //}
-                    //}
-                    //else
-                    //{
+                    tblReceivingDetail = new TblReceivingDetail();
+                    tblReceivingDetail.Nature = "RR";
+                    tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                    tblReceivingDetail.Rrcode = Rrcode;
+                    tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                    return View(tblReceivingDetail);
+                }
+                else
+                {
                     return RedirectToAction(nameof(Index));
                 }
-            }
 
-            return View();
+                }
+            else
+            {
+                tblReceivingDetail = new TblReceivingDetail();
+                tblReceivingDetail.Nature = "RR";
+                tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                tblReceivingDetail.Rrcode = "GSC" + tblReceivingDetail.Nature + GetReferenceNo(tblReceivingDetail.Nature, tblReceivingDetail.LocationId);
+                tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+            }
+           
+            return View(tblReceivingDetail);
             
         }
 
