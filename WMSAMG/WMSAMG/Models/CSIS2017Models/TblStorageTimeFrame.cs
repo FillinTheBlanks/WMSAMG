@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -36,5 +37,9 @@ namespace WMSAMG.Models.CSIS2017Models
         public decimal? FixedRate { get; set; }
         [Column(TypeName = "money")]
         public decimal? HourlyRate { get; set; }
+
+        public string CustomerName { get; set; }
+        public string StorageName { get; set; }
+        public List<SelectListItem> StorageLocationName { get; set; }
     }
 }

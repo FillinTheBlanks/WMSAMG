@@ -1,0 +1,87 @@
+﻿@model WMSAMG.Models.CSIS2017Models.TblStorageTimeFrame
+@using Syncfusion.EJ2
+
+@{
+    ViewData["Title"] = "Update Storage Location";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"]</h2>
+</div>
+<p>@ViewBag.ErrorMsg</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StorageTimeFrameId" />
+            <input type="hidden" asp-for="StorageLocationId" />
+            <div class="form-group">
+                <ejs-textbox id="Rrcode" ejs-for="ReferenceNo" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="ReferenceNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="CustomerId" ejs-for="CustomerId" readonly="true" cssClass="e-outline" placeholder="Account No." floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="CustomerName" ejs-for="CustomerName" readonly="true" cssClass="e-outline" placeholder="Account Name" floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-dropdownlist id="StorageLocationName" ejs-for="StorageLocationName" cssClass="e-outline" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering" >
+                    <e-dropdownlist-fields value="StorageLocationName" text="StorageLocationName"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+                <span asp-validation-for="StorageLocationName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="StorageName" ejs-for="StorageName" readonly="true" cssClass="e-outline" placeholder="Storage Name" floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="StorageName" class="text-danger"></span>
+            </div>
+        </form>
+</div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var dropdown = document.getElementById('StorageLocationName').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Storaging/GetStorageByLocationID', 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            dropdown.dataSource = JSON.parse(data);
+            dropdown.refresh();
+        };
+    }, false);
+
+
+     function onfiltering(e) {
+         var CBObj = document.getElementById("StorageLocationName").ej2_instances[0];
+        // load overall data when search key empty.
+        if (e.text == '')
+            e.updateData(CBObj.dataSource);
+        else {
+            var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationID']);
+            query = (e.text !== '') ? query.where('StorageLocationName', 'contains', e.text, true) : query;
+            e.updateData(CBObj.dataSource, query);
+        }
+    }
+
+    function onChange(args) {
+        //var CBObj = document.getElementById("StorageLocationName").ej2_instances[0];
+        //var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationID','StorageID','StorageTypeID','StorageName']).take(1);
+        //query = (args.value !== '') ? query.where('StorageLocationName', 'startsWith', args.value, true) : query;
+       
+        $("#StorageName").val('C');
+    }
+</script>

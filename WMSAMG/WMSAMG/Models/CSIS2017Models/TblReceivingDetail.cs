@@ -9,8 +9,8 @@ namespace WMSAMG.Models.CSIS2017Models
     [Table("tblReceivingDetail")]
     public partial class TblReceivingDetail
     {
-        public List<SelectListItem> Stocks { get; set; }
-        public List<SelectListItem> Customers { get; set; }
+        //public List<SelectListItem> Stocks { get; set; }
+        //public List<SelectListItem> Customers { get; set; }
 
         public string CustomerName { get; set; }
         public string CompanyName { get; set; }
