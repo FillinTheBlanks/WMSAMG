@@ -40,6 +40,7 @@ namespace WMSAMG.Models.CSIS2017Models
 
         public string CustomerName { get; set; }
         public string StorageName { get; set; }
-        public List<SelectListItem> StorageLocationName { get; set; }
+        public string StorageLocationName { get; set; }
+        public Guid? StockId { get; set; }
     }
 }

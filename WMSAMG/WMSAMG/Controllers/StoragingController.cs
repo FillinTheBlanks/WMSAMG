@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -60,16 +61,37 @@ namespace WMSAMG.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddorEdit(Guid id, [Bind("StorageTimeFrameId,RefCode,ReferenceNo,CustomerId,PayTypeInitial,Nature,StorageLocationId,StorageId,StorageTypeId,DateTimeFrameFrom,DateTimeFrameTo,FixedRate,HourlyRate")] TblStorageTimeFrame tblStorageTimeFrame)
+        public IActionResult AddorEdit(Guid[] id, [Bind("StorageTimeFrameId,RefCode,ReferenceNo,CustomerId,PayTypeInitial,Nature,StorageLocationId,StorageId,StorageTypeId,DateTimeFrameFrom,DateTimeFrameTo,FixedRate,HourlyRate")] TblStorageTimeFrame tblStorageTimeFrame)
         {
-            if (id != tblStorageTimeFrame.StorageTimeFrameId)
-            {
-                return NotFound();
-            }
+            //if (id != tblStorageTimeFrame.StorageTimeFrameId)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+                {
+                    sqlConnection.Open();
+                    SqlCommand sqlCmd = new SqlCommand("spInsert_ReceivingDetail", sqlConnection);
+                    sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCmd.Parameters.AddWithValue("StorageTimeFrameID", tblStorageTimeFrame.StorageTimeFrameId);
+                    sqlCmd.Parameters.AddWithValue("RefCode", tblStorageTimeFrame.RefCode);
+                    sqlCmd.Parameters.AddWithValue("RRCode", tblStorageTimeFrame.ReferenceNo);
+                    sqlCmd.Parameters.AddWithValue("Nature", tblStorageTimeFrame.Nature);
+                    sqlCmd.Parameters.AddWithValue("CustomerID", tblStorageTimeFrame.CustomerId);
+                    sqlCmd.Parameters.AddWithValue("PayTypeInitial", tblStorageTimeFrame.PayTypeInitial);
+                    sqlCmd.Parameters.AddWithValue("StockID", tblStorageTimeFrame.StockId);
+                    sqlCmd.Parameters.AddWithValue("StorageLocationID", tblStorageTimeFrame.StorageLocationId);
+                    sqlCmd.Parameters.AddWithValue("StorageID", tblStorageTimeFrame.StorageId);
+                    sqlCmd.Parameters.AddWithValue("StorageTypeID", tblStorageTimeFrame.StorageTypeId);
+                    sqlCmd.Parameters.AddWithValue("DateTimeFrameFrom", tblStorageTimeFrame.DateTimeFrameFrom);
+                    sqlCmd.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                    sqlCmd.Parameters.AddWithValue("Remarks", "");
+                    sqlCmd.Parameters.AddWithValue("ApprovedBy", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
+                    sqlCmd.ExecuteNonQuery();
+                }
+                    return RedirectToAction(nameof(Index));
             }
             return View(tblStorageTimeFrame);
         }
@@ -109,26 +131,36 @@ namespace WMSAMG.Controllers
                 if (dt.Rows.Count >= 1)
                 {
                     tblStorageTimeFrame.RefCode = (Guid)dt.Rows[0]["ReferenceCode"];
-                    tblStorageTimeFrame.ReferenceNo = dt.Rows[0]["RRCode"].ToString();
+                    tblStorageTimeFrame.ReferenceNo = dt.Rows[0]["RRCode"].ToString().Trim();
                     tblStorageTimeFrame.CustomerId = dt.Rows[0]["CustomerID"].ToString();
                     tblStorageTimeFrame.CustomerName = dt.Rows[0]["CustomerName"].ToString();
-                    tblStorageTimeFrame.StorageLocationId = (Guid)dt.Rows[0]["StorageLocationID"];
-                    tblStorageTimeFrame.StorageId = (Guid)dt.Rows[0]["StorageID"];
+                    //if(!string.IsNullOrEmpty(dt.Rows[0]["StorageLocationID"].ToString()))
+                    //{
+                    //    tblStorageTimeFrame.StorageLocationId = (Guid)dt.Rows[0]["StorageLocationID"];
+                    //}
+                    
+                    //tblStorageTimeFrame.StorageId = (Guid)dt.Rows[0]["StorageID"];
                     tblStorageTimeFrame.StorageTypeId = dt.Rows[0]["StorageTypeID"].ToString();
                     tblStorageTimeFrame.StorageName = dt.Rows[0]["StorageName"].ToString();
                     //tblStorageTimeFrame.StorageLocationName.Find(a => a.Value == dt.Rows[0]["StorageLocationName"].ToString()).Selected = true;
-                    tblStorageTimeFrame.DateTimeFrameFrom = (DateTime)dt.Rows[0]["DateTimeFrameFrom"];
-                    tblStorageTimeFrame.FixedRate = (Decimal)dt.Rows[0]["FixedRate"];
-                    tblStorageTimeFrame.HourlyRate = (Decimal)dt.Rows[0]["HourlyRate"];
+                    tblStorageTimeFrame.DateTimeFrameFrom = GetNullable<DateTime>(dt.Rows[0]["DateTimeFrameFrom"]);
+                    tblStorageTimeFrame.FixedRate = GetNullable<Decimal>(dt.Rows[0]["FixedRate"]);
+                    tblStorageTimeFrame.HourlyRate = GetNullable<Decimal>(dt.Rows[0]["HourlyRate"]);
                 }
             }
 
             return tblStorageTimeFrame;
         }
 
+        public static T? GetNullable<T>(object obj) where T : struct
+        {
+            if (obj == DBNull.Value) return null;
+            return (T?)obj;
+        }
+
         public JsonResult GetStorageByLocationID()
         {
-
+            
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
             {
@@ -154,5 +186,70 @@ namespace WMSAMG.Controllers
             return Json(Stocks, new System.Text.Json.JsonSerializerOptions());
         }
 
+        public JsonResult GetStorageByStorageLocationID(string id)
+        {
+            //if (string.IsNullOrEmpty(slid))
+            //{
+            //    slid = "";
+            //}
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_StorageLocationbyFilter", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", id);
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "StorageLocationID");
+                sqlDa.Fill(dt);
+            }
+            List<VwStoragetoLocation> StorageLocations = dt.AsEnumerable().Select(row =>
+                new VwStoragetoLocation
+                {
+                    StorageId = row.Field<Guid>("StorageID"),
+                    StorageLocationId = row.Field<Guid>("StorageLocationID"),
+                    StorageLocationName = row.Field<string>("StorageLocationName"),
+                    StorageTypeId = row.Field<string>("StorageTypeID"),
+                    StorageName = row.Field<string>("StorageName"),
+                    FixedRate = row.Field<Decimal>("FixedRate"),
+                    HourlyRate = row.Field<Decimal>("HourlyRate")
+                }).ToList();
+
+            //string JSONString = string.Empty;
+            //JSONString = JsonConvert.SerializeObject(dt);
+
+            return Json(StorageLocations, new System.Text.Json.JsonSerializerOptions());
+        }
+
+        public JsonResult GetActualInventorybyRRCode(string id)
+        {
+            
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ActualInventory", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("CompanyID", "35a953cd-49b0-4db4-b5ec-2aa23733a5e2");
+                sqlDa.SelectCommand.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("CustomerID", "");
+                sqlDa.Fill(dt);
+            }
+            List<VwActualInventory> actualInventories = dt.AsEnumerable().Select(row =>
+                new VwActualInventory
+                {
+                    Rrcode = row.Field<string>("RRCode"),
+                    ReferenceCode = row.Field<Guid>("ReferenceCode"),
+                    StockId = row.Field<Guid>("StockID"),
+                    StockSku = row.Field<string>("StockSKU"),
+                    StockDescription = row.Field<string>("StockDescription"),
+                    Qty = row.Field<Decimal>("Qty"),
+                    ActualWeight = row.Field<Decimal>("ActualWeight"),
+                    //TransactionDate = row.Field<DateTime>("TransactionDate"),
+                    StorageName = row.Field<string>("StorageName"),
+                    StorageLocationName = row.Field<string>("StorageLocationName")
+                }).Where(c => c.Rrcode == id).ToList();
+
+            return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());
+        }
     }
 }

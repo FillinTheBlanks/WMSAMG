@@ -18,6 +18,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="StorageTimeFrameId" />
             <input type="hidden" asp-for="StorageLocationId" />
+            <input type="hidden" asp-for="StorageId" />
             <div class="form-group">
                 <ejs-textbox id="Rrcode" ejs-for="ReferenceNo" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="ReferenceNo" class="text-danger"></span>
@@ -30,9 +31,15 @@
                 <ejs-textbox id="CustomerName" ejs-for="CustomerName" readonly="true" cssClass="e-outline" placeholder="Account Name" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+            <ejs-dropdownlist id="StorageName" ejs-for="StorageName" cssClass="e-outline" change="onChangeS" placeholder="Storage Name" popupHeight="220px" allowFiltering="true" filtering="onfilteringS">
+                <e-dropdownlist-fields value="StorageId" text="StorageName"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+            <span asp-validation-for="StorageName" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
-                <ejs-dropdownlist id="StorageLocationName" ejs-for="StorageLocationName" cssClass="e-outline" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering" >
-                    <e-dropdownlist-fields value="StorageLocationName" text="StorageLocationName"></e-dropdownlist-fields>
+                <ejs-dropdownlist id="StorageLocationName" ejs-for="StorageLocationName" cssClass="e-outline" change="onChange" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
+                    <e-dropdownlist-fields value="StorageLocationId" text="StorageLocationName"></e-dropdownlist-fields>
                 </ejs-dropdownlist>
                 <span asp-validation-for="StorageLocationName" class="text-danger"></span>
             </div>
@@ -40,13 +47,58 @@
                 <ejs-textbox id="StorageName" ejs-for="StorageName" readonly="true" cssClass="e-outline" placeholder="Storage Name" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="StorageName" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <ejs-textbox id="StorageTypeId" ejs-for="StorageTypeId" readonly="true" cssClass="e-outline" placeholder="Storage Type" floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="StorageTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-datetimepicker id="DateTimeFrameFrom" ejs-for="DateTimeFrameFrom" placeholder="From date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
+                <span asp-validation-for="DateTimeFrameFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-numerictextbox id="FixedRate" ejs-for="FixedRate" cssClass="e-outline" placeholder="Fixed Rate" floatLabelType="Always"></ejs-numerictextbox>
+                <span asp-validation-for="FixedRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-numerictextbox id="HourlyRate" ejs-for="HourlyRate" cssClass="e-outline" placeholder="Hourly Rate" floatLabelType="Always"></ejs-numerictextbox>
+                <span asp-validation-for="HourlyRate" class="text-danger"></span>
+            </div>
         </form>
 </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<ejs-grid id="Grid" allowPaging="true" allowFiltering="true" allowSorting="true" height="300" rowHeight="38" enableHover="false">
+    <e-grid-aggregates>
+        <e-grid-aggregate>
+            <e-aggregate-columns>
+                <e-aggregate-column field="Qty" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+                <e-aggregate-column field="ActualWeight" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+            </e-aggregate-columns>
+        </e-grid-aggregate>
+    </e-grid-aggregates>
+    <e-grid-selectionsettings type="Multiple"></e-grid-selectionsettings>
+    <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+    <e-grid-pagesettings pageCount="2"></e-grid-pagesettings>
+    <e-grid-columns>
+        <e-grid-column type="checkbox" width="50"></e-grid-column>
+        <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="StockID" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
+        <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140"></e-grid-column>
+        <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
+        <e-grid-column field="Qty" headerText="Qty" type="number" width="140"></e-grid-column>
+        <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
+        @*<e-grid-column field="TransactionDate" headerText="Receiving Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>*@
+        <e-grid-column field="StorageName" headerText="Storage" type="string" width="180"></e-grid-column>
+        <e-grid-column field="StorageLocationName" headerText="Storage Location" type="string" width="180"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+<hr />
+<div class="form-group">
+    <input type="submit" id="Save" value="Submit" class="e-btn e-primary bg-success" /> |
+    <a asp-action="Index" class="e-btn e-primary bg-info">Back to List</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -54,6 +106,13 @@
 <script type="text/javascript">
 
     document.addEventListener('DOMContentLoaded', function () {
+        var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Storaging/GetActualInventorybyRRCode/' + $('#Rrcode').val(), 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            grid.dataSource = JSON.parse(data);
+            grid.hideSpinner();
+        };
 
         var dropdown = document.getElementById('StorageLocationName').ej2_instances[0]; // Grid instance
         var ajax = new ej.base.Ajax('/Storaging/GetStorageByLocationID', 'GET');
@@ -62,6 +121,7 @@
             dropdown.dataSource = JSON.parse(data);
             dropdown.refresh();
         };
+        
     }, false);
 
 
@@ -71,17 +131,80 @@
         if (e.text == '')
             e.updateData(CBObj.dataSource);
         else {
-            var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationID']);
+            var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationId']);
             query = (e.text !== '') ? query.where('StorageLocationName', 'contains', e.text, true) : query;
             e.updateData(CBObj.dataSource, query);
         }
     }
 
     function onChange(args) {
-        //var CBObj = document.getElementById("StorageLocationName").ej2_instances[0];
-        //var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationID','StorageID','StorageTypeID','StorageName']).take(1);
-        //query = (args.value !== '') ? query.where('StorageLocationName', 'startsWith', args.value, true) : query;
-       
-        $("#StorageName").val('C');
+        console.log(args.value);
+        var options = {};
+        options.url = '/Storaging/GetStorageByStorageLocationID/' + args.value;
+        options.type = "GET";
+        options.dataType = "json";
+        options.success = function (data) {
+            data.forEach(function (element) {
+                $('#StorageName').val(element.StorageName);
+                $('#StorageLocationId').val(element.StorageLocationId);
+                $('#StorageId').val(element.StorageId);
+                $('#StorageTypeId').val(element.StorageTypeId);
+                $('#FixedRate').val(element.FixedRate);
+                $('#HourlyRate').val(element.HourlyRate);
+                $("#DateTimeFrameFrom").val(getDateTime(0));
+                return;
+            });
+        };
+        options.error = function () {
+            $("#msg").html("Error while calling the Web API!");
+        };
+        $.ajax(options);
+    }
+
+
+    function getDateTime(addHour) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours() + addHour;
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            second = '0' + second;
+        }
+        var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        return dateTime;
+    }
+
+    var dReady = false;
+    var theme;
+    var dtTime = false;
+    var isDataBound = false;
+    var isDataChanged = true;
+    var intervalFun;
+    var clrIntervalFun;
+    var clrIntervalFun1;
+    var clrIntervalFun2;
+    var dropSlectedIndex = null;
+    var stTime;
+    stTime = performance.now();
+
+    function startTimer(args) {
+        clearTimeout(clrIntervalFun);
+        clearInterval(intervalFun);
+        dtTime = true;
     }
 </script>

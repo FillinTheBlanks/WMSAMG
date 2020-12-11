@@ -1,19 +1,20 @@
 ﻿USE [CSIS2017]
 GO
 
-/****** Object: SqlProcedure [dbo].[spSelect_OnHandInventory] Script Date: 12/9/2020 3:26:33 PM ******/
+/****** Object: SqlProcedure [dbo].[spSelect_ActualInventory] Script Date: 12/11/2020 4:07:48 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 -- =============================================
 -- Author:		kevin llupar
 -- Create date: 06/06/2017
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [dbo].[spSelect_ActualInventory] 
+ALTER PROCEDURE [dbo].[spSelect_ActualInventory] 
 	@CompanyID as uniqueidentifier,
 	@LocationID as uniqueidentifier,
 	@CustomerID as varchar(100)
@@ -30,6 +31,7 @@ AS
 	,i.StorageName
 	,i.StorageLocationName
 	,i.PalletNo
+	,i.StockID
 	,i.StockSKU
 	,i.StockDescription
 	,i.Qty
