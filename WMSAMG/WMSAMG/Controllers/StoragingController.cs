@@ -60,20 +60,22 @@ namespace WMSAMG.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddorEdit(Guid[] id, [Bind("StorageTimeFrameId,RefCode,ReferenceNo,CustomerId,PayTypeInitial,Nature,StorageLocationId,StorageId,StorageTypeId,DateTimeFrameFrom,DateTimeFrameTo,FixedRate,HourlyRate")] TblStorageTimeFrame tblStorageTimeFrame)
+        [Route("Storaging/InsertTimeFrame")]
+        //[ValidateAntiForgeryToken]
+        public JsonResult InsertTimeFrame([FromBody] TblStorageTimeFrame tblStorageTimeFrame)
         {
             //if (id != tblStorageTimeFrame.StorageTimeFrameId)
             //{
+            //{
             //    return NotFound();
             //}
-
+            string message = string.Empty;
             if (ModelState.IsValid)
-            {
+            { 
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
                 {
                     sqlConnection.Open();
-                    SqlCommand sqlCmd = new SqlCommand("spInsert_ReceivingDetail", sqlConnection);
+                    SqlCommand sqlCmd = new SqlCommand("spUpdate_StorageLocationbyRefCode", sqlConnection);
                     sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlCmd.Parameters.AddWithValue("StorageTimeFrameID", tblStorageTimeFrame.StorageTimeFrameId);
                     sqlCmd.Parameters.AddWithValue("RefCode", tblStorageTimeFrame.RefCode);
@@ -90,10 +92,17 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("Remarks", "");
                     sqlCmd.Parameters.AddWithValue("ApprovedBy", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
                     sqlCmd.ExecuteNonQuery();
+                    message = " Saved Successfully!";
                 }
-                    return RedirectToAction(nameof(Index));
+                
+                //return RedirectToAction(nameof(Index));
             }
-            return View(tblStorageTimeFrame);
+            else
+            {
+                message = "Error on Model!";
+            }
+            //return View(tblStorageTimeFrame);
+            return Json(message, new System.Text.Json.JsonSerializerOptions());
         }
 
         // GET: Storaging/Delete/5
@@ -142,6 +151,8 @@ namespace WMSAMG.Controllers
                     //tblStorageTimeFrame.StorageId = (Guid)dt.Rows[0]["StorageID"];
                     tblStorageTimeFrame.StorageTypeId = dt.Rows[0]["StorageTypeID"].ToString();
                     tblStorageTimeFrame.StorageName = dt.Rows[0]["StorageName"].ToString();
+                    tblStorageTimeFrame.Nature = dt.Rows[0]["Nature"].ToString();
+                    tblStorageTimeFrame.PayTypeInitial = dt.Rows[0]["PayTypeInitial"].ToString();
                     //tblStorageTimeFrame.StorageLocationName.Find(a => a.Value == dt.Rows[0]["StorageLocationName"].ToString()).Selected = true;
                     tblStorageTimeFrame.DateTimeFrameFrom = GetNullable<DateTime>(dt.Rows[0]["DateTimeFrameFrom"]);
                     tblStorageTimeFrame.FixedRate = GetNullable<Decimal>(dt.Rows[0]["FixedRate"]);
