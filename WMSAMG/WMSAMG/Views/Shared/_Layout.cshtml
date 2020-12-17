@@ -41,13 +41,16 @@
                     <div class="navbar-collapse collapse" id="navbarCollapse">
                         <ul class="nav navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Stocks" asp-action="Index">Stocks</a>
+                                <a class="nav-link" asp-controller="Stocks" asp-action="Index" hidden>Stocks</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Receiving" asp-action="Index">Receiving</a>
+                                <a class="nav-link" asp-controller="Receiving" asp-action="Index">Receive Stocks</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Storaging" asp-action="Index">Storaging</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Withdrawal" asp-action="Index">Withdraw Stocks</a>
                             </li>
                         </ul>
                     </div>

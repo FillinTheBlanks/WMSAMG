@@ -47,6 +47,10 @@ namespace WMSAMG.Controllers
         // GET: Storaging/Edit/5
         public IActionResult AddorEdit(Guid? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
             string strid = id.ToString();
             TblStorageTimeFrame tblStorageTimeFrame = new TblStorageTimeFrame();
             if (!string.IsNullOrEmpty(strid))

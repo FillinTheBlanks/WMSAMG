@@ -36,7 +36,7 @@ namespace WMSAMG.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ActualInventory", sqlConnection);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_OnHandInventory", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("CompanyID", "35a953cd-49b0-4db4-b5ec-2aa23733a5e2");
                 sqlDa.SelectCommand.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");

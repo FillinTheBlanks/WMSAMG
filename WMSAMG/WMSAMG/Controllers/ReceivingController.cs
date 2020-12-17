@@ -34,8 +34,8 @@ namespace WMSAMG.Controllers
                 sqlConnection.Open();
                 SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "");
-                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "RRCode");
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "LocationID");
                 sqlDa.Fill(dt);
             }
             ViewBag.datasource = dt;
@@ -310,7 +310,8 @@ namespace WMSAMG.Controllers
             }
             return items;
         }
-
+       
+        [NonAction]
         public string GetReferenceNo(string nature, Guid? locationid)
         {
             string RrCode = String.Empty;

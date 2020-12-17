@@ -1,12 +1,14 @@
 ﻿USE [CSIS2017]
 GO
 
-/****** Object: SqlProcedure [dbo].[spSelect_ActualInventory] Script Date: 12/11/2020 4:07:48 PM ******/
+/****** Object: SqlProcedure [dbo].[spSelect_ActualInventory] Script Date: 12/17/2020 4:51:05 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+
 
 
 -- =============================================
@@ -37,6 +39,8 @@ AS
 	,i.Qty
 	,i.ActualWeight
 	,i.UOM
+	,i.TransactionDate
+	,i.PayTypeInitial
 	FROM vw_ActualInventory i
 	LEFT OUTER JOIN CSISControl.dbo.vw_StoragetoLocation s
 	ON i.StorageLocationID = s.StorageLocationID

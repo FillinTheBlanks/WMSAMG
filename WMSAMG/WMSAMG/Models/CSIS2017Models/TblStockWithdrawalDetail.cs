@@ -79,5 +79,7 @@ namespace WMSAMG.Models.CSIS2017Models
         public DateTime? EmployeeDate { get; set; }
         [Column("isSaved")]
         public bool? IsSaved { get; set; }
+
+        public string CustomerName { get; set; }
     }
 }

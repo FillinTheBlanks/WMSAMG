@@ -1,153 +1,251 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using WMSAMG.Models.CSIS2017Models;
+using WMSAMG.Models.CSISControlModels;
 
 namespace WMSAMG.Controllers
 {
     public class WithdrawalController : Controller
     {
-        private readonly CSIS2017Context _context;
+        private readonly IConfiguration _configuration;
 
-        public WithdrawalController(CSIS2017Context context)
+        public WithdrawalController(IConfiguration configuration)
         {
-            _context = context;
+            _configuration = configuration;
         }
 
+        
         // GET: Withdrawal
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.TblStockWithdrawalDetail.ToListAsync());
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_StockWithdrawalDetailbyFilter", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "LocationID");
+                sqlDa.Fill(dt);
+            }
+            ViewBag.datasource = dt;
+            return View(dt);
         }
 
-        // GET: Withdrawal/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+      
+
+        // GET: Withdrawal/AddorEdit/5
+        public IActionResult AddorEdit(Guid? id)
         {
-            if (id == null)
+   
+            string strid = id.ToString();
+            TblStockWithdrawalDetail tblStockWithdrawal = new TblStockWithdrawalDetail();
+            if (!string.IsNullOrEmpty(strid))
             {
-                return NotFound();
+                tblStockWithdrawal = FetchRecordByID(strid);
             }
-
-            var tblStockWithdrawalDetail = await _context.TblStockWithdrawalDetail
-                .FirstOrDefaultAsync(m => m.ReferenceCode == id);
-            if (tblStockWithdrawalDetail == null)
+            else
             {
-                return NotFound();
+                tblStockWithdrawal.Nature = "SW";
+                tblStockWithdrawal.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                tblStockWithdrawal.Swcode = "GSC" + tblStockWithdrawal.Nature + GetReferenceNo(tblStockWithdrawal.Nature, tblStockWithdrawal.LocationId);
+                tblStockWithdrawal.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                tblStockWithdrawal.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                
             }
-
-            return View(tblStockWithdrawalDetail);
-        }
-
-        // GET: Withdrawal/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Withdrawal/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReferenceCode,Swcode,Rrcode,CustomerId,PayTypeInitial,StockId,StockSku,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ProductionDate,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,StartTime,EndTime,LocationId,Nature,Source,Remarks,ApprovedBy,Requestor,Approver,EmployeeId,EmployeeDate,IsSaved")] TblStockWithdrawalDetail tblStockWithdrawalDetail)
-        {
-            if (ModelState.IsValid)
-            {
-                tblStockWithdrawalDetail.ReferenceCode = Guid.NewGuid();
-                _context.Add(tblStockWithdrawalDetail);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(tblStockWithdrawalDetail);
-        }
-
-        // GET: Withdrawal/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var tblStockWithdrawalDetail = await _context.TblStockWithdrawalDetail.FindAsync(id);
-            if (tblStockWithdrawalDetail == null)
-            {
-                return NotFound();
-            }
-            return View(tblStockWithdrawalDetail);
+            return View(tblStockWithdrawal);
         }
 
         // POST: Withdrawal/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ReferenceCode,Swcode,Rrcode,CustomerId,PayTypeInitial,StockId,StockSku,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ProductionDate,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,StartTime,EndTime,LocationId,Nature,Source,Remarks,ApprovedBy,Requestor,Approver,EmployeeId,EmployeeDate,IsSaved")] TblStockWithdrawalDetail tblStockWithdrawalDetail)
+        //[ValidateAntiForgeryToken]
+        [Route("Withdrawal/SaveRecord")]
+        //[ValidateAntiForgeryToken]
+        public JsonResult SaveRecord([FromBody] TblStockWithdrawalDetail tblStockWithdrawal)
         {
-            if (id != tblStockWithdrawalDetail.ReferenceCode)
-            {
-                return NotFound();
-            }
-
+            //if (id != tblStorageTimeFrame.StorageTimeFrameId)
+            //{
+            //{
+            //    return NotFound();
+            //}
+            string message = string.Empty;
             if (ModelState.IsValid)
             {
-                try
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
                 {
-                    _context.Update(tblStockWithdrawalDetail);
-                    await _context.SaveChangesAsync();
+                    sqlConnection.Open();
+                    SqlCommand sqlCmd = new SqlCommand("spInsert_StockWithdrawalDetail", sqlConnection);
+                    sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCmd.Parameters.AddWithValue("ReferenceCode", tblStockWithdrawal.ReferenceCode);
+                    sqlCmd.Parameters.AddWithValue("SWCode", tblStockWithdrawal.Swcode);
+                    sqlCmd.Parameters.AddWithValue("RRCode", tblStockWithdrawal.Rrcode);
+                    sqlCmd.Parameters.AddWithValue("Nature", tblStockWithdrawal.Nature);
+                    sqlCmd.Parameters.AddWithValue("CustomerID", tblStockWithdrawal.CustomerId);
+                    sqlCmd.Parameters.AddWithValue("PayTypeInitial", tblStockWithdrawal.PayTypeInitial);
+                    sqlCmd.Parameters.AddWithValue("StockID", tblStockWithdrawal.StockId);
+                    sqlCmd.Parameters.AddWithValue("StorageLocationID", tblStockWithdrawal.StorageLocationId);
+                    sqlCmd.Parameters.AddWithValue("StorageID", tblStockWithdrawal.StorageId);
+                    sqlCmd.Parameters.AddWithValue("StorageTypeID", tblStockWithdrawal.StorageTypeId);
+                    sqlCmd.Parameters.AddWithValue("DateTimeFrameFrom", tblStockWithdrawal.DateTimeFrameFrom);
+                    sqlCmd.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                    sqlCmd.Parameters.AddWithValue("Remarks", "");
+                    sqlCmd.Parameters.AddWithValue("ApprovedBy", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
+                    sqlCmd.ExecuteNonQuery();
+                    message = " Saved Successfully!";
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TblStockWithdrawalDetailExists(tblStockWithdrawalDetail.ReferenceCode))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                //return RedirectToAction(nameof(Index));
             }
-            return View(tblStockWithdrawalDetail);
+            else
+            {
+                message = "Error on Model!";
+            }
+            //return View(tblStorageTimeFrame);
+            return Json(message, new System.Text.Json.JsonSerializerOptions());
         }
 
         // GET: Withdrawal/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var tblStockWithdrawalDetail = await _context.TblStockWithdrawalDetail
-                .FirstOrDefaultAsync(m => m.ReferenceCode == id);
-            if (tblStockWithdrawalDetail == null)
-            {
-                return NotFound();
-            }
+           
 
-            return View(tblStockWithdrawalDetail);
+            return View();
         }
 
         // POST: Withdrawal/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public IActionResult DeleteConfirmed(Guid id)
         {
-            var tblStockWithdrawalDetail = await _context.TblStockWithdrawalDetail.FindAsync(id);
-            _context.TblStockWithdrawalDetail.Remove(tblStockWithdrawalDetail);
-            await _context.SaveChangesAsync();
+           
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TblStockWithdrawalDetailExists(Guid id)
+        [NonAction]
+        public TblStockWithdrawalDetail FetchRecordByID(string id)
         {
-            return _context.TblStockWithdrawalDetail.Any(e => e.ReferenceCode == id);
+
+            DataTable dt = new DataTable();
+            TblStockWithdrawalDetail tblStockWithdrawal = new TblStockWithdrawalDetail();
+
+            //tblReceiving.Customers = PopulateCustomers();
+
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_StockWithdrawalDetailbyFilter", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", id);
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "ReferenceCode");
+                sqlDa.Fill(dt);
+                if (dt.Rows.Count >= 1)
+                {
+                    tblStockWithdrawal.ReferenceCode = (Guid)dt.Rows[0]["ReferenceCode"];
+                    tblStockWithdrawal.Swcode = dt.Rows[0]["SWCode"].ToString().Trim();
+                    tblStockWithdrawal.CustomerId = dt.Rows[0]["CustomerID"].ToString();
+                    tblStockWithdrawal.CustomerName = dt.Rows[0]["CustomerName"].ToString();
+                }
+            }
+
+            return tblStockWithdrawal;
+        }
+
+        [NonAction]
+        public string GetReferenceNo(string nature, Guid? locationid)
+        {
+            string SwCode = String.Empty;
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new SqlCommand("spSelect_AvailableSWCode", sqlConnection);
+                sqlCmd.Parameters.AddWithValue("LocationID", locationid);
+                sqlCmd.Parameters.AddWithValue("Nature", nature);
+                sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                SqlDataReader sqlDr = sqlCmd.ExecuteReader();
+
+                while (sqlDr.Read())
+                {
+                    SwCode = sqlDr[2].ToString();
+                }
+            }
+            return SwCode;
+        }
+
+        public JsonResult GetActualInventorybyCustomerID(string id)
+        {
+
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ActualInventory", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("CompanyID", "35a953cd-49b0-4db4-b5ec-2aa23733a5e2");
+                sqlDa.SelectCommand.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("CustomerID", id);
+                sqlDa.Fill(dt);
+            }
+            List<VwActualInventory> actualInventories = dt.AsEnumerable().Select(row =>
+                new VwActualInventory
+                {
+                    Rrcode = row.Field<string>("RRCode"),
+                    ReferenceCode = row.Field<Guid>("ReferenceCode"),
+                    PayTypeInitial = row.Field<string>("PayTypeInitial"),
+                    StockId = row.Field<Guid>("StockID"),
+                    StockSku = row.Field<string>("StockSKU"),
+                    StockDescription = row.Field<string>("StockDescription"),
+                    Qty = row.Field<Decimal>("Qty"),
+                    ActualWeight = row.Field<Decimal>("ActualWeight"),
+                    TransactionDate = row.Field<DateTime>("TransactionDate"),
+                    StorageName = row.Field<string>("StorageName"),
+                    StorageLocationName = row.Field<string>("StorageLocationName")
+                }).ToList();
+
+            return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());
+        }
+
+        public JsonResult GetCustomers()
+        {
+            //if (string.IsNullOrEmpty(slid))
+            //{
+            //    slid = "";
+            //}
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_CustomerbyFilter", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "LocationID");
+                sqlDa.Fill(dt);
+            }
+            List<VwCustomertoCompanyandLocation> vwCustomers = dt.AsEnumerable().Select(row =>
+                new VwCustomertoCompanyandLocation
+                {
+                    CustomerId = row.Field<string>("CustomerId"),
+                    CustomerName = row.Field<string>("CustomerName"),
+                    CustomerStatus = row.Field<bool>("CustomerStatus")
+                }).Where(c => c.CustomerStatus == true).ToList();
+
+            
+            return Json(vwCustomers, new System.Text.Json.JsonSerializerOptions());
         }
     }
 }
