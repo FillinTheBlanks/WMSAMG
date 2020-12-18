@@ -176,6 +176,7 @@
     $(document).ready(function () {
 
         $('#btnsubmit').click(function () {
+            $('#btnsubmit').prop('disabled', true);
             var obj = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
             if (obj.getSelectedRecords().length > 0) {
                 //var data = obj.getSelectedRecords();
@@ -231,6 +232,7 @@
                 }
 
                 if (boolsuccess = true) {
+                    $('#btnsubmit').prop('disabled',false);
                     alert(cnt + ' Record/s Successfully Stored!');
                     $('#IndexAnchor')[0].click();
                 }
