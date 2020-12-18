@@ -192,9 +192,24 @@
                     storagerec.CustomerId = $('#CustomerId').val();
                     storagerec.PayTypeInitial = $('#PayTypeInitial').val();
                     storagerec.StockId = obj.getSelectedRecords()[i].StockId;
-                    storagerec.StorageLocationId = $('#StorageLocationId').val();
-                    storagerec.StorageId = $('#StorageId').val();
-                    storagerec.StorageTypeId = $('#StorageTypeId').val();
+                    if ($('#StorageLocationId').val() != null && $('#StorageLocationId').val() != '') {
+                        storagerec.StorageLocationId = $('#StorageLocationId').val();
+                    } else {
+                        storagerec.StorageLocationId = "00000000-0000-0000-0000-000000000000";
+                    }
+                    if ($('#StorageId').val() != null && $('#StorageId').val() != '') {
+                        storagerec.StorageId = $('#StorageId').val();
+                    } else {
+                        storagerec.StorageId = "00000000-0000-0000-0000-000000000000";
+                    }
+                    if ($('#StorageTypeId').val() != null && $('#StorageTypeId').val() != '') {
+                        storagerec.StorageTypeId = $('#StorageTypeId').val();
+                    } else {
+                        storagerec.StorageTypeId = "00000000-0000-0000-0000-000000000000";
+                    }
+                    
+                    //storagerec.StorageId = $('#StorageId').val();
+                    //storagerec.StorageTypeId = $('#StorageTypeId').val();
                     storagerec.DateTimeFrameFrom = new Date($('#DateTimeFrameFrom').val());
                     storagerec.DateTimeFrameTo = new Date(null);
                     storagerec.FixedRate = parseFloat($('#FixedRate').val());

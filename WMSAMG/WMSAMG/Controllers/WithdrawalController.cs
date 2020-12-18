@@ -59,6 +59,8 @@ namespace WMSAMG.Controllers
                 tblStockWithdrawal.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
                 tblStockWithdrawal.Swcode = "GSC" + tblStockWithdrawal.Nature + GetReferenceNo(tblStockWithdrawal.Nature, tblStockWithdrawal.LocationId);
                 tblStockWithdrawal.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                tblStockWithdrawal.Approver = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                tblStockWithdrawal.Requestor = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblStockWithdrawal.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 
             }
@@ -80,6 +82,11 @@ namespace WMSAMG.Controllers
             //    return NotFound();
             //}
             string message = string.Empty;
+
+            //if (!ModelState.IsValid) { 
+            //    message = ModelState.Values.SelectMany(v => v.Errors).Select(error => error.ErrorMessage).ToString();
+
+            //}
             if (ModelState.IsValid)
             {
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
@@ -94,13 +101,28 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("CustomerID", tblStockWithdrawal.CustomerId);
                     sqlCmd.Parameters.AddWithValue("PayTypeInitial", tblStockWithdrawal.PayTypeInitial);
                     sqlCmd.Parameters.AddWithValue("StockID", tblStockWithdrawal.StockId);
+                    sqlCmd.Parameters.AddWithValue("StockSKU", tblStockWithdrawal.StockSku);
+                    sqlCmd.Parameters.AddWithValue("StockGroupID", tblStockWithdrawal.StockGroupId);
+                    sqlCmd.Parameters.AddWithValue("Qty", tblStockWithdrawal.Qty);
+                    sqlCmd.Parameters.AddWithValue("ActualWeight", tblStockWithdrawal.ActualWeight);
+                    sqlCmd.Parameters.AddWithValue("UOM", tblStockWithdrawal.Uom);
+                    sqlCmd.Parameters.AddWithValue("PalletNo", tblStockWithdrawal.PalletNo);
+                    sqlCmd.Parameters.AddWithValue("CompanyID", tblStockWithdrawal.CompanyId);
+                    sqlCmd.Parameters.AddWithValue("ProductionDate", tblStockWithdrawal.ProductionDate);
                     sqlCmd.Parameters.AddWithValue("StorageLocationID", tblStockWithdrawal.StorageLocationId);
                     sqlCmd.Parameters.AddWithValue("StorageID", tblStockWithdrawal.StorageId);
                     sqlCmd.Parameters.AddWithValue("StorageTypeID", tblStockWithdrawal.StorageTypeId);
-                    sqlCmd.Parameters.AddWithValue("DateTimeFrameFrom", tblStockWithdrawal.DateTimeFrameFrom);
+                    sqlCmd.Parameters.AddWithValue("TransactionDate", tblStockWithdrawal.TransactionDate);
+                    sqlCmd.Parameters.AddWithValue("StartTime", tblStockWithdrawal.StartTime);
+                    sqlCmd.Parameters.AddWithValue("EndTime", tblStockWithdrawal.EndTime);
                     sqlCmd.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
-                    sqlCmd.Parameters.AddWithValue("Remarks", "");
+                    sqlCmd.Parameters.AddWithValue("Source", tblStockWithdrawal.Source);
+                    sqlCmd.Parameters.AddWithValue("Remarks", tblStockWithdrawal.Remarks);
                     sqlCmd.Parameters.AddWithValue("ApprovedBy", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
+                    sqlCmd.Parameters.AddWithValue("Requestor", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
+                    sqlCmd.Parameters.AddWithValue("Approver", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
+                    sqlCmd.Parameters.AddWithValue("EmployeeID", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
+                    sqlCmd.Parameters.AddWithValue("IsSaved", 1);
                     sqlCmd.ExecuteNonQuery();
                     message = " Saved Successfully!";
                 }
@@ -111,6 +133,7 @@ namespace WMSAMG.Controllers
             {
                 message = "Error on Model!";
             }
+           
             //return View(tblStorageTimeFrame);
             return Json(message, new System.Text.Json.JsonSerializerOptions());
         }
@@ -209,15 +232,29 @@ namespace WMSAMG.Controllers
                     PayTypeInitial = row.Field<string>("PayTypeInitial"),
                     StockId = row.Field<Guid>("StockID"),
                     StockSku = row.Field<string>("StockSKU"),
+                    StockGroupId = row.Field<Guid>("StockGroupID"),
+                    Uom = row.Field<string>("UOM"),
+                    PalletNo = row.Field<string>("PalletNo"),
+                    CompanyId = row.Field<Guid>("CompanyID"),
                     StockDescription = row.Field<string>("StockDescription"),
                     Qty = row.Field<Decimal>("Qty"),
                     ActualWeight = row.Field<Decimal>("ActualWeight"),
                     TransactionDate = row.Field<DateTime>("TransactionDate"),
                     StorageName = row.Field<string>("StorageName"),
-                    StorageLocationName = row.Field<string>("StorageLocationName")
-                }).ToList();
+                    Source = row.Field<string>("Nature"),
+                    StorageLocationName = row.Field<string>("StorageLocationName"),
+                    StorageLocationId = row.Field<Nullable<Guid>>("StorageLocationID"),
+                    StorageId = row.Field<Nullable<Guid>>("StorageID"),
+                    StorageTypeId = row.Field<string>("StorageTypeID")
+                }).Where(c => c.StorageLocationId != null).OrderByDescending(c => c.TransactionDate).ToList();
 
             return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());
+        }
+
+        public static T? GetNullable<T>(object obj) where T : struct
+        {
+            if (obj == DBNull.Value) return null;
+            return (T?)obj;
         }
 
         public JsonResult GetCustomers()
