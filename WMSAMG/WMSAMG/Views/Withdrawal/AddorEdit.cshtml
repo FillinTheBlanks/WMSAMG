@@ -1,0 +1,340 @@
+﻿@model WMSAMG.Models.CSIS2017Models.TblStockWithdrawalDetail
+@using Syncfusion.EJ2
+@using Microsoft.AspNetCore.Identity
+@using WMSAMG.Areas.Identity.Data
+
+@inject SignInManager<WMSAMGUser> SignInManager
+@inject UserManager<WMSAMGUser> UserManager
+@{
+    ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "Withdraw Stocks" : "Edit Withdrawn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"]</h2>
+</div>
+<p>@ViewBag.ErrorMsg</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddorEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" id="ReferenceCode" asp-for="ReferenceCode" />
+            <input type="hidden" id="Nature" asp-for="Nature" />
+            <input type="hidden" id="ApprovedBy" asp-for="ApprovedBy" />
+            <input type="hidden" id="Approver" asp-for="Approver" />
+            <input type="hidden" id="Requestor" asp-for="Requestor" />
+            <input type="hidden" id="EmployeeId" asp-for="EmployeeId" />
+            <input type="hidden" id="LocationId" asp-for="LocationId" />
+
+            <div class="form-group">
+                <ejs-textbox id="Swcode" ejs-for="Swcode" readonly="true" cssClass="e-outline form-control" placeholder="SW No." floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="Swcode" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
+            <span asp-validation-for="Rrcode" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <ejs-textbox id="CustomerId" ejs-for="CustomerId" readonly="true" cssClass="e-outline" placeholder="Account No." floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <ejs-dropdownlist id="CustomerName" ejs-for="CustomerName" cssClass="e-outline" change="onChange" placeholder="Account Name" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
+                    <e-dropdownlist-fields value="CustomerId" text="CustomerName"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-datetimepicker id="StartTime" ejs-for="StartTime" placeholder="Date Start" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-datetimepicker id="EndTime" ejs-for="EndTime" placeholder="Date End" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-datetimepicker id="TransactionDate" ejs-for="TransactionDate" placeholder="Date Withdrawn" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
+                <span asp-validation-for="TransactionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="Remarks" ejs-for="Remarks" cssClass="e-outline" placeholder="Remarks" floatLabelType="Auto"></ejs-textbox>
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+
+        </form>
+    </div>
+</div>
+@*@{
+    var ddParams = new
+        { @params = new { value = "Germany" } };
+    var numericParams = new
+        { @params= new { decimals= 2, value = 5 }
+        };
+    var dpParams = new
+        { @params = new { value = new Date() } };
+    var boolParams = new
+        { @params = new { checked= true }};
+}*@
+
+<ejs-grid id="Grid" allowPaging="true" allowFiltering="true"  actionComplete="actionComplete" allowResizing="true" allowSorting="true" height="300" rowHeight="38" enableHover="false"
+          toolbar="@(new List<string>() { "Edit", "Cancel" })" rowSelected="rowSelect">
+    <e-grid-aggregates>
+        <e-grid-aggregate>
+            <e-aggregate-columns>
+                <e-aggregate-column field="Qty" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+                <e-aggregate-column field="ActualWeight" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+            </e-aggregate-columns>
+        </e-grid-aggregate>
+    </e-grid-aggregates>
+    <e-grid-selectionsettings type="Multiple"></e-grid-selectionsettings>
+    <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+    <e-grid-pagesettings pageCount="2"></e-grid-pagesettings>
+    <e-grid-editSettings allowEditing="true" mode="Dialog"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column type="checkbox" width="50"></e-grid-column>
+        <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="Rrcode" headerText="RR No." type="string" width="120" allowEditing="false"></e-grid-column>
+        <e-grid-column field="StockId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
+        <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140" allowEditing="false"></e-grid-column>
+        <e-grid-column field="StockDescription" headerText="Description" type="string" width="180" allowEditing="false"></e-grid-column>
+        <e-grid-column field="Qty" headerText="Qty" editType="numericedit" textAlign="Right" validationRules="@(new { required=true})" type="number" format="N2" width="140"></e-grid-column>
+        <e-grid-column field="ActualWeight" headerText="Actual Weight" editType="numericedit" validationRules="@(new { required=true})" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
+        <e-grid-column field="PayTypeInitial" headerText="Pay Type" type="string" width="100" allowEditing="false"></e-grid-column>
+        <e-grid-column field="TransactionDate" headerText="Received Date" format='MM/dd/yyyy' textAlign="Left" width="180" allowEditing="false"></e-grid-column>
+        <e-grid-column field="StorageName" headerText="Storage" type="string" width="180" visible="false" allowEditing="false"></e-grid-column>
+        <e-grid-column field="StorageLocationName" headerText="Storage Location" type="string" width="180" allowEditing="false"></e-grid-column>
+        <e-grid-column field="PalletNo" headerText="PalletNo" type="string" visible="false" width="180" allowEditing="false"></e-grid-column>
+        <e-grid-column field="Uom" headerText="UOM" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="PalletNo" headerText="PalletNo" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="CompanyId" headerText="CompanyId" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="StockGroupId" headerText="StockGroupId" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="Source" headerText="Source" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="StorageLocationId" headerText="StorageLocationId" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="StorageId" headerText="StorageId" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="StorageTypeId" headerText="StorageTypeId" type="string" visible="false" width="180"></e-grid-column>
+        <e-grid-column field="StockGroupId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+
+<hr />
+<div class="form-group">
+    <input type="submit" id="btnsubmit" value="Submit" class="e-btn e-primary bg-success" />
+    @*<input type="submit" id="Save" value="Submit" class="e-btn e-primary bg-success" />*@ |
+    <a asp-action="Index" id="IndexAnchor" class="e-btn e-primary bg-info">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    function rowSelect() {
+        //var obj = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
+        //alert(obj.getSelectedRecords()[0].StockSku);
+    }
+
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
+            var dialog = args.dialog;
+            dialog.height = 400;
+            // change the header of the dialog
+            dialog.header = args.requestType === 'beginEdit' ? 'Record of ' + args.rowData['Rrcode'] : 'New Withdrawal';
+        }
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var dropdown = document.getElementById('CustomerName').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Withdrawal/GetCustomers', 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            dropdown.dataSource = JSON.parse(data);
+            dropdown.refresh();
+        };
+
+    }, false);
+
+    function changeMax(args) {
+        var grid = document.getElementById("Grid").ej2_instances[0];
+        grid.Qty[0].maximum = args.value;
+        grid.ActualWeight[0].maximum = args.value;
+        grid.refresh();
+    } 
+
+    function onfiltering(e) {
+        var CBObj = document.getElementById("CustomerName").ej2_instances[0];
+        // load overall data when search key empty.
+        if (e.text == '')
+            e.updateData(CBObj.dataSource);
+        else {
+            var query = new ej.data.Query().from('CustomerName').select(['CustomerName', 'CustomerId']);
+            query = (e.text !== '') ? query.where('CustomerName', 'contains', e.text, true) : query;
+            e.updateData(CBObj.dataSource, query);
+        }
+    }
+
+    function onChange(args) {
+        //console.log(args.value);
+        //var options = {};
+        //options.url = '/Withdrawal/GetCustomers';
+        //options.type = "GET";
+        //options.dataType = "json";
+        //options.success = function (data) {
+        //    data.forEach(function (element) {
+        //        $('#StorageName').val(element.StorageName);
+        //        $('#StorageLocationId').val(element.StorageLocationId);
+        //        $('#StorageId').val(element.StorageId);
+        //        $('#StorageTypeId').val(element.StorageTypeId);
+        //        $('#FixedRate').val(element.FixedRate);
+        //        $('#HourlyRate').val(element.HourlyRate);
+        //        $("#DateTimeFrameFrom").val(getDateTime(0));
+        //        return;
+        //    });
+        //};
+        //options.error = function () {
+        //    $("#msg").html("Error while calling the Web API!");
+        //};
+        //$.ajax(options);
+        $("#CustomerId").val(args.value);
+        $("#StartTime").val(getDateTime(0));
+        $("#EndTime").val(getDateTime(1));
+        $("#TransactionDate").val(getDateTime(0));
+        var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Withdrawal/GetActualInventorybyCustomerID/' + args.value, 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            grid.dataSource = JSON.parse(data);
+            grid.hideSpinner();
+        };
+    }
+
+
+    $(document).ready(function () {
+
+        $('#btnsubmit').click(function () {
+            var obj = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
+            if (obj.getSelectedRecords().length > 0) {
+                //var data = obj.getSelectedRecords();
+                var cnt = obj.getSelectedRecords().length;
+                var i;
+                var boolsuccess = false;
+                var message = '';
+                for (i = 0; i < cnt; i++) {
+                    var withdrawrec = {};
+                    withdrawrec.ReferenceCode = obj.getSelectedRecords()[i].ReferenceCode;
+                    withdrawrec.Swcode = $('#Swcode').val();
+                    withdrawrec.Rrcode = obj.getSelectedRecords()[i].Rrcode;
+                    withdrawrec.Nature = $('#Nature').val();
+                    
+                    withdrawrec.CustomerId = $('#CustomerId').val();
+                    withdrawrec.PayTypeInitial = obj.getSelectedRecords()[i].PayTypeInitial;
+
+                    withdrawrec.StockId = obj.getSelectedRecords()[i].StockId;
+                    withdrawrec.StockSku = obj.getSelectedRecords()[i].StockSku;
+                    withdrawrec.StockGroupId = obj.getSelectedRecords()[i].StockGroupId;
+                    withdrawrec.Qty = parseFloat(obj.getSelectedRecords()[i].Qty);
+                    withdrawrec.ActualWeight = parseFloat(obj.getSelectedRecords()[i].ActualWeight);
+                    withdrawrec.Uom = obj.getSelectedRecords()[i].Uom;
+                    withdrawrec.PalletNo = obj.getSelectedRecords()[i].PalletNo;
+                    withdrawrec.CompanyId = obj.getSelectedRecords()[i].CompanyId;
+                    withdrawrec.ProductionDate = new Date(obj.getSelectedRecords()[i].TransactionDate);
+
+                    withdrawrec.StorageLocationId = String(obj.getSelectedRecords()[i].StorageLocationId);
+                    withdrawrec.StorageId = String(obj.getSelectedRecords()[i].StorageId);
+                    withdrawrec.StorageTypeId = String(obj.getSelectedRecords()[i].StorageTypeId);
+                    withdrawrec.StartTime = new Date($('#StartTime').val());
+                    withdrawrec.EndTime = new Date($('#EndTime').val());
+                    withdrawrec.TransactionDate = new Date($('#TransactionDate').val());
+
+                    withdrawrec.Source = obj.getSelectedRecords()[i].Source;
+                    withdrawrec.Remarks = $('#Remarks').val();
+                    withdrawrec.isSaved = true;
+                    withdrawrec.ApprovedBy = $('#ApprovedBy').val();
+                    withdrawrec.Requestor = $('#Requestor').val();
+                    withdrawrec.Approver = $('#Approver').val();
+                    withdrawrec.EmployeeID = $('#EmployeeID').val();
+                    withdrawrec.LocationID = $('#LocationID').val();
+                    withdrawrec.StockPcsperPack = 0;
+                    withdrawrec.StockPackperCase = 0;
+                    withdrawrec.StockWeightinKilosperPack = 0;
+                    withdrawrec.StockWeightinKilosperCase = 0;
+                    withdrawrec.EmployeeDate = new Date($('#TransactionDate').val());
+
+                    console.log(JSON.stringify(withdrawrec));
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Withdrawal/SaveRecord',
+                        data: JSON.stringify(withdrawrec),
+                        contentType: "application/json",
+                        dataType: 'json',
+                        success: function (data) {
+                            boolsuccess = true;
+                            message = JSON.stringify(data);
+                            console.log(data);
+                        }
+                    });
+                    withdrawrec = null;
+                }
+
+                if (boolsuccess == true) {
+                    alert(cnt + ' Record/s Successfully Withdrawn!');
+                    $('#IndexAnchor')[0].click();
+                }
+            }
+        })
+    });
+
+
+    function getDateTime(addHour) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours() + addHour;
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            second = '0' + second;
+        }
+        var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        return dateTime;
+    }
+
+    var dReady = false;
+    var theme;
+    var dtTime = false;
+    var isDataBound = false;
+    var isDataChanged = true;
+    var intervalFun;
+    var clrIntervalFun;
+    var clrIntervalFun1;
+    var clrIntervalFun2;
+    var dropSlectedIndex = null;
+    var stTime;
+    stTime = performance.now();
+
+    function startTimer(args) {
+        clearTimeout(clrIntervalFun);
+        clearInterval(intervalFun);
+        dtTime = true;
+    }
+</script>

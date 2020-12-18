@@ -1,12 +1,12 @@
 ﻿@model System.Data.DataTable
 @{
-    ViewData["Title"] = "Available Stocks on Storage";
+    ViewData["Title"] = "List of Withdrawn Stocks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
 <div class="jumbotron-fluid bg-light">
-    <h2 class="text-left">@ViewData["Title"] <a asp-action='AddorEdit' class="e-btn e-primary bg-success float-md-right" hidden>Create New</a></h2>
+    <h2 class="text-left">@ViewData["Title"] <a asp-action='AddorEdit' class="e-btn e-primary bg-success float-md-right" >Create New</a></h2>
 
 </div>
 
@@ -17,27 +17,26 @@
     <e-grid-aggregates>
         <e-grid-aggregate>
             <e-aggregate-columns>
-                <e-aggregate-column field="TotalQty" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
-                <e-aggregate-column field="TotalActualWeight" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+                <e-aggregate-column field="Qty" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+                <e-aggregate-column field="ActualWeight" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
             </e-aggregate-columns>
         </e-grid-aggregate>
     </e-grid-aggregates>
-    <e-grid-groupSettings showDropArea="true" columns="@(new string[] { "StorageName","StorageLocationName"})"></e-grid-groupSettings>
     <e-grid-pagesettings pageSize="15"></e-grid-pagesettings>
     <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
     <e-grid-columns>
-        <e-grid-column field="StorageLocationName" headerText="Storage Location" type="string" width="150"></e-grid-column>
-        <e-grid-column field="StorageName" headerText="Storage Name" type="string" width="160"></e-grid-column>
-        <e-grid-column field="RackName" headerText="Rack" type="string" textAlign="Left" width="90"></e-grid-column>
-        <e-grid-column field="LevelNo" headerText="Level" type="string" width="90"></e-grid-column>
-        <e-grid-column field="CustomerName" headerText="Account" type="string" width="90"></e-grid-column>
-        <e-grid-column field="StockSKU" headerText="Stock SKU" type="string" width="100"></e-grid-column>
+        <e-grid-column field="ReferenceCode" headerText="Manage" template="<a href='/Storaging/AddorEdit/${ReferenceCode}'>Update</a>" width="105" visible="false"></e-grid-column>
+        <e-grid-column field="SWCode" headerText="SW No." type="string" textAlign="Left" width="130"></e-grid-column>
+        <e-grid-column field="RRCode" headerText="RR No." type="string" textAlign="Left" width="120"></e-grid-column>
+        <e-grid-column field="CustomerID" headerText="Customer ID" type="string" width="135"></e-grid-column>
+        <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="160"></e-grid-column>
+        <e-grid-column field="StockSKU" headerText="Stock SKU" type="string" width="115"></e-grid-column>
         <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
-        <e-grid-column field="TotalQty" headerText="Qty" type="number" width="80"></e-grid-column>
-        <e-grid-column field="TotalActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="145"></e-grid-column>
-        <e-grid-column field="PalletNo" headerText="Pallet" type="string" width="100"></e-grid-column>
-        <e-grid-column field="UOM" headerText="UOM" type="string" width="100"></e-grid-column>
-
+        <e-grid-column field="Qty" headerText="Qty" type="number" width="80"></e-grid-column>
+        <e-grid-column field="ActualWeight" headerText="Actual Wt." textAlign="Right" type="number" format="N2" width="125"></e-grid-column>
+        <e-grid-column field="StorageName" headerText="Storage Type" type="string" width="150" visible="false"></e-grid-column>
+        <e-grid-column field="StorageLocationName" headerText="Storage Name" type="string" width="200"></e-grid-column>
+        <e-grid-column field="TransactionDate" headerText="Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
     </e-grid-columns>
 
 </ejs-grid>

@@ -10,7 +10,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"]</h2>
+</div>
 <p>@ViewBag.ErrorMsg</p>
 <hr />
 <div class="row">
@@ -29,8 +31,6 @@
             <input type="hidden" asp-for="Source" />
             <input type="hidden" asp-for="IsSaved" />
             <div class="form-group">
-
-
                 <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Rrcode" class="text-danger"></span>
             </div>
