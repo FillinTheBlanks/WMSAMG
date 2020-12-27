@@ -15,130 +15,7 @@
     <h2 class="text-left">@ViewData["Title"] <a asp-action='AddorEdit' class="e-btn e-primary bg-success float-md-right">Create New</a></h2>
     
 </div>
-@*<p hidden>@UserManager.GetUserId(User)</p>*@
 
-@*<table class="table">
-    <thead>
-        <tr>
-            <th>
-                RR Ref.
-            </th>
-            <th>
-                Customer
-            </th>
-            <th>
-                Payment Type
-            </th>
-            <th>
-                SKU
-            </th>
-            <th>
-                Stock Group
-            </th>
-            <th>
-                Qty
-            </th>
-            <th>
-                Actual Wht.
-            </th>
-            <th>
-                UOM
-            </th>
-            <th>
-                Received
-            </th>
-            <th hidden>
-                End Time
-            </th>
-            <th>
-                Pallet No.
-            </th>
-            <th hidden>
-                Company
-            </th>
-            <th hidden>
-                Date Received
-            </th>
-            <th>
-                Remarks
-            </th>
-            <th hidden>
-                Approved By
-            </th>
-            <th hidden>
-                Encoder
-            </th>
-            <th hidden>
-                Verified
-            </th>
-            <th>
-                <a asp-action="AddorEdit">Create New</a>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0; i < Model.Rows.Count; i++)
-        {
-            <tr>
-                <td>
-                    @Model.Rows[i]["RRCode"]
-                </td>
-                <td>
-                    @Model.Rows[i]["CustomerName"]
-                </td>
-                <td>
-                    @Model.Rows[i]["PayTypeInitial"]
-                </td>
-                <td>
-                    @Model.Rows[i]["StockSKU"] : @Model.Rows[i]["StockDescription"]
-                </td>
-                <td>
-                    @Model.Rows[i]["StockGroupCategory"]
-                </td>
-                <td>
-                    @Model.Rows[i]["Qty"]
-                </td>
-                <td>
-                    @Model.Rows[i]["ActualWeight"]
-                </td>
-                <td>
-                    @Model.Rows[i]["UOM"]
-                </td>
-                <td>
-                    @Model.Rows[i]["ReceivingTime"]
-                </td>
-                <td hidden>
-                    @Model.Rows[i]["EndTime"]
-                </td>
-                <td>
-                    @Model.Rows[i]["PalletNo"]
-                </td>
-                <td hidden>
-                    @Model.Rows[i]["CompanyName"]
-                </td>
-                <td hidden>
-                    @Model.Rows[i]["EmployeeDate"]
-                </td>
-                <td>
-                    @Model.Rows[i]["Remarks"]
-                </td>
-                <td hidden>
-                    @Model.Rows[i]["Approver"]
-                </td>
-                <td hidden>
-                    @Model.Rows[i]["Encoder"]
-                </td>
-                <td hidden>
-                    @Model.Rows[i]["isSaved"]
-                </td>
-                <td>
-                    <a asp-action="AddorEdit" asp-route-id="@Model.Rows[i]["ReferenceCode"]">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@Model.Rows[i]["ReferenceCode"]">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>*@
 <ejs-grid id="Grid" dataSource="((System.Data.DataTable)ViewBag.datasource)" allowExcelExport="true" allowGrouping="true" allowResizing="true"
           allowFiltering="true" allowPaging="true" allowSorting="true" height="400" rowHeight="38" enableHover="false"
           toolbarClick="toolbarClick" toolbar="@(new List<string>() { "ExcelExport" })" 
@@ -160,7 +37,8 @@
             <e-grid-column field="CustomerID" headerText="Customer ID" type="string" width="140"></e-grid-column>
             <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="180"></e-grid-column>
             <e-grid-column field="StockId" headerText="StockId" type="string" width="160" visible="false"></e-grid-column>
-            <e-grid-column field="StockSKU" headerText="Stock SKU" type="string" width="100"></e-grid-column>
+            <e-grid-column field="StockSKU" headerText="Stock SKU" type="string" width="110"></e-grid-column>
+            <e-grid-column field="StockPcsperPack" headerText="Size" type="string" width="80"></e-grid-column>
             <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
             <e-grid-column field="Qty" headerText="Qty" type="number" width="80"></e-grid-column>
             <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="150"></e-grid-column>

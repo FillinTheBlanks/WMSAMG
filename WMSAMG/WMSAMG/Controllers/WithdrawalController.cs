@@ -102,6 +102,7 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("PayTypeInitial", tblStockWithdrawal.PayTypeInitial);
                     sqlCmd.Parameters.AddWithValue("StockID", tblStockWithdrawal.StockId);
                     sqlCmd.Parameters.AddWithValue("StockSKU", tblStockWithdrawal.StockSku);
+                    sqlCmd.Parameters.AddWithValue("StockPcsperPack", tblStockWithdrawal.StockPcsperPack);
                     sqlCmd.Parameters.AddWithValue("StockGroupID", tblStockWithdrawal.StockGroupId);
                     sqlCmd.Parameters.AddWithValue("Qty", tblStockWithdrawal.Qty);
                     sqlCmd.Parameters.AddWithValue("ActualWeight", tblStockWithdrawal.ActualWeight);
@@ -232,6 +233,7 @@ namespace WMSAMG.Controllers
                     PayTypeInitial = row.Field<string>("PayTypeInitial"),
                     StockId = row.Field<Guid>("StockID"),
                     StockSku = row.Field<string>("StockSKU"),
+                    StockPcsperPack = row.Field<Decimal>("StockPcsperPack"),
                     StockGroupId = row.Field<Guid>("StockGroupID"),
                     Uom = row.Field<string>("UOM"),
                     PalletNo = row.Field<string>("PalletNo"),

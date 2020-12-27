@@ -723,3 +723,9 @@ C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Storaging\AddorEdit.cshtml.g.cs
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Withdrawal\AddorEdit.cshtml.g.cs
+C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Storaging\AddorEdit.cshtml.g.cs
+C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Storaging\Delete.cshtml.g.cs
+C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Storaging\Index.cshtml.g.cs
+C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Withdrawal\AddorEdit.cshtml.g.cs
+C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Withdrawal\Delete.cshtml.g.cs
+C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Withdrawal\Index.cshtml.g.cs

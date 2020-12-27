@@ -22,7 +22,7 @@
             <input type="hidden" asp-for="ReferenceCode" />
             <input type="hidden" asp-for="CarrierReferenceCode" />
             <input type="hidden" asp-for="StockGroupId" />
-            <input type="hidden" asp-for="StockPcsperPack" />
+            @*<input type="hidden" asp-for="StockPcsperPack" />*@
             <input type="hidden" asp-for="StockPackperCase" />
             <input type="hidden" asp-for="StockWeightinKilosperPack" />
             <input type="hidden" asp-for="StockWeightinKilosperCase" />
@@ -59,26 +59,29 @@
                 <ejs-textbox id="StockDescription" ejs-for="StockDescription" readonly="true" cssClass="e-outline" placeholder="Description" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="StockDescription" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                <ejs-numerictextbox id="Qty" ejs-for="Qty" cssClass="e-outline" placeholder="Quantity" floatLabelType="Auto"></ejs-numerictextbox>
+                <ejs-numerictextbox id="StockPcsperPack" ejs-for="StockPcsperPack" cssClass="e-outline" placeholder="Size" validateDecimalOnType="true" decimals="0" max="25" min="1" floatLabelType="Always" ></ejs-numerictextbox>
+                <span asp-validation-for="StockPcsperPack" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-numerictextbox id="Qty" ejs-for="Qty" cssClass="e-outline" placeholder="Quantity" min="1" floatLabelType="Auto"></ejs-numerictextbox>
                 <span asp-validation-for="Qty" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-numerictextbox id="ActualWeight" ejs-for="ActualWeight" cssClass="e-outline" placeholder="Actual Weight" floatLabelType="Auto"></ejs-numerictextbox>
+                <ejs-numerictextbox id="ActualWeight" ejs-for="ActualWeight" cssClass="e-outline" min="1" placeholder="Actual Weight" floatLabelType="Auto"></ejs-numerictextbox>
                 <span asp-validation-for="ActualWeight" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <ejs-textbox id="Uom" ejs-for="Uom" cssClass="e-outline" placeholder="UoM" floatLabelType="Auto"></ejs-textbox>
                 <span asp-validation-for="Uom" class="text-danger"></span>
             </div>
-            </hr>
+            <hr>
             <div class="form-group">
                 <ejs-datetimepicker id="ReceivingTime" ejs-for="ReceivingTime" placeholder="Receiving date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="ReceivingTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-datetimepicker id="EndTime" ejs-for="EndTime" placeholder="End date and time" cssClass="e-outline" floatLabelType="Always" ></ejs-datetimepicker>
+                <ejs-datetimepicker id="EndTime" ejs-for="EndTime" placeholder="End date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
             </hr>
@@ -111,19 +114,19 @@
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input asp-for="ApprovedBy" class="form-control" hidden/>
-                <span asp-validation-for="ApprovedBy" class="text-danger" ></span>
+                <input asp-for="ApprovedBy" class="form-control" hidden />
+                <span asp-validation-for="ApprovedBy" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input asp-for="EmployeeId" class="form-control" hidden/>
-                <span asp-validation-for="EmployeeId" class="text-danger" ></span>
+                <input asp-for="EmployeeId" class="form-control" hidden />
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-datetimepicker id="EmployeeDate" ejs-for="EmployeeDate"  placeholder="Encoded date and time" cssClass="e-outline" readonly="true" enabled="false" floatLabelType="Always"></ejs-datetimepicker>
+                <ejs-datetimepicker id="EmployeeDate" ejs-for="EmployeeDate" placeholder="Encoded date and time" cssClass="e-outline" readonly="true" enabled="false" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="EmployeeDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" id="Save" value="Submit" class="e-btn e-primary bg-success" /> | 
+                <input type="submit" id="Save" value="Submit" class="e-btn e-primary bg-success" /> |
                 <a asp-action="Index" class="e-btn e-primary bg-info">Back to List</a>
             </div>
         </form>
@@ -230,6 +233,7 @@
         }
     }
 
+    //#region DateTime Formatter
     function getDateTime(addHour) {
         var now = new Date();
         var year = now.getFullYear();
@@ -314,6 +318,7 @@
             msgEle.classList.remove('e-hide');
         }
     });
+    //#endregion
 </script>
 
 

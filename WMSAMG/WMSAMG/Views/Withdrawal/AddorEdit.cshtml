@@ -33,9 +33,9 @@
                 <span asp-validation-for="Swcode" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-            <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
-            <span asp-validation-for="Rrcode" class="text-danger"></span>
-        </div>*@
+                    <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
+                    <span asp-validation-for="Rrcode" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <ejs-textbox id="CustomerId" ejs-for="CustomerId" readonly="true" cssClass="e-outline" placeholder="Account No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="CustomerId" class="text-danger"></span>
@@ -47,6 +47,7 @@
                 </ejs-dropdownlist>
                 <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
+            <hr>
             <div class="form-group">
                 <ejs-datetimepicker id="StartTime" ejs-for="StartTime" placeholder="Date Start" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="StartTime" class="text-danger"></span>
@@ -68,18 +69,18 @@
     </div>
 </div>
 @*@{
-    var ddParams = new
-        { @params = new { value = "Germany" } };
-    var numericParams = new
-        { @params= new { decimals= 2, value = 5 }
-        };
-    var dpParams = new
-        { @params = new { value = new Date() } };
-    var boolParams = new
-        { @params = new { checked= true }};
-}*@
+        var ddParams = new
+            { @params = new { value = "Germany" } };
+        var numericParams = new
+            { @params= new { decimals= 2, value = 5 }
+            };
+        var dpParams = new
+            { @params = new { value = new Date() } };
+        var boolParams = new
+            { @params = new { checked= true }};
+    }*@
 
-<ejs-grid id="Grid" allowPaging="true" allowFiltering="true"  actionComplete="actionComplete" allowResizing="true" allowSorting="true" height="300" rowHeight="38" enableHover="false"
+<ejs-grid id="Grid" allowPaging="true" allowFiltering="true" actionComplete="actionComplete" allowResizing="true" allowSorting="true" height="300" rowHeight="38" enableHover="false"
           toolbar="@(new List<string>() { "Edit", "Cancel" })" rowSelected="rowSelect">
     <e-grid-aggregates>
         <e-grid-aggregate>
@@ -99,6 +100,7 @@
         <e-grid-column field="Rrcode" headerText="RR No." type="string" width="120" allowEditing="false"></e-grid-column>
         <e-grid-column field="StockId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
         <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140" allowEditing="false"></e-grid-column>
+        <e-grid-column field="StockPcsperPack" headerText="Size" type="number" width="140" allowEditing="false"></e-grid-column>
         <e-grid-column field="StockDescription" headerText="Description" type="string" width="180" allowEditing="false"></e-grid-column>
         <e-grid-column field="Qty" headerText="Qty" editType="numericedit" textAlign="Right" validationRules="@(new { required=true})" type="number" format="N2" width="140"></e-grid-column>
         <e-grid-column field="ActualWeight" headerText="Actual Weight" editType="numericedit" validationRules="@(new { required=true})" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
@@ -128,9 +130,7 @@
 </div>
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
 <script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
@@ -166,7 +166,7 @@
         grid.Qty[0].maximum = args.value;
         grid.ActualWeight[0].maximum = args.value;
         grid.refresh();
-    } 
+    }
 
     function onfiltering(e) {
         var CBObj = document.getElementById("CustomerName").ej2_instances[0];
@@ -232,12 +232,13 @@
                     withdrawrec.Swcode = $('#Swcode').val();
                     withdrawrec.Rrcode = obj.getSelectedRecords()[i].Rrcode;
                     withdrawrec.Nature = $('#Nature').val();
-                    
+
                     withdrawrec.CustomerId = $('#CustomerId').val();
                     withdrawrec.PayTypeInitial = obj.getSelectedRecords()[i].PayTypeInitial;
 
                     withdrawrec.StockId = obj.getSelectedRecords()[i].StockId;
                     withdrawrec.StockSku = obj.getSelectedRecords()[i].StockSku;
+                    withdrawrec.StockPcsperPack = parseFloat(obj.getSelectedRecords()[i].StockPcsperPack);
                     withdrawrec.StockGroupId = obj.getSelectedRecords()[i].StockGroupId;
                     withdrawrec.Qty = parseFloat(obj.getSelectedRecords()[i].Qty);
                     withdrawrec.ActualWeight = parseFloat(obj.getSelectedRecords()[i].ActualWeight);
@@ -261,7 +262,6 @@
                     withdrawrec.Approver = $('#Approver').val();
                     withdrawrec.EmployeeID = $('#EmployeeID').val();
                     withdrawrec.LocationID = $('#LocationID').val();
-                    withdrawrec.StockPcsperPack = 0;
                     withdrawrec.StockPackperCase = 0;
                     withdrawrec.StockWeightinKilosperPack = 0;
                     withdrawrec.StockWeightinKilosperCase = 0;
@@ -275,23 +275,25 @@
                         contentType: "application/json",
                         dataType: 'json',
                         success: function (data) {
-                            boolsuccess = true;
+                            //boolsuccess = true;
                             message = JSON.stringify(data);
                             console.log(data);
+                            alert(cnt + ' Record/s Successfully Withdrawn!');
+                            $('#IndexAnchor')[0].click();
                         }
                     });
                     withdrawrec = null;
                 }
 
-                if (boolsuccess == true) {
-                    alert(cnt + ' Record/s Successfully Withdrawn!');
-                    $('#IndexAnchor')[0].click();
-                }
+                //if (boolsuccess == true) {
+
+
+                //}
             }
         })
     });
 
-
+    //#region DateTime Formatter
     function getDateTime(addHour) {
         var now = new Date();
         var year = now.getFullYear();
@@ -337,4 +339,9 @@
         clearInterval(intervalFun);
         dtTime = true;
     }
+    //#endregion
 </script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

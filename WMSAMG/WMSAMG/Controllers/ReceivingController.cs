@@ -358,6 +358,7 @@ namespace WMSAMG.Controllers
                     PayTypeInitial = row.Field<string>("PayTypeInitial"),
                     StockId = row.Field<Guid>("StockID"),
                     StockSku = row.Field<string>("StockSKU"),
+                    StockPcsperPack = row.Field<decimal>("StockPcsperPack"),
                     StockDescription = row.Field<string>("StockDescription"),
                     Qty = row.Field<decimal>("Qty"),
                     ActualWeight = row.Field<decimal>("ActualWeight"),

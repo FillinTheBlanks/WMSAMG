@@ -28,6 +28,8 @@ namespace WMSAMG.Models.CSIS2017Models
         [Column("StockSKU")]
         [StringLength(100)]
         public string StockSku { get; set; }
+        [Column(TypeName = "money")]
+        public decimal? StockPcsperPack { get; set; }
         [Column("StockGroupID")]
         public Guid? StockGroupId { get; set; }
         [Column(TypeName = "money")]

@@ -18,7 +18,7 @@ namespace WMSAMG.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
         //public HomeController(ILogger<HomeController> logger)
         //{
