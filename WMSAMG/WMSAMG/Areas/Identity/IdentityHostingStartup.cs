@@ -21,7 +21,7 @@ namespace WMSAMG.Areas.Identity
                         context.Configuration.GetConnectionString("AuthContextConnection")));
 
                 services.AddDefaultIdentity<WMSAMGUser>(options => {
-                    options.SignIn.RequireConfirmedAccount = false;
+                    options.SignIn.RequireConfirmedAccount = true;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireDigit = false;

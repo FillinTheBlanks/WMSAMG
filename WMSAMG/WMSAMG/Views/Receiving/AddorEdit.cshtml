@@ -72,7 +72,7 @@
                 <span asp-validation-for="ActualWeight" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-textbox id="Uom" ejs-for="Uom" cssClass="e-outline" placeholder="UoM" floatLabelType="Auto"></ejs-textbox>
+                <ejs-textbox id="Uom" ejs-for="Uom" cssClass="e-outline" placeholder="UoM" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Uom" class="text-danger"></span>
             </div>
             <hr>
@@ -213,7 +213,7 @@
                         $('#StockPackperCase').val(element.StockPackperCase);
                         $('#StockWeightinKilosperCase').val(element.StockWeightinKilosperCase);
                         $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
-                        
+                        $('#Uom').val('Kls');
                     });
                 };
                 options.error = function () {

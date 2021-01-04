@@ -10,9 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WMSAMG.Models.CSIS2017Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WMSAMG.Controllers
 {
+    [Authorize]
     public class ReceivingController : Controller
     {
         private readonly IConfiguration _configuration;

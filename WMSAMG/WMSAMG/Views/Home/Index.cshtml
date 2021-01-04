@@ -3,6 +3,11 @@
     ViewData["Title"] = "Available Stocks on Storage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
+    var defaultAnimation = new Syncfusion.EJ2.Popups.DialogAnimationSettings { Effect = Syncfusion.EJ2.Popups.DialogEffect.None };
+    Dictionary<string, object> resetType = new Dictionary<string, object>();
+    resetType.Add("type", "reset");
+    Dictionary<string, object> submitType = new Dictionary<string, object>();
+    submitType.Add("type", "submit");
 }
 
 <div class="jumbotron-fluid bg-light">
@@ -12,7 +17,7 @@
 
 <ejs-grid id="Grid" dataSource="((System.Data.DataTable)ViewBag.datasource)" allowExcelExport="true" allowGrouping="true" allowResizing="true"
           allowFiltering="true" allowPaging="true" allowSorting="true" height="400" rowHeight="38" enableHover="false"
-          toolbarClick="toolbarClick" toolbar="@(new List<string>() { "ExcelExport" })"
+          toolbarClick="toolbarClick" toolbar="@(new List<string>() { "ExcelExport" ,"Print"})"
           contextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})">
     <e-grid-aggregates>
         <e-grid-aggregate>
@@ -42,20 +47,22 @@
 
 </ejs-grid>
 
-<script>
-    function toolbarClick(args) {
-        var gridObj = document.getElementById("Grid").ej2_instances[0];
-        if (args.item.id === 'Grid_excelexport') {
-            gridObj.excelExport();
-        }
-    }
 
-    function load() {
-        var grid = document.getElementById('Grid').ej2_instances[0];
-        var rowHeight = grid.getRowHeight();  //height of the each row
-        var gridHeight = grid.height;  //grid height
-        var pageSize = 15;   //initial page size
-        var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
-        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
-    }
-</script>
+    <script>
+        
+        function toolbarClick(args) {
+            var gridObj = document.getElementById("Grid").ej2_instances[0];
+            if (args.item.id === 'Grid_excelexport') {
+                gridObj.excelExport();
+            }
+        }
+
+        function load() {
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            var rowHeight = grid.getRowHeight();  //height of the each row
+            var gridHeight = grid.height;  //grid height
+            var pageSize = 15;   //initial page size
+            var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
+            grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+        }
+    </script>

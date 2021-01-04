@@ -48,6 +48,24 @@ namespace WMSAMG.Controllers
             
         }
 
+        public IActionResult StoragingTicket()
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_StorageTicket", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("CustomerID", "");
+                sqlDa.SelectCommand.Parameters.AddWithValue("TransactionDate", "");
+                sqlDa.SelectCommand.Parameters.AddWithValue("StorageID", "");
+                sqlDa.Fill(dt);
+            }
+            ViewBag.datasource = dt;
+            
+            return View(dt);
+        }
+
         public IActionResult Privacy()
         {
             return View();

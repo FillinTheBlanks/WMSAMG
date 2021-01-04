@@ -88,6 +88,7 @@ namespace WMSAMG.Models.CSIS2017Models
             }
         }
 
+        [Obsolete]
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<HrGeneralLog>(entity =>

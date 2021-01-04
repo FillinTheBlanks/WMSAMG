@@ -12,9 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WMSAMG.Models.CSISControlModels;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WMSAMG.Controllers
 {
+    [Authorize]
     public class StocksController : Controller
     {
         private readonly IConfiguration _configuration;
