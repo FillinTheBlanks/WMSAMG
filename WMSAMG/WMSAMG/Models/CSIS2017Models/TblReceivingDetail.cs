@@ -38,6 +38,7 @@ namespace WMSAMG.Models.CSIS2017Models
         [Column("StockGroupID")]
         public Guid? StockGroupId { get; set; }
         [Column(TypeName = "money")]
+        [Range(1,25)]
         public decimal? StockPcsperPack { get; set; }
         [Column(TypeName = "money")]
         public decimal? StockPackperCase { get; set; }

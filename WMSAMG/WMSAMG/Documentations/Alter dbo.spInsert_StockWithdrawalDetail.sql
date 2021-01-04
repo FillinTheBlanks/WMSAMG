@@ -1,12 +1,13 @@
 ﻿USE [CSIS2017]
 GO
 
-/****** Object: SqlProcedure [dbo].[spInsert_StockWithdrawalDetail] Script Date: 12/18/2020 8:48:49 AM ******/
+/****** Object: SqlProcedure [dbo].[spInsert_StockWithdrawalDetail] Script Date: 12/25/2020 12:50:21 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -25,7 +26,7 @@ ALTER PROCEDURE [dbo].[spInsert_StockWithdrawalDetail]
 	@StockID as uniqueidentifier,
 	@StockSKU as nvarchar(100),
 	@StockGroupID as uniqueidentifier,
-	--@StockPcsperPack as money,
+	@StockPcsperPack as money,
 	--@StockPackperCase as money,
 	@Qty as money,
 	@ActualWeight as decimal(18,4),
@@ -73,7 +74,7 @@ BEGIN
 		  ,StockID
 		  ,StockSKU
 		  ,StockGroupID
-		  --,StockPcsperPack
+		  ,StockPcsperPack
 		  --,StockPackperCase
 		  ,Qty
 		  ,ActualWeight
@@ -109,7 +110,7 @@ BEGIN
 	@StockID,
 	@StockSKU,
 	@StockGroupID,
-	--@StockPcsperPack,
+	@StockPcsperPack,
 	--@StockPackperCase,
 	@Qty,
 	@ActualWeight,
@@ -145,7 +146,7 @@ BEGIN
 		  ,StockID
 		  ,StockSKU
 		  ,StockGroupID
-		  --,StockPcsperPack
+		  ,StockPcsperPack
 		  --,StockPackperCase
 		  ,Qty
 		  ,ActualWeight
@@ -176,7 +177,7 @@ BEGIN
 	@StockID,
 	@StockSKU,
 	@StockGroupID,
-	--@StockPcsperPack,
+	@StockPcsperPack,
 	--@StockPackperCase,
 	@Qty,
 	@ActualWeight,

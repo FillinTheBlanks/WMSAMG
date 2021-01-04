@@ -256,6 +256,7 @@ namespace WMSAMG.Controllers
                     ReferenceCode = row.Field<Guid>("ReferenceCode"),
                     StockId = row.Field<Guid>("StockID"),
                     StockSku = row.Field<string>("StockSKU"),
+                    StockPcsperPack = row.Field<decimal>("StockPcsperPack"),
                     StockDescription = row.Field<string>("StockDescription"),
                     Qty = row.Field<Decimal>("Qty"),
                     ActualWeight = row.Field<Decimal>("ActualWeight"),
