@@ -1,0 +1,294 @@
+﻿@model WMSAMG.Models.CSIS2017Models.TblStorageTimeFrame
+@using Syncfusion.EJ2
+
+@{
+    ViewData["Title"] = "Update Storage Location";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"]</h2>
+</div>
+<p>@ViewBag.ErrorMsg</p>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddorEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" id="StorageTimeFrameId" asp-for="StorageTimeFrameId" />
+            <input type="hidden" id="StorageLocationId" asp-for="StorageLocationId" />
+            <input type="hidden" id="StorageId" asp-for="StorageId" />
+            <input type="hidden" id="RefCode" asp-for="RefCode" />
+            <input type="hidden" id="Nature" asp-for="Nature" />
+            <input type="hidden" id="StockId2" asp-for="StockId" />
+            <input type="hidden" id="PayTypeInitial" asp-for="PayTypeInitial" />
+            <input type="hidden" id="DateTimeFrameTo" asp-for="DateTimeFrameTo" />
+            <div class="form-group">
+                <ejs-textbox id="Rrcode" ejs-for="ReferenceNo" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="ReferenceNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="CustomerId" ejs-for="CustomerId" readonly="true" cssClass="e-outline" placeholder="Account No." floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="CustomerName" ejs-for="CustomerName" readonly="true" cssClass="e-outline" placeholder="Account Name" floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <ejs-dropdownlist id="StorageName" ejs-for="StorageName" cssClass="e-outline" change="onChangeS" placeholder="Storage Name" popupHeight="220px" allowFiltering="true" filtering="onfilteringS">
+                        <e-dropdownlist-fields value="StorageId" text="StorageName"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                    <span asp-validation-for="StorageName" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <ejs-dropdownlist id="StorageLocationName" ejs-for="StorageLocationName" cssClass="e-outline" change="onChange" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
+                    <e-dropdownlist-fields value="StorageLocationId" text="StorageLocationName"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+                <span asp-validation-for="StorageLocationName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="StorageName" ejs-for="StorageName" readonly="true" cssClass="e-outline" placeholder="Storage Name" floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="StorageName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="StorageTypeId" ejs-for="StorageTypeId" readonly="true" cssClass="e-outline" placeholder="Storage Type" floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="StorageTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-datetimepicker id="DateTimeFrameFrom" ejs-for="DateTimeFrameFrom" placeholder="From date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
+                <span asp-validation-for="DateTimeFrameFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-numerictextbox id="FixedRate" ejs-for="FixedRate" cssClass="e-outline" readonly="true" placeholder="Fixed Rate" floatLabelType="Always"></ejs-numerictextbox>
+                <span asp-validation-for="FixedRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-numerictextbox id="HourlyRate" ejs-for="HourlyRate" cssClass="e-outline" readonly="true" placeholder="Hourly Rate" floatLabelType="Always"></ejs-numerictextbox>
+                <span asp-validation-for="HourlyRate" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<ejs-grid id="Grid" allowPaging="true" allowFiltering="true" allowSorting="true" height="300" rowHeight="38" enableHover="false" rowSelected="rowSelect">
+    <e-grid-aggregates>
+        <e-grid-aggregate>
+            <e-aggregate-columns>
+                <e-aggregate-column field="Qty" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+                <e-aggregate-column field="ActualWeight" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+            </e-aggregate-columns>
+        </e-grid-aggregate>
+    </e-grid-aggregates>
+    <e-grid-selectionsettings type="Multiple"></e-grid-selectionsettings>
+    <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
+    <e-grid-pagesettings pageCount="2"></e-grid-pagesettings>
+    <e-grid-columns>
+        <e-grid-column type="checkbox" width="50"></e-grid-column>
+        <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="StockId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
+        <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140"></e-grid-column>
+        <e-grid-column field="StockPcsperPack" headerText="Size" type="string" width="120"></e-grid-column>
+        <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
+        <e-grid-column field="Qty" headerText="Qty" type="number" width="140"></e-grid-column>
+        <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
+        @*<e-grid-column field="TransactionDate" headerText="Receiving Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>*@
+        <e-grid-column field="StorageName" headerText="Storage" type="string" width="180"></e-grid-column>
+        <e-grid-column field="StorageLocationName" headerText="Storage Location" type="string" width="180"></e-grid-column>
+    </e-grid-columns>
+</ejs-grid>
+
+<hr />
+<div class="form-group">
+    <input type="submit" id="btnsubmit" value="Submit" class="e-btn e-primary bg-success" />
+    @*<input type="submit" id="Save" value="Submit" class="e-btn e-primary bg-success" />*@ |
+    <a asp-action="Index" id="IndexAnchor" class="e-btn e-primary bg-info">Back to List</a>
+</div>
+
+
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+    function rowSelect() {
+        //var obj = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
+        //alert(obj.getSelectedRecords()[0].StockSku);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Storaging/GetActualInventorybyRRCode/' + $('#Rrcode').val(), 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            grid.dataSource = JSON.parse(data);
+            grid.hideSpinner();
+        };
+
+        var dropdown = document.getElementById('StorageLocationName').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Storaging/GetStorageByLocationID', 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            dropdown.dataSource = JSON.parse(data);
+            dropdown.refresh();
+        };
+
+    }, false);
+
+    function onfiltering(e) {
+        var CBObj = document.getElementById("StorageLocationName").ej2_instances[0];
+        // load overall data when search key empty.
+        if (e.text == '')
+            e.updateData(CBObj.dataSource);
+        else {
+            var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationId']);
+            query = (e.text !== '') ? query.where('StorageLocationName', 'contains', e.text, true) : query;
+            e.updateData(CBObj.dataSource, query);
+        }
+    }
+
+    function onChange(args) {
+        console.log(args.value);
+        var options = {};
+        options.url = '/Storaging/GetStorageByStorageLocationID/' + args.value;
+        options.type = "GET";
+        options.dataType = "json";
+        options.success = function (data) {
+            data.forEach(function (element) {
+                $('#StorageName').val(element.StorageName);
+                $('#StorageLocationId').val(element.StorageLocationId);
+                $('#StorageId').val(element.StorageId);
+                $('#StorageTypeId').val(element.StorageTypeId);
+                $('#FixedRate').val(element.FixedRate);
+                $('#HourlyRate').val(element.HourlyRate);
+                $("#DateTimeFrameFrom").val(getDateTime(0));
+                return;
+            });
+        };
+        options.error = function () {
+            $("#msg").html("Error while calling the Web API!");
+        };
+        $.ajax(options);
+    }
+
+
+    $(document).ready(function () {
+
+        $('#btnsubmit').click(function () {
+            $('#btnsubmit').prop('disabled', true);
+            var obj = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
+            if (obj.getSelectedRecords().length > 0) {
+                //var data = obj.getSelectedRecords();
+                var cnt = obj.getSelectedRecords().length;
+                var i;
+                var boolsuccess = false;
+                var message = '';
+                for (i = 0; i < cnt; i++) {
+                    var storagerec = {};
+                    storagerec.StorageTimeFrameId = obj.getSelectedRecords()[i].ReferenceCode;
+                    storagerec.RefCode = obj.getSelectedRecords()[i].ReferenceCode;
+                    storagerec.ReferenceNo = $('#Rrcode').val();
+                    storagerec.Nature = $('#Nature').val();
+                    storagerec.CustomerId = $('#CustomerId').val();
+                    storagerec.PayTypeInitial = $('#PayTypeInitial').val();
+                    storagerec.StockId = obj.getSelectedRecords()[i].StockId;
+                    if ($('#StorageLocationId').val() != null && $('#StorageLocationId').val() != '') {
+                        storagerec.StorageLocationId = $('#StorageLocationId').val();
+                    } else {
+                        storagerec.StorageLocationId = "00000000-0000-0000-0000-000000000000";
+                    }
+                    if ($('#StorageId').val() != null && $('#StorageId').val() != '') {
+                        storagerec.StorageId = $('#StorageId').val();
+                    } else {
+                        storagerec.StorageId = "00000000-0000-0000-0000-000000000000";
+                    }
+                    if ($('#StorageTypeId').val() != null && $('#StorageTypeId').val() != '') {
+                        storagerec.StorageTypeId = $('#StorageTypeId').val();
+                    } else {
+                        storagerec.StorageTypeId = "00000000-0000-0000-0000-000000000000";
+                    }
+
+                    //storagerec.StorageId = $('#StorageId').val();
+                    //storagerec.StorageTypeId = $('#StorageTypeId').val();
+                    storagerec.DateTimeFrameFrom = new Date($('#DateTimeFrameFrom').val());
+                    storagerec.DateTimeFrameTo = new Date(null);
+                    storagerec.FixedRate = parseFloat($('#FixedRate').val());
+                    storagerec.HourlyRate = parseFloat($('#HourlyRate').val());
+                    console.log(JSON.stringify(storagerec));
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Storaging/InsertTimeFrame',
+                        data: JSON.stringify(storagerec),
+                        contentType: "application/json",
+                        dataType: 'json',
+                        success: function (data) {
+                            //boolsuccess = true;
+                            message = JSON.stringify(data);
+                            console.log(data);
+                        }
+                    });
+                    storagerec = null;
+                }
+
+                if (boolsuccess = true) {
+                    $('#btnsubmit').prop('disabled', false);
+                    alert(cnt + ' Record/s Successfully Stored!');
+                    $('#IndexAnchor')[0].click();
+                }
+            }
+        })
+    });
+
+    //#region DateTime Formatter
+
+    function getDateTime(addHour) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        var hour = now.getHours() + addHour;
+        var minute = now.getMinutes();
+        var second = now.getSeconds();
+        if (month.toString().length == 1) {
+            month = '0' + month;
+        }
+        if (day.toString().length == 1) {
+            day = '0' + day;
+        }
+        if (hour.toString().length == 1) {
+            hour = '0' + hour;
+        }
+        if (minute.toString().length == 1) {
+            minute = '0' + minute;
+        }
+        if (second.toString().length == 1) {
+            second = '0' + second;
+        }
+        var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        return dateTime;
+    }
+
+    var dReady = false;
+    var theme;
+    var dtTime = false;
+    var isDataBound = false;
+    var isDataChanged = true;
+    var intervalFun;
+    var clrIntervalFun;
+    var clrIntervalFun1;
+    var clrIntervalFun2;
+    var dropSlectedIndex = null;
+    var stTime;
+    stTime = performance.now();
+
+    function startTimer(args) {
+        clearTimeout(clrIntervalFun);
+        clearInterval(intervalFun);
+        dtTime = true;
+    }
+    //#endregion
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

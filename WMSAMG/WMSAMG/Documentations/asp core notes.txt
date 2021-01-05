@@ -9,7 +9,7 @@ add-migration -Context "CSIS2017Context"
 
 
 
-Scaffold-DbContext "Server=(localdb)\MSSQLLocalDB;Database=PRACTICEDB;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/PRACTICEDB -Context "PRACTICEDBContext" -DataAnnotations -force
+Scaffold-DbContext "Server=(localdb)\SQL16;Database=CSISControl;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Areas/Identity/Data -Context "AuthContext" -DataAnnotations -force
 
 
 

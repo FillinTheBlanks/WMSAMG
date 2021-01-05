@@ -10,9 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using WMSAMG.Models.CSIS2017Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WMSAMG.Controllers
 {
+    [Authorize]
     public class ReceivingController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -34,8 +36,8 @@ namespace WMSAMG.Controllers
                 sqlConnection.Open();
                 SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
-                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "");
-                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "RRCode");
+                sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "LocationID");
                 sqlDa.Fill(dt);
             }
             ViewBag.datasource = dt;
@@ -44,7 +46,7 @@ namespace WMSAMG.Controllers
         }
 
         // GET: Receiving/Details/5
-        public IActionResult AddorEdit(Guid? id)
+        public IActionResult AddorEdit(string? id)
         {
             //List<object> DataRange = new List<object>();
             //DataRange.Add(new { Text = "1,000 Rows", Value = "1000" });
@@ -52,25 +54,37 @@ namespace WMSAMG.Controllers
             //DataRange.Add(new { Text = "100,000 Rows", Value = "100000" });
             //ViewBag.Data = DataRange;
             
-            String strid = id.ToString();
-
+            
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
             
             //tblReceiving.Customers = PopulateCustomers();
             
-            if (strid != string.Empty)
+            if (!string.IsNullOrEmpty(id))
             {
-                tblReceiving = FetchRecordByID(strid);
-            } else
+                if(id.Substring(0,3) == "GSC" && ModelState.IsValid)
+                {
+                    
+                    tblReceiving.Rrcode = id;
+                    tblReceiving.Nature = "RR";
+                    tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                    tblReceiving.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceiving.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceiving.ReferenceCode = Guid.Empty;
+                    tblReceiving.CarrierReferenceCode = Guid.Empty;
+                    tblReceiving.TransactionDate = DateTime.Now;
+                } else
+                {
+                    tblReceiving = FetchRecordByID(id);
+                } 
+            }
+            else
             {
-               
                 tblReceiving.Nature = "RR";           
                 tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
                 tblReceiving.Rrcode = "GSC" + tblReceiving.Nature + GetReferenceNo(tblReceiving.Nature, tblReceiving.LocationId);
                 tblReceiving.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ",""));
                 tblReceiving.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceiving.CarrierReferenceCode = Guid.Empty;
-                //ViewBag.UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
 
             return View(tblReceiving);
@@ -81,9 +95,19 @@ namespace WMSAMG.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddorEdit(Guid id, [Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,PayTypeInitial,StockId,StockSku,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
+        public IActionResult AddorEdit([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,PayTypeInitial,StockId,StockSku,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
         {
             string Rrcode = tblReceivingDetail.Rrcode;
+            //int successindx = 0;
+            if (!ModelState.IsValid)
+            {
+                //var query = from state in ModelState.Values
+                //            from error in state.Errors
+                //            select error.ErrorMessage;
+                var errors = ModelState.ErrorCount.ToString();
+                ViewBag.ErrorMsg = errors;
+            }
+
             if (ModelState.IsValid)
             {
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
@@ -110,7 +134,7 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperCase", tblReceivingDetail.StockWeightinKilosperCase);
                     sqlCmd.Parameters.AddWithValue("PalletNo", tblReceivingDetail.PalletNo);
                     sqlCmd.Parameters.AddWithValue("CompanyID", tblReceivingDetail.CompanyId);
-                    sqlCmd.Parameters.AddWithValue("TransactionDate", tblReceivingDetail.TransactionDate);
+                    sqlCmd.Parameters.AddWithValue("TransactionDate", DateTime.Now);
                     sqlCmd.Parameters.AddWithValue("LocationID", tblReceivingDetail.LocationId);
                     sqlCmd.Parameters.AddWithValue("Nature", tblReceivingDetail.Nature);
                     sqlCmd.Parameters.AddWithValue("Source", tblReceivingDetail.Nature);
@@ -120,12 +144,36 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("isSaved", 1);
                     sqlCmd.ExecuteNonQuery();
                 }
+                if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
+                {
+                    tblReceivingDetail = new TblReceivingDetail();
+                    tblReceivingDetail.Nature = "RR";
+                    tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                    tblReceivingDetail.Rrcode = Rrcode;
+                    tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                    return View(tblReceivingDetail);
+                }
+                else
+                {
                     return RedirectToAction(nameof(Index));
+                }
+
+                }
+            else
+            {
+                tblReceivingDetail = new TblReceivingDetail();
+                tblReceivingDetail.Nature = "RR";
+                tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                tblReceivingDetail.Rrcode = "GSC" + tblReceivingDetail.Nature + GetReferenceNo(tblReceivingDetail.Nature, tblReceivingDetail.LocationId);
+                tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
             }
+           
+            return View(tblReceivingDetail);
             
-            //tblReceivingDetail = new TblReceivingDetail();
-            //tblReceivingDetail.Rrcode = Rrcode;
-            return View();
         }
 
         // GET: Receiving/Delete/5
@@ -197,10 +245,8 @@ namespace WMSAMG.Controllers
                     tblReceiving.TransactionDate = Convert.ToDateTime(dt.Rows[0]["TransactionDate"]);
                     tblReceiving.Nature = dt.Rows[0]["Nature"].ToString();
                     tblReceiving.Source = dt.Rows[0]["Source"].ToString();
-
                     tblReceiving.EmployeeId = GetNullable<Guid>(dt.Rows[0]["EmployeeID"]);
                     tblReceiving.ApprovedBy = GetNullable<Guid>(dt.Rows[0]["ApprovedBy"]);
-                    
                     tblReceiving.EmployeeDate = Convert.ToDateTime(dt.Rows[0]["EmployeeDate"]);
                     tblReceiving.IsSaved = (Boolean)dt.Rows[0]["IsSaved"];
                 }
@@ -266,7 +312,8 @@ namespace WMSAMG.Controllers
             }
             return items;
         }
-
+       
+        [NonAction]
         public string GetReferenceNo(string nature, Guid? locationid)
         {
             string RrCode = String.Empty;
@@ -313,6 +360,7 @@ namespace WMSAMG.Controllers
                     PayTypeInitial = row.Field<string>("PayTypeInitial"),
                     StockId = row.Field<Guid>("StockID"),
                     StockSku = row.Field<string>("StockSKU"),
+                    StockPcsperPack = row.Field<decimal>("StockPcsperPack"),
                     StockDescription = row.Field<string>("StockDescription"),
                     Qty = row.Field<decimal>("Qty"),
                     ActualWeight = row.Field<decimal>("ActualWeight"),
