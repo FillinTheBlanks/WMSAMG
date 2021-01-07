@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,12 +17,13 @@ namespace WMSAMG
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this._configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        //public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -29,9 +31,12 @@ namespace WMSAMG
             services.AddResponseCaching();
             services.AddControllersWithViews();
             services.AddRazorPages();
-
-            //services.AddDbContext<PRACTICEDBContext>(options =>
-            //            options.UseSqlServer(Configuration.GetConnectionString("PRACTICEDBContext")));
+            services.AddDbContextPool<Models.CSISControlModels.CSISControlContext>(c => c.UseSqlServer(_configuration.GetConnectionString("AuthContextConnection")));
+            services.AddDbContextPool<Models.CSIS2017Models.CSIS2017Context>(c => c.UseSqlServer(_configuration.GetConnectionString("DataContextConnection")));
+            //services.AddDbContext<Models.CSISControlModels.CSISControlContext>(options =>
+            //            options.UseSqlServer(Configuration.GetConnectionString("AuthContextConnection")));
+            //services.AddDbContext<Models.CSIS2017Models.CSIS2017Context>(options =>
+            //            options.UseSqlServer(Configuration.GetConnectionString("DataContextConnection")));
 
             //remove default json selialize
             services.AddControllers().AddJsonOptions(options =>
@@ -41,7 +46,24 @@ namespace WMSAMG
             });
             // add cors package
 
-            services.AddCors();
+            //services.AddCors();
+
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+            //services.AddSession(options =>
+            //{
+            //    // Set a short timeout for easy testing.
+            //    options.IdleTimeout = TimeSpan.FromSeconds(10);
+            //    options.Cookie.HttpOnly = true;
+            //});
+
+            // Add detection services container and device resolver service.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,18 +80,19 @@ namespace WMSAMG
             {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
-            app.UseCors(options =>
-                options.WithOrigins("http://localhost:44336")
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                );
+            //app.UseCors(options =>
+            //    options.WithOrigins("http://localhost")
+            //    //options.WithOrigins("http://localhost:44336")
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader()
+            //    );
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            
+            app.UseSession();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
