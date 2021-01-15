@@ -51,8 +51,9 @@
                 <input asp-for="StockId" class="form-control" readonly />
                 <span asp-validation-for="StockId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);"></ejs-textbox>
+            <div class="form-inline form-group">
+                <ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);" width="75%">  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();" ></ejs-button></ejs-textbox>
+                
                 <span asp-validation-for="StockSku" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -153,6 +154,7 @@
         <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="180"></e-grid-column>
         <e-grid-column field="StockId" headerText="StockId" type="string" width="140" visible="false"></e-grid-column>
         <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140"></e-grid-column>
+        <e-grid-column field="StockPcsperPack" headerText="Size" type="string" width="100"></e-grid-column>
         <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
         <e-grid-column field="Qty" headerText="Qty" type="number" width="140"></e-grid-column>
         <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
@@ -177,58 +179,63 @@
 </script>
 
 <script>
+    function SearchSKU() {
+        var str = $("#StockSku").val();
+
+        if ($("#EmployeeDate").val() == '') {
+            $("#ReceivingTime").val(getDateTime(0));
+            $("#EndTime").val(getDateTime(1));
+            $("#EmployeeDate").val(getDateTime(0));
+            //$("#TransactionDate").val(getDateTime(0));
+        }
+
+
+        $('#StockDescription').ready(function () {
+            var options = {};
+            options.url = '/Stocks/GetStockBySKU/' + str;
+            options.type = "GET";
+            options.dataType = "json";
+            options.success = function (data) {
+                console.log(data);
+                data.forEach(function (element) {
+
+                    $('#StockDescription').val(element.StockDescription);
+                    $('#StockId').val(element.StockId);
+                    $('#StockSku').val(element.StockSku);
+                    $('#StockGroupId').val(element.StockGroupId);
+                    $('#CustomerId').val(element.CustomerId);
+                    $('#CustomerName').val(element.CustomerName);
+                    $('#CompanyId').val(element.CompanyId);
+                    $('#CompanyName').val(element.CompanyName);
+                    $('#PayTypeInitial').val(element.PayTypeInitial);
+                    $('#LocationId').val(element.LocationId);
+                    $('#LocationInitial').val(element.LocationInitial);
+                    $('#StockPcsperPack').val(element.StockPcsperPack);
+                    $('#StockPackperCase').val(element.StockPackperCase);
+                    $('#StockWeightinKilosperCase').val(element.StockWeightinKilosperCase);
+                    $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
+                    $('#Uom').val('Kls');
+                });
+            };
+            options.error = function () {
+                $("#msg").html("Error while calling the Web API!");
+            };
+            $.ajax(options);
+        });
+
+        var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            grid.dataSource = JSON.parse(data);
+            grid.hideSpinner();
+        };
+    }
+
     function keypresshandle(e) {
         if (e.keyCode === 13) {
             e.preventDefault();
-            var str = $("#StockSku").val();
-
-            if ($("#EmployeeDate").val() == '') {
-                $("#ReceivingTime").val(getDateTime(0));
-                $("#EndTime").val(getDateTime(1));
-                $("#EmployeeDate").val(getDateTime(0));
-                //$("#TransactionDate").val(getDateTime(0));
-            }
-
-
-            $('#StockDescription').ready(function () {
-                var options = {};
-                options.url = '/Stocks/GetStockBySKU/' + str;
-                options.type = "GET";
-                options.dataType = "json";
-                options.success = function (data) {
-                    console.log(data);
-                    data.forEach(function (element) {
-
-                        $('#StockDescription').val(element.StockDescription);
-                        $('#StockId').val(element.StockId);
-                        $('#StockGroupId').val(element.StockGroupId);
-                        $('#CustomerId').val(element.CustomerId);
-                        $('#CustomerName').val(element.CustomerName);
-                        $('#CompanyId').val(element.CompanyId);
-                        $('#CompanyName').val(element.CompanyName);
-                        $('#PayTypeInitial').val(element.PayTypeInitial);
-                        $('#LocationId').val(element.LocationId);
-                        $('#LocationInitial').val(element.LocationInitial);
-                        $('#StockPcsperPack').val(element.StockPcsperPack);
-                        $('#StockPackperCase').val(element.StockPackperCase);
-                        $('#StockWeightinKilosperCase').val(element.StockWeightinKilosperCase);
-                        $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
-                        $('#Uom').val('Kls');
-                    });
-                };
-                options.error = function () {
-                    $("#msg").html("Error while calling the Web API!");
-                };
-                $.ajax(options);
-            });
-
-            var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
-            var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
-            ajax.send();
-            ajax.onSuccess = function (data) {
-                grid.dataSource = JSON.parse(data);
-                grid.hideSpinner();
-            };
+            SearchSKU();
 
         }
     }

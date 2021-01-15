@@ -977,3 +977,4 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.pdb
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.genruntimeconfig.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.Properties.Resources.resources
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csproj.GenerateResource.cache
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
