@@ -22,23 +22,29 @@ namespace WMSAMG.Models.CSIS2017Models
         [StringLength(50)]
         public string Rrcode { get; set; }
         public Guid? CarrierReferenceCode { get; set; }
+        //[Required]
         [Column("CustomerID")]
         [StringLength(50)]
         public string CustomerId { get; set; }
+        //[Required]
         [StringLength(5)]
         public string PayTypeInitial { get; set; }
         [Column("StockID")]
         public Guid? StockId { get; set; }
+        //[Required]
         [Column("StockSKU")]
         [StringLength(100)]
         public string StockSku { get; set; }
         [Column("StockDescription")]
         [StringLength(200)]
         public string StockDescription { get; set; }
+        [Required]
+        [Column("Size")]
+        [StringLength(100)]
+        public string Size { get; set; }
         [Column("StockGroupID")]
         public Guid? StockGroupId { get; set; }
         [Column(TypeName = "money")]
-        [Range(1,25)]
         public decimal? StockPcsperPack { get; set; }
         [Column(TypeName = "money")]
         public decimal? StockPackperCase { get; set; }
@@ -63,7 +69,7 @@ namespace WMSAMG.Models.CSIS2017Models
         [Column(TypeName = "money")]
         public decimal? StockWeightinKilosperCase { get; set; }
         [StringLength(10)]
-        [Required]
+        
         public string PalletNo { get; set; }
         [Column("CompanyID")]
         public Guid? CompanyId { get; set; }

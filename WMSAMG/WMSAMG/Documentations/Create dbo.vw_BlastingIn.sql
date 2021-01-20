@@ -20,7 +20,7 @@ GO
 
 
 
-ALTER VIEW [dbo].[vw_ReceivingDetail]
+CREATE VIEW [dbo].[vw_BlastingIn]
 
 AS
 SELECT	 r.ReferenceCode
@@ -82,7 +82,7 @@ LEFT OUTER JOIN CSISControl.dbo.vw_CustomertoCompanyandLocation cu ON r.Customer
 OUTER APPLY LATESTSTORAGEOFITEM_FIRSTONLY(r.ReferenceCode,r.RRCode) st
 --LEFT OUTER JOIN vw_StorageTimeFrameDetail st ON r.ReferenceCode = st.RefCode AND r.RRCode=st.ReferenceNo AND r.CustomerID=st.CustomerID
 LEFT OUTER JOIN tblScheduleCarrier sc ON r.CarrierReferenceCode = sc.ReferenceCode
-WHERE st.DateTimeFrameTo IS NULL OR st.DateTimeFrameFrom <= GETDATE() AND r.isSaved=1
+WHERE st.DateTimeFrameTo IS NULL OR st.DateTimeFrameFrom <= GETDATE() AND r.isSaved=0
 GROUP BY r.ReferenceCode
 		  ,r.RRCode
 		  ,l.LocationInitial

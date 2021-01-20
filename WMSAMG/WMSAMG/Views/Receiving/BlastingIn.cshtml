@@ -1,0 +1,68 @@
+﻿@*@model IEnumerable<WMSAMG.Models.CSIS2017Models.TblReceivingDetail>*@
+@*@using Microsoft.AspNetCore.Identity
+    @using WMSAMG.Areas.Identity.Data*@
+
+@model System.Data.DataTable
+@*@inject SignInManager<WMSAMGUser> SignInManager
+    @inject UserManager<WMSAMGUser> UserManager*@
+@{
+    ViewData["Title"] = "List of Blast In";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"] <a asp-action='AddorEditBlastIn' class="e-btn e-primary bg-success float-md-right">Create New</a></h2>
+
+</div>
+
+<ejs-grid id="Grid" dataSource="((System.Data.DataTable)ViewBag.datasource)" allowExcelExport="true" allowGrouping="true" allowResizing="true"
+          allowFiltering="true" allowPaging="true" allowSorting="true" height="400" rowHeight="38" enableHover="false"
+          toolbarClick="toolbarClick" toolbar="@(new List<string>() { "ExcelExport" })"
+          contextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})">
+    <e-grid-aggregates>
+        <e-grid-aggregate>
+            <e-aggregate-columns>
+                <e-aggregate-column field="Qty" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+                <e-aggregate-column field="ActualWeight" type="Sum" format="N2" footerTemplate="${Sum}"></e-aggregate-column>
+            </e-aggregate-columns>
+        </e-grid-aggregate>
+    </e-grid-aggregates>
+    <e-grid-pagesettings pageSize="15"></e-grid-pagesettings>
+    <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column field="ReferenceCode" headerText="Manage" template="<a href='/Receiving/AddorEditBlastIn/${ReferenceCode}'>Update</a> <a href='/Receiving/Delete/${ReferenceCode}' hidden>Delete</a>" textAlign="Center" type="string" width="110"></e-grid-column>
+        <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="Remarks" headerText="Remarks" type="string" textAlign="Left" width="120"></e-grid-column>
+        <e-grid-column field="RRCode" headerText="RR No." type="string" textAlign="Left" width="120"></e-grid-column>
+        <e-grid-column field="CustomerID" headerText="Customer ID" type="string" width="140"></e-grid-column>
+        <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="180"></e-grid-column>
+        <e-grid-column field="StockId" headerText="StockId" type="string" width="160" visible="false"></e-grid-column>
+        <e-grid-column field="StockSKU" headerText="Stock SKU" type="string" width="110"></e-grid-column>
+        <e-grid-column field="Size" headerText="Size" type="string" width="80"></e-grid-column>
+        <e-grid-column field="StockDescription" headerText="Description" type="string" width="180"></e-grid-column>
+        <e-grid-column field="Qty" headerText="Qty" type="number" width="80"></e-grid-column>
+        <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="150"></e-grid-column>
+        <e-grid-column field="TransactionDate" headerText="Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
+
+    </e-grid-columns>
+
+</ejs-grid>
+
+<script>
+    function toolbarClick(args) {
+        var gridObj = document.getElementById("Grid").ej2_instances[0];
+        if (args.item.id === 'Grid_excelexport') {
+            gridObj.excelExport();
+        }
+    }
+
+    function load() {
+        var grid = document.getElementById('Grid').ej2_instances[0];
+        var rowHeight = grid.getRowHeight();  //height of the each row
+        var gridHeight = grid.height;  //grid height
+        var pageSize = 15;   //initial page size
+        var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
+        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+    }
+</script>

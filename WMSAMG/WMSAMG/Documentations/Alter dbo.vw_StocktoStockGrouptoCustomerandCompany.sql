@@ -21,6 +21,7 @@ AS
 SELECT st.StockID,
        st.StockSKU,
        st.StockDescription,
+       st.DefaultQty,
        st.StockPackperCase,
        st.StockPcsperPack,
        st.StockWeightinKilosperCase,

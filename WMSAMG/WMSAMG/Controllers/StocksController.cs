@@ -63,6 +63,7 @@ namespace WMSAMG.Controllers
                     StockId = row.Field<Guid>("StockID"),
                     StockGroupId = row.Field<Guid>("StockGroupID"),
                     StockSku = row.Field<string>("StockSKU"),
+                    DefaultQty = row.Field<int>("DefaultQty"),
                     StockDescription = row.Field<string>("StockDescription"),
                     CustomerId = row.Field<string>("CustomerID"),
                     CustomerName = row.Field<string>("CustomerName"),

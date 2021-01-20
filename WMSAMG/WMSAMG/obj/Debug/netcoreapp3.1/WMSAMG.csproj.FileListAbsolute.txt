@@ -730,9 +730,6 @@ C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\R
 C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Withdrawal\Delete.cshtml.g.cs
 C:\Users\KamoteGamer\Source\Repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Withdrawal\Index.cshtml.g.cs
 C:\Users\Administrator\source\repos\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Home\StoragingTicket.cshtml.g.cs
-D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
-D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.resources.dll
-D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\linux-arm\native\libe_sqlite3.so
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\appsettings.Development.json
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\appsettings.json
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\libman.json
@@ -794,6 +791,7 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Microsoft.
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\NuGet.Frameworks.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\SQLitePCLRaw.batteries_v2.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\SQLitePCLRaw.nativelibrary.dll
@@ -828,6 +826,7 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\tr\Microso
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.resources.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.resources.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\de\Microsoft.CodeAnalysis.CSharp.resources.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\es\Microsoft.CodeAnalysis.CSharp.resources.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\it\Microsoft.CodeAnalysis.CSharp.resources.dll
@@ -876,6 +875,7 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\w
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.pdb
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\alpine-x64\native\libe_sqlite3.so
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\linux-arm\native\libe_sqlite3.so
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\linux-arm64\native\libe_sqlite3.so
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\linux-armel\native\libe_sqlite3.so
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\linux-musl-x64\native\libe_sqlite3.so
@@ -888,6 +888,8 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\w
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\win-x86\native\e_sqlite3.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.Properties.Resources.resources
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csproj.GenerateResource.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.AssemblyInfoInputs.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.AssemblyInfo.cs
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csproj.CoreCompileInputs.cache
@@ -975,6 +977,6 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csp
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.dll
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.pdb
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.genruntimeconfig.cache
-D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.Properties.Resources.resources
-D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csproj.GenerateResource.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Receiving\BlastingIn.cshtml.g.cs
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Receiving\AddorEditBlastIn.cshtml.g.cs

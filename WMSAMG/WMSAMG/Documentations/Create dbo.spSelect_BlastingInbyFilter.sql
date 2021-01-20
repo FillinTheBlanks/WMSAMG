@@ -14,7 +14,7 @@ GO
 -- Create date: 06/06/2017
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE [dbo].[spSelect_ReceivingDetailbyFilter] 
+CREATE PROCEDURE [dbo].[spSelect_BlastingInbyFilter] 
 	@TextFilter as nvarchar(200),
 	@ColumnName as nvarchar(100)
 AS
@@ -71,8 +71,8 @@ BEGIN TRY
 		  ,RRNumber
 		  ,DateSchedule
 		  ,TimeSchedule
-	FROM vw_ReceivingDetail WHERE CAST(' + @ColumnName + ' as nvarchar(200)) LIKE ''' + @TextFilter + '%' + '''
-	AND isSaved=1
+	FROM vw_BlastingIn WHERE CAST(' + @ColumnName + ' as nvarchar(200)) LIKE ''' + @TextFilter + '%' + '''
+	AND isSaved=0
 	ORDER BY RRNumber DESC
 
 COMMIT TRAN -- Transaction Success!

@@ -6,7 +6,7 @@
 @inject SignInManager<WMSAMGUser> SignInManager
 @inject UserManager<WMSAMGUser> UserManager
 @{
-    ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "New Blast Out" : "Edit Blast Out";
+    ViewData["Title"] = Model.ReferenceCode == Guid.Empty ? "New Blast In" : "Edit Blast In";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -17,7 +17,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddorEdit">
+        <form asp-action="AddorEditBlastIn">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReferenceCode" />
             <input type="hidden" asp-for="CarrierReferenceCode" />
@@ -126,7 +126,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" id="Save" value="Submit" class="e-btn e-primary bg-success" /> |
-                <a asp-action="Index" class="e-btn e-primary bg-info">Back to List</a>
+                <a asp-action="BlastingIn" class="e-btn e-primary bg-info">Back to List</a>
             </div>
         </form>
     </div>
@@ -166,7 +166,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         
         var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
-        var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
+        var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNoBlastIn/' + $('#Rrcode').val(), 'GET');
         ajax.send();
         ajax.onSuccess = function (data) {
             grid.dataSource = JSON.parse(data);

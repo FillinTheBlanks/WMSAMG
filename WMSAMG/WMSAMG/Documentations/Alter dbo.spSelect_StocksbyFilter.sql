@@ -1,20 +1,11 @@
-﻿USE [CSISControl]
-GO
-
-/****** Object: SqlProcedure [dbo].[spSelect_StocksbyFilter] Script Date: 12/1/2020 9:55:27 AM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
+﻿
 
 -- =============================================
 -- Author:		kevin llupar
 -- Create date: 06/06/2017
 -- Description:	<Description,,>
 -- =============================================
-ALTER PROCEDURE [dbo].[spSelect_StocksbyFilter] 
+CREATE PROCEDURE [dbo].[spSelect_StocksbyFilter] 
 	@TextFilter as nvarchar(200),
 	@ColumnName as nvarchar(100)
 AS
@@ -31,10 +22,11 @@ BEGIN TRY
 		StockID
 		, StockSKU
 		, StockDescription
-		, StockPcsperPack
-		, StockPackperCase
-		, StockWeightinKilosperPack
-		, StockWeightinKilosperCase
+		, isnull(DefaultQty,0) DefaultQty
+		, isnull(StockPcsperPack,0) StockPcsperPack
+		, isnull(StockPackperCase,0) StockPackperCase
+		, isnull(StockWeightinKilosperPack,0) StockWeightinKilosperPack
+		, isnull(StockWeightinKilosperCase,0) StockWeightinKilosperCase
 		, ShelfLifeinDays
 		, StockGroupID
 		, StockGroupCategory

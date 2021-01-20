@@ -52,6 +52,7 @@ namespace WMSAMG.Models.CSISControlModels
         public string LocationInitial { get; set; }
         [StringLength(5)]
         public string PayTypeInitial { get; set; }
+        public int DefaultQty { get; set; }
 
     }
 }
