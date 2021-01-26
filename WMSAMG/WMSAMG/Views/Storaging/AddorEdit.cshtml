@@ -24,9 +24,14 @@
             <input type="hidden" id="StockId2" asp-for="StockId" />
             <input type="hidden" id="PayTypeInitial" asp-for="PayTypeInitial" />
             <input type="hidden" id="DateTimeFrameTo" asp-for="DateTimeFrameTo" />
+
             <div class="form-group">
                 <ejs-textbox id="Rrcode" ejs-for="ReferenceNo" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="ReferenceNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="Remarks" ejs-for="Remarks" readonly="true" cssClass="e-outline form-control" placeholder="Remarks" floatLabelType="Always"></ejs-textbox>
+                <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <ejs-textbox id="CustomerId" ejs-for="CustomerId" readonly="true" cssClass="e-outline" placeholder="Account No." floatLabelType="Always"></ejs-textbox>
@@ -37,11 +42,11 @@
                 <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                    <ejs-dropdownlist id="StorageName" ejs-for="StorageName" cssClass="e-outline" change="onChangeS" placeholder="Storage Name" popupHeight="220px" allowFiltering="true" filtering="onfilteringS">
-                        <e-dropdownlist-fields value="StorageId" text="StorageName"></e-dropdownlist-fields>
-                    </ejs-dropdownlist>
-                    <span asp-validation-for="StorageName" class="text-danger"></span>
-                </div>*@
+            <ejs-dropdownlist id="StorageName" ejs-for="StorageName" cssClass="e-outline" change="onChangeS" placeholder="Storage Name" popupHeight="220px" allowFiltering="true" filtering="onfilteringS">
+                <e-dropdownlist-fields value="StorageId" text="StorageName"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+            <span asp-validation-for="StorageName" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <ejs-dropdownlist id="StorageLocationName" ejs-for="StorageLocationName" cssClass="e-outline" change="onChange" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
                     <e-dropdownlist-fields value="StorageLocationId" text="StorageLocationName"></e-dropdownlist-fields>
@@ -87,6 +92,7 @@
     <e-grid-columns>
         <e-grid-column type="checkbox" width="50"></e-grid-column>
         <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="Remarks" headerText="Remarks" type="string" width="120"></e-grid-column>
         <e-grid-column field="StockId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
         <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140"></e-grid-column>
         <e-grid-column field="StockPcsperPack" headerText="Size" type="string" width="120"></e-grid-column>
@@ -118,7 +124,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
-        var ajax = new ej.base.Ajax('/Storaging/GetActualInventorybyRRCode/' + $('#Rrcode').val(), 'GET');
+        var ajax = new ej.base.Ajax('/Storaging/GetActualInventorybyRRCode/' + $('#Remarks').val(), 'GET');
         ajax.send();
         ajax.onSuccess = function (data) {
             grid.dataSource = JSON.parse(data);

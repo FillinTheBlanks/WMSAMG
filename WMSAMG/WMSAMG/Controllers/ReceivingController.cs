@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using WMSAMG.Models.CSIS2017Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using WMSAMG.Models.CSIS2017Models;
 
 namespace WMSAMG.Controllers
 {
@@ -42,7 +41,7 @@ namespace WMSAMG.Controllers
             }
             ViewBag.datasource = dt;
             return View(dt);
-            
+
         }
 
         public IActionResult BlastingIn()
@@ -69,10 +68,10 @@ namespace WMSAMG.Controllers
         public IActionResult AddorEdit(string? id)
         {
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
-           
+
             if (!string.IsNullOrEmpty(id))
             {
-                if(id.Substring(0,3) == "GSC" && ModelState.IsValid)
+                if (id.Substring(0, 3) == "GSC" && ModelState.IsValid)
                 {
                     tblReceiving.Rrcode = id;
                     tblReceiving.Nature = "RR";
@@ -82,17 +81,18 @@ namespace WMSAMG.Controllers
                     tblReceiving.ReferenceCode = Guid.Empty;
                     tblReceiving.CarrierReferenceCode = Guid.Empty;
                     tblReceiving.TransactionDate = DateTime.Now;
-                } else
+                }
+                else
                 {
                     tblReceiving = FetchRecordByID(id);
-                } 
+                }
             }
             else
             {
-                tblReceiving.Nature = "RR";           
+                tblReceiving.Nature = "RR";
                 tblReceiving.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
                 tblReceiving.Rrcode = "GSC" + tblReceiving.Nature + GetReferenceNo(tblReceiving.Nature, tblReceiving.LocationId);
-                tblReceiving.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ",""));
+                tblReceiving.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceiving.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceiving.CarrierReferenceCode = Guid.Empty;
             }
@@ -320,9 +320,9 @@ namespace WMSAMG.Controllers
         public string GenerateProdDateRefNo()
         {
             string PDRno = "PD-";
-            DateTime date = DateTime.Now ;
+            DateTime date = DateTime.Now;
 
-            PDRno = PDRno + date.ToString("yy").Substring(1,1) + date.ToString("MM") + date.ToString("dd");
+            PDRno = PDRno + date.ToString("yy").Substring(1, 1) + date.ToString("MM") + date.ToString("dd");
 
             return PDRno;
         }
@@ -335,7 +335,7 @@ namespace WMSAMG.Controllers
                 return NotFound();
             }
 
-           
+
 
             return View();
         }
@@ -345,7 +345,7 @@ namespace WMSAMG.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(Guid id)
         {
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -402,7 +402,7 @@ namespace WMSAMG.Controllers
                     tblReceiving.IsSaved = (Boolean)dt.Rows[0]["IsSaved"];
                 }
             }
-           
+
             return tblReceiving;
         }
 
@@ -463,7 +463,7 @@ namespace WMSAMG.Controllers
             }
             return items;
         }
-       
+
         [NonAction]
         public string GetReferenceNo(string nature, Guid? locationid)
         {
@@ -517,9 +517,9 @@ namespace WMSAMG.Controllers
                     ActualWeight = row.Field<decimal>("ActualWeight"),
                     ReceivingTime = row.Field<Nullable<DateTime>>("ReceivingTime"),
                     EndTime = row.Field<Nullable<DateTime>>("EndTime")
-                    
+
                 }).ToList();
-            
+
 
             return Json(vwReceivingDetails, new System.Text.Json.JsonSerializerOptions());
 

@@ -97,10 +97,11 @@
     <e-grid-columns>
         <e-grid-column type="checkbox" width="50"></e-grid-column>
         <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="Remarks" headerText="Remarks" type="string" width="120" allowEditing="false"></e-grid-column>
         <e-grid-column field="Rrcode" headerText="RR No." type="string" width="120" allowEditing="false"></e-grid-column>
         <e-grid-column field="StockId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
         <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140" allowEditing="false"></e-grid-column>
-        <e-grid-column field="StockPcsperPack" headerText="Size" type="number" width="140" allowEditing="false"></e-grid-column>
+        @*<e-grid-column field="StockPcsperPack" headerText="Size" type="number" width="140" allowEditing="false"></e-grid-column>*@
         <e-grid-column field="StockDescription" headerText="Description" type="string" width="180" allowEditing="false"></e-grid-column>
         <e-grid-column field="Qty" headerText="Qty" editType="numericedit" textAlign="Right" validationRules="@(new { required=true})" type="number" format="N2" width="140"></e-grid-column>
         <e-grid-column field="ActualWeight" headerText="Actual Weight" editType="numericedit" validationRules="@(new { required=true})" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>

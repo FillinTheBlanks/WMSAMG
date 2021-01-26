@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using WMSAMG.Models.CSISControlModels;
 
 namespace WMSAMG.Controllers
@@ -37,7 +35,7 @@ namespace WMSAMG.Controllers
                 sqlDa.Fill(dt);
             }
             return View(dt);
-            
+
         }
 
         //Get All Employee
@@ -75,7 +73,7 @@ namespace WMSAMG.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 return RedirectToAction(nameof(Index));
             }
             return View(tblCompany);
@@ -89,7 +87,7 @@ namespace WMSAMG.Controllers
                 return NotFound();
             }
 
-           
+
             return View();
         }
 
@@ -107,7 +105,7 @@ namespace WMSAMG.Controllers
 
             if (ModelState.IsValid)
             {
-               
+
                 return RedirectToAction(nameof(Index));
             }
             return View(tblCompany);
@@ -126,7 +124,7 @@ namespace WMSAMG.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(Guid id)
         {
-            
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,12 +1,13 @@
 ﻿USE [CSIS2017]
 GO
 
-/****** Object: View [dbo].[vw_StorageTimeFrameDetail] Script Date: 1/1/2021 11:46:31 AM ******/
+/****** Object: View [dbo].[vw_StorageTimeFrameDetail] Script Date: 01/22/2021 9:51:44 AM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -30,6 +31,8 @@ SELECT
       ,f.PayTypeInitial
 	  ,rr.StockSKU
 	  ,rr.StockPcsperPack
+	  ,rr.Size
+	  ,rr.Remarks
 	  ,rr.Qty
 	  ,rr.ActualWeight
       ,f.Nature

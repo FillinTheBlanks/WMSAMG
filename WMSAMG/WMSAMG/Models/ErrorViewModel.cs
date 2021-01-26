@@ -1,5 +1,3 @@
-using System;
-
 namespace WMSAMG.Models
 {
     public class ErrorViewModel

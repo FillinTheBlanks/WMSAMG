@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using WMSAMG.Models.CSIS2017Models;
 using WMSAMG.Models.CSISControlModels;
 
@@ -44,7 +42,7 @@ namespace WMSAMG.Controllers
             return View(dt);
         }
 
-     
+
 
         // GET: Storaging/Edit/5
         public IActionResult AddorEdit(Guid? id)
@@ -59,7 +57,7 @@ namespace WMSAMG.Controllers
             {
                 tblStorageTimeFrame = FetchRecordByID(strid);
             }
-                return View(tblStorageTimeFrame);
+            return View(tblStorageTimeFrame);
         }
 
         // POST: Storaging/Edit/5
@@ -77,7 +75,7 @@ namespace WMSAMG.Controllers
             //}
             string message = string.Empty;
             if (ModelState.IsValid)
-            { 
+            {
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
                 {
                     sqlConnection.Open();
@@ -100,7 +98,7 @@ namespace WMSAMG.Controllers
                     sqlCmd.ExecuteNonQuery();
                     message = " Saved Successfully!";
                 }
-                
+
                 //return RedirectToAction(nameof(Index));
             }
             else
@@ -114,7 +112,7 @@ namespace WMSAMG.Controllers
         // GET: Storaging/Delete/5
         public IActionResult Delete(Guid? id)
         {
-          
+
             return View();
         }
 
@@ -123,7 +121,7 @@ namespace WMSAMG.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(Guid id)
         {
-          
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -153,7 +151,7 @@ namespace WMSAMG.Controllers
                     //{
                     //    tblStorageTimeFrame.StorageLocationId = (Guid)dt.Rows[0]["StorageLocationID"];
                     //}
-                    
+
                     //tblStorageTimeFrame.StorageId = (Guid)dt.Rows[0]["StorageID"];
                     tblStorageTimeFrame.StorageTypeId = dt.Rows[0]["StorageTypeID"].ToString();
                     tblStorageTimeFrame.StorageName = dt.Rows[0]["StorageName"].ToString();
@@ -163,6 +161,7 @@ namespace WMSAMG.Controllers
                     tblStorageTimeFrame.DateTimeFrameFrom = GetNullable<DateTime>(dt.Rows[0]["DateTimeFrameFrom"]);
                     tblStorageTimeFrame.FixedRate = GetNullable<Decimal>(dt.Rows[0]["FixedRate"]);
                     tblStorageTimeFrame.HourlyRate = GetNullable<Decimal>(dt.Rows[0]["HourlyRate"]);
+                    tblStorageTimeFrame.Remarks = dt.Rows[0]["Remarks"].ToString();
                 }
             }
 
@@ -177,7 +176,7 @@ namespace WMSAMG.Controllers
 
         public JsonResult GetStorageByLocationID()
         {
-            
+
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
             {
@@ -239,7 +238,7 @@ namespace WMSAMG.Controllers
 
         public JsonResult GetActualInventorybyRRCode(string id)
         {
-            
+
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
@@ -264,8 +263,9 @@ namespace WMSAMG.Controllers
                     ActualWeight = row.Field<Decimal>("ActualWeight"),
                     //TransactionDate = row.Field<DateTime>("TransactionDate"),
                     StorageName = row.Field<string>("StorageName"),
-                    StorageLocationName = row.Field<string>("StorageLocationName")
-                }).Where(c => c.Rrcode == id).ToList();
+                    StorageLocationName = row.Field<string>("StorageLocationName"),
+                    Remarks = row.Field<string>("Remarks")
+                }).Where(c => c.Remarks == id).ToList();
 
             return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());
         }

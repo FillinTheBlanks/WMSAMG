@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -69,7 +67,7 @@ namespace WMSAMG.Models.CSIS2017Models
         [Column(TypeName = "money")]
         public decimal? StockWeightinKilosperCase { get; set; }
         [StringLength(10)]
-        
+
         public string PalletNo { get; set; }
         [Column("CompanyID")]
         public Guid? CompanyId { get; set; }

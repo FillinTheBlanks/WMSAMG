@@ -7,7 +7,7 @@
 
 //namespace WMSAMG.TestFiles
 //{
-    
+
 //    public class EmployeeController : Controller
 //    {
 //        PRACTICEDBContext Obj = new PRACTICEDBContext();
@@ -22,14 +22,14 @@
 //        [Route("Employee/Get_AllEmployee")]
 //        public JsonResult Get_AllEmployee()
 //        {
-            
+
 //            using (PRACTICEDBContext Obj = new PRACTICEDBContext())
 //            {
 //                List<EmployeeView> Emp = Obj.EmployeeView.ToList();
 
 //                return Json(Emp, new System.Text.Json.JsonSerializerOptions());
 //            }
-            
+
 //        }
 //        [HttpGet]
 //        [Route("Employee/Get_EmployeeById/{Id}")]
@@ -125,7 +125,7 @@
 //        //    {
 //        //        return "Employee Not Inserted! Try Again";
 //        //    }
-            
+
 //        //}
 
 //        ////Delete Employee Information
@@ -153,7 +153,7 @@
 //        ////Update Employee Information
 //        //public string Update_Employee(Employee employee)
 //        //{
-            
+
 //        //    if (employee != null)
 //        //    {
 //        //        using (PRACTICEDBContext Obj = new PRACTICEDBContext())

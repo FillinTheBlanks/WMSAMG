@@ -21,22 +21,25 @@
                     <e-field name="TransactionDate" format="MM/dd/yyyy" type="date"></e-field>
                 </e-formatsettings>
                 <e-rows>
+                    <e-field name="Reference" showRemoveIcon="false"></e-field>
                     <e-field name="CustomerName" showRemoveIcon="false"></e-field>
-                    <e-field name="StorageName" showRemoveIcon="false"></e-field>
+                    @*<e-field name="StorageName" showRemoveIcon="false"></e-field>*@
                     <e-field name="TransactionDate" showRemoveIcon="false"></e-field>
-                    <e-field name="StockPcsperPack" caption="Size" showRemoveIcon="false"></e-field>
+                    <e-field name="Num" showRemoveIcon="false"></e-field>
                 </e-rows>
                 <e-columns>
                     <e-field name="Mode" caption="IN/OUT" showRemoveIcon="false"></e-field>
                     <e-field name="StockSKU" caption="Stocks" showRemoveIcon="false"></e-field>
+                    <e-field name="Size" caption="Size" showRemoveIcon="false"></e-field>
                 </e-columns>
                 <e-values>
                     <e-field name="Qty" caption="Pcs" showRemoveIcon="false"></e-field>
                     <e-field name="ActualWeight" caption="Kls" showRemoveIcon="false"></e-field>
                 </e-values>
                 <e-filters>
+                    <e-field name="Reference" showRemoveIcon="false"></e-field>
                     <e-field name="CustomerName" caption="Customers" showRemoveIcon="false"></e-field>
-                    <e-field name="StorageName" caption="Storage" showRemoveIcon="false"></e-field>
+                    @*<e-field name="StorageName" caption="Storage" showRemoveIcon="false"></e-field>*@
                     <e-field name="TransactionDate" caption="Date" showRemoveIcon="false"></e-field>
                 </e-filters>
             </e-datasourcesettings>

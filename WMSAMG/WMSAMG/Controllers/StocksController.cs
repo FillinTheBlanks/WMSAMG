@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using WMSAMG.Models.CSISControlModels;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WMSAMG.Controllers
 {
@@ -24,13 +20,13 @@ namespace WMSAMG.Controllers
         public StocksController(IConfiguration configuration)
         {
             this._configuration = configuration;
-            
+
         }
 
         // GET: Stocks
         public IActionResult Index()
         {
-            
+
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
             {
@@ -46,7 +42,7 @@ namespace WMSAMG.Controllers
 
         public JsonResult GetStockBySKU(string Id)
         {
-            
+
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
             {
@@ -79,9 +75,9 @@ namespace WMSAMG.Controllers
                 }).ToList();
             //string JSONString = string.Empty;
             //JSONString = JsonConvert.SerializeObject(dt);
-            
+
             return Json(Stocks, new System.Text.Json.JsonSerializerOptions());
-            
+
         }
 
 
@@ -99,7 +95,7 @@ namespace WMSAMG.Controllers
             {
                 tblStock = FetchStockByID(id);
             }
-           
+
             return View(tblStock);
         }
 
@@ -110,7 +106,7 @@ namespace WMSAMG.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddorEdit(Guid id, [Bind("StockId,StockSku,StockDescription,StockGroupId,StockPcsperPack,StockPackperCase,StockWeightinKilosperPack,StockWeightinKilosperCase,ShelfLifeinDays,CustomerId,CompanyId,StockStatus")] TblStock tblStock)
         {
-            
+
             if (ModelState.IsValid)
             {
                 using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
@@ -120,8 +116,8 @@ namespace WMSAMG.Controllers
                     sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
                     sqlCmd.Parameters.AddWithValue("StockID", tblStock.StockId);
                     sqlCmd.Parameters.AddWithValue("StockSKU", tblStock.StockSku);
-                    sqlCmd.Parameters.AddWithValue("StockDescription", tblStock.StockDescription); 
-                    sqlCmd.Parameters.AddWithValue("StockPackperCase", tblStock.StockPackperCase); 
+                    sqlCmd.Parameters.AddWithValue("StockDescription", tblStock.StockDescription);
+                    sqlCmd.Parameters.AddWithValue("StockPackperCase", tblStock.StockPackperCase);
                     sqlCmd.Parameters.AddWithValue("StockPcsperPack", tblStock.StockPcsperPack);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperCase", tblStock.StockWeightinKilosperCase);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperPack", tblStock.StockWeightinKilosperPack);
@@ -154,14 +150,14 @@ namespace WMSAMG.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(Guid id)
         {
-             
+
             return RedirectToAction(nameof(Index));
         }
 
         [NonAction]
         public TblStock FetchStockByID(Guid? id)
         {
-            
+
             DataTable dt = new DataTable();
             TblStock tblStock = new TblStock();
 
@@ -177,7 +173,7 @@ namespace WMSAMG.Controllers
                 sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", id);
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "StockID");
                 sqlDa.Fill(dt);
-                if(dt.Rows.Count == 1)
+                if (dt.Rows.Count == 1)
                 {
                     tblStock.StockId = (Guid)dt.Rows[0]["StockID"];
                     tblStock.StockSku = dt.Rows[0]["StockSKU"].ToString();
@@ -211,16 +207,16 @@ namespace WMSAMG.Controllers
                 sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlDataReader sqlDr = sqlCmd.ExecuteReader();
 
-                while(sqlDr.Read())
+                while (sqlDr.Read())
                 {
                     items.Add(new SelectListItem
                     {
                         Text = sqlDr["CompanyInitial"].ToString(),
                         Value = sqlDr["CompanyID"].ToString()
                     });
-                   
+
                 }
-               
+
             }
             return items;
         }

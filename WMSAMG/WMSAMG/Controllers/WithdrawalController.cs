@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using WMSAMG.Models.CSIS2017Models;
 using WMSAMG.Models.CSISControlModels;
 
@@ -25,7 +23,7 @@ namespace WMSAMG.Controllers
             _configuration = configuration;
         }
 
-        
+
         // GET: Withdrawal
         public IActionResult Index()
         {
@@ -43,12 +41,12 @@ namespace WMSAMG.Controllers
             return View(dt);
         }
 
-      
+
 
         // GET: Withdrawal/AddorEdit/5
         public IActionResult AddorEdit(Guid? id)
         {
-   
+
             string strid = id.ToString();
             TblStockWithdrawalDetail tblStockWithdrawal = new TblStockWithdrawalDetail();
             if (!string.IsNullOrEmpty(strid))
@@ -64,7 +62,7 @@ namespace WMSAMG.Controllers
                 tblStockWithdrawal.Approver = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblStockWithdrawal.Requestor = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblStockWithdrawal.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
-                
+
             }
             return View(tblStockWithdrawal);
         }
@@ -136,7 +134,7 @@ namespace WMSAMG.Controllers
             {
                 message = "Error on Model!";
             }
-           
+
             //return View(tblStorageTimeFrame);
             return Json(message, new System.Text.Json.JsonSerializerOptions());
         }
@@ -149,7 +147,7 @@ namespace WMSAMG.Controllers
                 return NotFound();
             }
 
-           
+
 
             return View();
         }
@@ -159,7 +157,7 @@ namespace WMSAMG.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(Guid id)
         {
-           
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -249,8 +247,9 @@ namespace WMSAMG.Controllers
                     StorageLocationName = row.Field<string>("StorageLocationName"),
                     StorageLocationId = row.Field<Nullable<Guid>>("StorageLocationID"),
                     StorageId = row.Field<Nullable<Guid>>("StorageID"),
-                    StorageTypeId = row.Field<string>("StorageTypeID")
-                }).Where(c => c.StorageLocationId != null).OrderByDescending(c => c.TransactionDate).ToList();
+                    StorageTypeId = row.Field<string>("StorageTypeID"),
+                    Remarks = row.Field<string>("Remarks")
+                }).Where(c => c.StorageLocationId != null).OrderByDescending(c => c.TransactionDate).OrderBy(c => c.ActualWeight).ToList();
 
             return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());
         }
@@ -285,7 +284,7 @@ namespace WMSAMG.Controllers
                     CustomerStatus = row.Field<bool>("CustomerStatus")
                 }).Where(c => c.CustomerStatus == true).ToList();
 
-            
+
             return Json(vwCustomers, new System.Text.Json.JsonSerializerOptions());
         }
     }

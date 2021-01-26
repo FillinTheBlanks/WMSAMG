@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using WMSAMG.Areas.Identity.Data;
 
 namespace WMSAMG.Areas.Identity.Pages.Account
@@ -22,7 +19,7 @@ namespace WMSAMG.Areas.Identity.Pages.Account
         private readonly SignInManager<WMSAMGUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<WMSAMGUser> signInManager, 
+        public LoginModel(SignInManager<WMSAMGUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<WMSAMGUser> userManager)
         {
@@ -57,7 +54,7 @@ namespace WMSAMG.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 Response.Redirect("/");
             }

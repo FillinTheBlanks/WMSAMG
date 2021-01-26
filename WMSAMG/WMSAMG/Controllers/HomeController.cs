@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using System.Data;
+using System.Diagnostics;
 using WMSAMG.Models;
-using WMSAMG.Models.CSISControlModels;
 
 namespace WMSAMG.Controllers
 {
+
     [Authorize]
     public class HomeController : Controller
     {
@@ -45,7 +39,7 @@ namespace WMSAMG.Controllers
             }
             ViewBag.datasource = dt;
             return View(dt);
-            
+
         }
 
         public IActionResult StoragingTicket()
@@ -62,7 +56,7 @@ namespace WMSAMG.Controllers
                 sqlDa.Fill(dt);
             }
             ViewBag.datasource = dt;
-            
+
             return View(dt);
         }
 
@@ -77,6 +71,6 @@ namespace WMSAMG.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        
+
     }
 }

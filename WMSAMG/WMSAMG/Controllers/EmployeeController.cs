@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WMSAMG.Models.CSISControlModels;
 
 namespace WMSAMG.Controllers
@@ -13,7 +11,7 @@ namespace WMSAMG.Controllers
     public class EmployeeController : Controller
     {
         CSISControlContext Obj = new CSISControlContext();
-       
+
         public ActionResult Index()
         {
             return View();
@@ -23,9 +21,9 @@ namespace WMSAMG.Controllers
         [HttpGet]
         [Route("Employee/Get_AllEmployee")]
         public JsonResult Get_AllEmployee()
-        {    
-            using(CSISControlContext Obj = new CSISControlContext())
-            { 
+        {
+            using (CSISControlContext Obj = new CSISControlContext())
+            {
                 List<VwEmployeetoDepartmentandCompany> Emp = Obj.VwEmployeetoDepartmentandCompany.ToList();
                 return Json(Emp, new System.Text.Json.JsonSerializerOptions());
             }
@@ -36,7 +34,7 @@ namespace WMSAMG.Controllers
         //Get Employee with Id
         public JsonResult Get_EmployeeById(string Id)
         {
-            using(CSISControlContext Obj = new CSISControlContext())
+            using (CSISControlContext Obj = new CSISControlContext())
             {
                 Guid EmployeeId = Guid.Parse(Id);
                 return Json(Obj.VwEmployeetoDepartmentandCompany.Find(EmployeeId), new System.Text.Json.JsonSerializerOptions());
@@ -136,7 +134,7 @@ namespace WMSAMG.Controllers
         //    {
         //        return "Employee Not Inserted! Try Again";
         //    }
-            
+
         //}
 
         ////Delete Employee Information
@@ -164,7 +162,7 @@ namespace WMSAMG.Controllers
         ////Update Employee Information
         //public string Update_Employee(Employee employee)
         //{
-            
+
         //    if (employee != null)
         //    {
         //        using (PRACTICEDBContext Obj = new PRACTICEDBContext())

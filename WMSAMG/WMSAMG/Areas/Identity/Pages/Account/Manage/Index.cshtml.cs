@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using WMSAMG.Areas.Identity.Data;
 
 namespace WMSAMG.Areas.Identity.Pages.Account.Manage
@@ -55,7 +52,7 @@ namespace WMSAMG.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(WMSAMGUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            
+
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
@@ -65,7 +62,7 @@ namespace WMSAMG.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber,
                 FirstName = user.FirstName,
                 LastName = user.LastName
-        };
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -99,7 +96,7 @@ namespace WMSAMG.Areas.Identity.Pages.Account.Manage
             var result = await _userManager.UpdateAsync(user);
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            
+
             if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);

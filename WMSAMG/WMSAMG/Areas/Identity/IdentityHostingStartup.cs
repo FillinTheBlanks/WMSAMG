@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,12 +12,14 @@ namespace WMSAMG.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
-            builder.ConfigureServices((context, services) => {
+            builder.ConfigureServices((context, services) =>
+            {
                 services.AddDbContext<AuthContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("AuthContextConnection")));
 
-                services.AddDefaultIdentity<WMSAMGUser>(options => {
+                services.AddDefaultIdentity<WMSAMGUser>(options =>
+                {
                     options.SignIn.RequireConfirmedAccount = true;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;

@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace WMSAMG.Models.CSISControlModels
@@ -9,7 +7,7 @@ namespace WMSAMG.Models.CSISControlModels
     {
         public CSISControlContext()
         {
-            
+
         }
         public CSISControlContext(IConfiguration configuration)
         {
@@ -77,7 +75,7 @@ namespace WMSAMG.Models.CSISControlModels
             if (!optionsBuilder.IsConfigured)
             {
 
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=CSISControl;Trusted_Connection=True;");
                 //optionsBuilder.UseSqlServer("Server=(local);Database=CSISControl;Trusted_Connection=True;");
                 optionsBuilder.UseSqlServer(_configuration.GetConnectionString("AuthContextConnection"));

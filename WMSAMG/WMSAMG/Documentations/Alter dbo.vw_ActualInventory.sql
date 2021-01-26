@@ -1,12 +1,13 @@
 ﻿USE [CSIS2017]
 GO
 
-/****** Object: View [dbo].[vw_ActualInventory] Script Date: 12/24/2020 10:45:50 AM ******/
+/****** Object: View [dbo].[vw_ActualInventory] Script Date: 01/21/2021 1:25:16 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -28,6 +29,7 @@ SELECT	distinct r.ReferenceCode
       ,r.StockID
 	  ,r.StockDescription
       ,r.StockSKU
+	  ,r.Size
       ,r.StockGroupID
       ,MIN(r.Qty) Qty
       ,MIN(r.ActualWeight) ActualWeight
@@ -59,6 +61,7 @@ group by r.ReferenceCode
       ,r.StockID
 	  ,r.StockDescription
       ,r.StockSKU
+	  ,r.Size
       ,r.StockGroupID
       ,r.UOM
 	  ,r.PalletNo

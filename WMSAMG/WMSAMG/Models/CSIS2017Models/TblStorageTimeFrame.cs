@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -42,5 +40,6 @@ namespace WMSAMG.Models.CSIS2017Models
         public string StorageName { get; set; }
         public string StorageLocationName { get; set; }
         public Guid? StockId { get; set; }
+        public string Remarks { get; set; }
     }
 }
