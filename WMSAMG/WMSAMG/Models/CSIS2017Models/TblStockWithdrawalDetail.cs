@@ -80,5 +80,6 @@ namespace WMSAMG.Models.CSIS2017Models
         public bool? IsSaved { get; set; }
 
         public string CustomerName { get; set; }
+        public int LineNum { get; set; }
     }
 }

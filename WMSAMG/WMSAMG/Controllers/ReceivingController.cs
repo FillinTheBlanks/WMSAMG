@@ -140,7 +140,7 @@ namespace WMSAMG.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddorEdit([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,PayTypeInitial,StockId,StockSku,Size,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
+        public IActionResult AddorEdit([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,CustomerName,PayTypeInitial,StockId,StockSku,StockDescription,Size,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
         {
             string Rrcode = tblReceivingDetail.Rrcode;
             DateTime? ReceivingTime = tblReceivingDetail.ReceivingTime;
@@ -194,15 +194,18 @@ namespace WMSAMG.Controllers
                 }
                 if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
                 {
-                    tblReceivingDetail = new TblReceivingDetail();
-                    tblReceivingDetail.Nature = "RR";
-                    tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
-                    tblReceivingDetail.Rrcode = Rrcode;
-                    tblReceivingDetail.ReceivingTime = ReceivingTime;
-                    tblReceivingDetail.Remarks = Remarks;
-                    tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
-                    tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
-                    tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                    //tblReceivingDetail = new TblReceivingDetail();
+                    //tblReceivingDetail.Nature = "RR";
+                    //tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                    //tblReceivingDetail.Rrcode = Rrcode;
+                    //tblReceivingDetail.ReceivingTime = ReceivingTime;
+                    //tblReceivingDetail.Remarks = Remarks;
+                    //tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    //tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    //tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                   
+                    tblReceivingDetail.ActualWeight = 0;
+                    tblReceivingDetail.ReferenceCode = Guid.Empty;
                     return View(tblReceivingDetail);
                 }
                 else
@@ -231,7 +234,7 @@ namespace WMSAMG.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddorEditBlastIn([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,PayTypeInitial,StockId,StockSku,Size,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
+        public IActionResult AddorEditBlastIn([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,CustomerName,PayTypeInitial,StockId,StockSku,StockDescription,Size,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
         {
             string Rrcode = tblReceivingDetail.Rrcode;
             DateTime? ReceivingTime = tblReceivingDetail.ReceivingTime;
@@ -285,15 +288,17 @@ namespace WMSAMG.Controllers
                 }
                 if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
                 {
-                    tblReceivingDetail = new TblReceivingDetail();
-                    tblReceivingDetail.Nature = "RR";
-                    tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
-                    tblReceivingDetail.Rrcode = Rrcode;
-                    tblReceivingDetail.ReceivingTime = ReceivingTime;
-                    tblReceivingDetail.Remarks = Remarks;
-                    tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
-                    tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
-                    tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                    //tblReceivingDetail = new TblReceivingDetail();
+                    //tblReceivingDetail.Nature = "RR";
+                    //tblReceivingDetail.LocationId = Guid.Parse("aea95735-24df-40a2-9132-5cbff7595bb9");
+                    //tblReceivingDetail.Rrcode = Rrcode;
+                    //tblReceivingDetail.ReceivingTime = ReceivingTime;
+                    //tblReceivingDetail.Remarks = Remarks;
+                    //tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    //tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
+                    //tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                    tblReceivingDetail.ActualWeight = 0;
+                    tblReceivingDetail.ReferenceCode = Guid.Empty;
                     return View(tblReceivingDetail);
                 }
                 else
@@ -311,6 +316,8 @@ namespace WMSAMG.Controllers
                 tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                
+
             }
 
             return View(tblReceivingDetail);
@@ -505,6 +512,7 @@ namespace WMSAMG.Controllers
                 new VwReceivingDetail
                 {
                     ReferenceCode = row.Field<Guid>("ReferenceCode"),
+                    Remarks = row.Field<string>("Remarks"),
                     Rrcode = row.Field<string>("RRCode"),
                     CustomerId = row.Field<string>("CustomerID"),
                     CustomerName = row.Field<string>("CustomerName"),
@@ -545,6 +553,7 @@ namespace WMSAMG.Controllers
                 new VwReceivingDetail
                 {
                     ReferenceCode = row.Field<Guid>("ReferenceCode"),
+                    Remarks = row.Field<string>("Remarks"),
                     Rrcode = row.Field<string>("RRCode"),
                     CustomerId = row.Field<string>("CustomerID"),
                     CustomerName = row.Field<string>("CustomerName"),

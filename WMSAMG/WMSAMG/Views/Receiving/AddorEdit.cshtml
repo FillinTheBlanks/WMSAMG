@@ -31,6 +31,10 @@
             <input type="hidden" asp-for="Source" />
             <input type="hidden" asp-for="IsSaved" />
             <input type="hidden" asp-for="PalletNo" />
+            <input type="hidden" id="StorageLocationId" />
+            <input type="hidden" id="StorageId" />
+            <input type="hidden" id="FixedRate" />
+            <input type="hidden" id="HourlyRate" />
             <div class="form-group">
                 <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Rrcode" class="text-danger"></span>
@@ -52,6 +56,7 @@
                 <input asp-for="StockId" class="form-control" readonly />
                 <span asp-validation-for="StockId" class="text-danger"></span>
             </div>
+
             <div class="form-inline form-group">
                 <ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);" width="75%">  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button></ejs-textbox>
 
@@ -80,7 +85,7 @@
             </div>
             <hr>
             <div class="form-group">
-                <ejs-datetimepicker id="ReceivingTime" ejs-for="ReceivingTime" placeholder="Receiving date and time" cssClass="e-outline" change="getPDNo" floatLabelType="Always"></ejs-datetimepicker>
+                <ejs-datetimepicker id="ReceivingTime" ejs-for="ReceivingTime" placeholder="Receiving date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>  @*change="getPDNo"*@
                 <span asp-validation-for="ReceivingTime" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
@@ -109,8 +114,18 @@
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-textbox id="Remarks" ejs-for="Remarks" cssClass="e-outline" placeholder="Remarks" value=" " floatLabelType="Auto"></ejs-textbox>
+                <ejs-textbox id="Remarks" ejs-for="Remarks" cssClass="e-outline" placeholder="Remarks" value=" " floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <ejs-dropdownlist id="StorageLocationName" cssClass="e-outline" change="onChange" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
+                    <e-dropdownlist-fields value="StorageLocationId" text="StorageLocationName"></e-dropdownlist-fields>
+                </ejs-dropdownlist>
+
+            </div>
+            <div class="form-group">
+                <ejs-textbox id="StorageTypeId" readonly="true" cssClass="e-outline" placeholder="Storage Type" floatLabelType="Always"></ejs-textbox>
+
             </div>
             <div class="form-group">
                 <input asp-for="ApprovedBy" class="form-control" hidden />
@@ -125,7 +140,7 @@
                 <span asp-validation-for="EmployeeDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" id="Save" value="Submit" class="e-btn e-primary bg-success" /> |
+                <input type="submit" id="btnsubmit" value="Submit" class="e-btn e-primary bg-success" /> |
                 <a asp-action="Index" class="e-btn e-primary bg-info">Back to List</a>
             </div>
         </form>
@@ -148,6 +163,7 @@
     <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
     <e-grid-columns>
         <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="Remarks" headerText="Remarks" type="string" width="120"></e-grid-column>
         <e-grid-column field="CustomerId" headerText="Customer ID" type="string" width="120"></e-grid-column>
         <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="180"></e-grid-column>
         <e-grid-column field="StockId" headerText="StockId" type="string" width="140" visible="false"></e-grid-column>
@@ -161,22 +177,66 @@
     </e-grid-columns>
 </ejs-grid>
 
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
     document.addEventListener('DOMContentLoaded', function () {
-        
+
+        var dropdown = document.getElementById('StorageLocationName').ej2_instances[0]; // Grid instance
+        var ajax = new ej.base.Ajax('/Storaging/GetStorageByLocationID', 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            dropdown.dataSource = JSON.parse(data);
+            dropdown.refresh();
+            dropdown.index = 0;
+        };
+
         var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
         var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
         ajax.send();
         ajax.onSuccess = function (data) {
             grid.dataSource = JSON.parse(data);
             grid.hideSpinner();
+            UpdateStorageLocation();
         };
     }, false);
 
-</script>
+    function onfiltering(e) {
+        var CBObj = document.getElementById("StorageLocationName").ej2_instances[0];
+        // load overall data when search key empty.
+        if (e.text == '')
+            e.updateData(CBObj.dataSource);
+        else {
+            var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationId']);
+            query = (e.text !== '') ? query.where('StorageLocationName', 'contains', e.text, true) : query;
+            e.updateData(CBObj.dataSource, query);
+        }
+    }
 
-<script>
+    function onChange(args) {
+        console.log(args.value);
+        var options = {};
+        options.url = '/Storaging/GetStorageByStorageLocationID/' + args.value;
+        options.type = "GET";
+        options.dataType = "json";
+        options.success = function (data) {
+            data.forEach(function (element) {
+                //$('#StorageName').val(element.StorageName);
+                $('#StorageLocationId').val(element.StorageLocationId);
+                $('#StorageId').val(element.StorageId);
+                $('#StorageTypeId').val(element.StorageTypeId);
+                $('#FixedRate').val(element.FixedRate);
+                $('#HourlyRate').val(element.HourlyRate);
+                //$("#DateTimeFrameFrom").val(getDateTime(0));
+                return;
+            });
+        };
+        options.error = function () {
+            $("#msg").html("Error while calling the Web API!");
+        };
+        $.ajax(options);
+    }
+
     function SearchSKU() {
         var str = $("#StockSku").val();
 
@@ -280,6 +340,65 @@
         else {
             $('#Remarks').val('');
         }
+    }
+
+    function UpdateStorageLocation() {
+           
+        var obj = document.getElementById('Grid').ej2_instances[0];
+            //if (obj.getSelectedRecords().length > 0) {
+                //var data = obj.getSelectedRecords();
+        console.log(obj.getRows().length);
+        if (obj.getRows().length > 0) {
+            var i = 0;
+            var boolsuccess = false;
+            var message = '';
+               
+                    var storagerec = {};
+                    storagerec.StorageTimeFrameId = "00000000-0000-0000-0000-000000000000";
+                    storagerec.RefCode = obj.getRows()[i].ReferenceCode;
+                    storagerec.ReferenceNo = $('#Rrcode').val();
+                    storagerec.Nature = $('#Nature').val();
+                    storagerec.CustomerId = $('#CustomerId').val();
+                    storagerec.PayTypeInitial = $('#PayTypeInitial').val();
+                    storagerec.StockId = obj.getRows()[i].StockId;
+                    if ($('#StorageLocationId').val() != null && $('#StorageLocationId').val() != '') {
+                        storagerec.StorageLocationId = $('#StorageLocationId').val();
+                    } else {
+                        storagerec.StorageLocationId = "00000000-0000-0000-0000-000000000000";
+                    }
+                    if ($('#StorageId').val() != null && $('#StorageId').val() != '') {
+                        storagerec.StorageId = $('#StorageId').val();
+                    } else {
+                        storagerec.StorageId = "00000000-0000-0000-0000-000000000000";
+                    }
+                    if ($('#StorageTypeId').val() != null && $('#StorageTypeId').val() != '') {
+                        storagerec.StorageTypeId = $('#StorageTypeId').val();
+                    } else {
+                        storagerec.StorageTypeId = "00000000-0000-0000-0000-000000000000";
+                    }
+
+                    //storagerec.StorageId = $('#StorageId').val();
+                    //storagerec.StorageTypeId = $('#StorageTypeId').val();
+                    storagerec.DateTimeFrameFrom = new Date($('#ReceivingTime').val());
+                    storagerec.DateTimeFrameTo = new Date(null);
+                    storagerec.FixedRate = parseFloat($('#FixedRate').val());
+                    storagerec.HourlyRate = parseFloat($('#HourlyRate').val());
+                    console.log(JSON.stringify(storagerec));
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Storaging/InsertTimeFrame',
+                        data: JSON.stringify(storagerec),
+                        contentType: "application/json",
+                        dataType: 'json',
+                        success: function (data) {
+                            //boolsuccess = true;
+                            message = JSON.stringify(data);
+                            console.log(data);
+                        }
+                    });
+                    storagerec = null;
+        }
+          
     }
 
     //#region DateTime Formatter

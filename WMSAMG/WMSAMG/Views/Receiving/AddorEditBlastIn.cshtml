@@ -80,7 +80,7 @@
             </div>
             <hr>
             <div class="form-group">
-                <ejs-datetimepicker id="ReceivingTime" ejs-for="ReceivingTime" placeholder="Receiving date and time" cssClass="e-outline" change="getPDNo" floatLabelType="Always"></ejs-datetimepicker>
+                <ejs-datetimepicker id="ReceivingTime" ejs-for="ReceivingTime" placeholder="Receiving date and time" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="ReceivingTime" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
@@ -109,7 +109,7 @@
                 <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <ejs-textbox id="Remarks" ejs-for="Remarks" cssClass="e-outline" placeholder="Remarks" value=" " floatLabelType="Auto"></ejs-textbox>
+                <ejs-textbox id="Remarks" ejs-for="Remarks" cssClass="e-outline" placeholder="Remarks" value=" " floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -148,6 +148,7 @@
     <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
     <e-grid-columns>
         <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="Remarks" headerText="Remarks" type="string" width="120"></e-grid-column>
         <e-grid-column field="CustomerId" headerText="Customer ID" type="string" width="120"></e-grid-column>
         <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="180"></e-grid-column>
         <e-grid-column field="StockId" headerText="StockId" type="string" width="140" visible="false"></e-grid-column>
@@ -214,27 +215,29 @@
                     $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
                     $('#Uom').val('Kls');
                     $('#PalletNo').val('');
-                    $('#Qty').val(element.DefaultQty);
+                    
+                    $('#Qty').val(parseInt(element.DefaultQty));
                     $('#isSaved').val(1);
                     $('#Size').val('1-1');
+                    $('#Qty').focus();
+                    //var now = new Date();
+                    //var year = now.getFullYear();
+                    //var month = now.getMonth() + 1;
+                    //var day = now.getDate();
 
-                    var now = new Date();
-                    var year = now.getFullYear();
-                    var month = now.getMonth() + 1;
-                    var day = now.getDate();
+                    //if (month.toString().length == 1) {
+                    //    month = '0' + month;
+                    //}
+                    //if (day.toString().length == 1) {
+                    //    day = '0' + day;
+                    //}
 
-                    if (month.toString().length == 1) {
-                        month = '0' + month;
-                    }
-                    if (day.toString().length == 1) {
-                        day = '0' + day;
-                    }
+                    //var PDNo = 'PD-' + year.toString().substring(3) + month.toString() + day.toString();
 
-                    var PDNo = 'PD-' + year.toString().substring(3) + month.toString() + day.toString();
-
-                    $('#Remarks').val(PDNo);
+                    //$('#Remarks').val('');
                 });
             };
+            
             options.error = function () {
                 $("#msg").html("Error while calling the Web API!");
             };

@@ -72,7 +72,7 @@ namespace WMSAMG.Controllers
                     StockPackperCase = row.Field<decimal>("StockPackperCase"),
                     StockWeightinKilosperCase = row.Field<decimal>("StockWeightinKilosperCase"),
                     StockWeightinKilosperPack = row.Field<decimal>("StockWeightinKilosperPack")
-                }).ToList();
+                }).Where(m => m.StockSku == Id.ToUpper().Trim()).ToList();
             //string JSONString = string.Empty;
             //JSONString = JsonConvert.SerializeObject(dt);
 

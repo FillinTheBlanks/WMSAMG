@@ -48,11 +48,11 @@
                 <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
             <hr>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <ejs-datetimepicker id="StartTime" ejs-for="StartTime" placeholder="Date Start" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="StartTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <ejs-datetimepicker id="EndTime" ejs-for="EndTime" placeholder="Date End" cssClass="e-outline" floatLabelType="Always"></ejs-datetimepicker>
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
@@ -97,6 +97,7 @@
     <e-grid-columns>
         <e-grid-column type="checkbox" width="50"></e-grid-column>
         <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="LineNum" headerText="LineNum" type="int" width="100" allowEditing="false"></e-grid-column>
         <e-grid-column field="Remarks" headerText="Remarks" type="string" width="120" allowEditing="false"></e-grid-column>
         <e-grid-column field="Rrcode" headerText="RR No." type="string" width="120" allowEditing="false"></e-grid-column>
         <e-grid-column field="StockId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
@@ -251,12 +252,14 @@
                     withdrawrec.StorageLocationId = String(obj.getSelectedRecords()[i].StorageLocationId);
                     withdrawrec.StorageId = String(obj.getSelectedRecords()[i].StorageId);
                     withdrawrec.StorageTypeId = String(obj.getSelectedRecords()[i].StorageTypeId);
+                    withdrawrec.LineNum = obj.getSelectedRecords()[i].LineNum;
                     withdrawrec.StartTime = new Date($('#StartTime').val());
                     withdrawrec.EndTime = new Date($('#EndTime').val());
                     withdrawrec.TransactionDate = new Date($('#TransactionDate').val());
 
                     withdrawrec.Source = obj.getSelectedRecords()[i].Source;
-                    withdrawrec.Remarks = $('#Remarks').val();
+                    withdrawrec.Remarks = obj.getSelectedRecords()[i].Remarks;
+                    //withdrawrec.Remarks = $('#Remarks').val();
                     withdrawrec.isSaved = true;
                     withdrawrec.ApprovedBy = $('#ApprovedBy').val();
                     withdrawrec.Requestor = $('#Requestor').val();
