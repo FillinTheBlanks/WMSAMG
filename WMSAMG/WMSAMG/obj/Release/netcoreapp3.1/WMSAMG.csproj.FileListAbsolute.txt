@@ -248,3 +248,4 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\WMSAMG.P
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\WMSAMG.csproj.GenerateResource.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\Razor\Views\Receiving\AddorEditBlastIn.cshtml.g.cs
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\Razor\Views\Receiving\BlastingIn.cshtml.g.cs
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\Razor\Views\Home\WithdrawalTicket.cshtml.g.cs

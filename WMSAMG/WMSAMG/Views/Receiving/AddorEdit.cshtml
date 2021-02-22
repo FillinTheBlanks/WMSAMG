@@ -33,8 +33,9 @@
             <input type="hidden" asp-for="PalletNo" />
             <input type="hidden" id="StorageLocationId" />
             <input type="hidden" id="StorageId" />
-            <input type="hidden" id="FixedRate" />
-            <input type="hidden" id="HourlyRate" />
+            <input type="hidden" id="StorageTypeId" />
+            @*<input type="hidden" id="FixedRate" />
+            <input type="hidden" id="HourlyRate" />*@
             <div class="form-group">
                 <ejs-textbox id="Rrcode" ejs-for="Rrcode" readonly="true" cssClass="e-outline form-control" placeholder="RR No." floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Rrcode" class="text-danger"></span>
@@ -117,16 +118,16 @@
                 <ejs-textbox id="Remarks" ejs-for="Remarks" cssClass="e-outline" placeholder="Remarks" value=" " floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <ejs-dropdownlist id="StorageLocationName" cssClass="e-outline" change="onChange" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
-                    <e-dropdownlist-fields value="StorageLocationId" text="StorageLocationName"></e-dropdownlist-fields>
-                </ejs-dropdownlist>
+            @*<div class="form-group" hidden>
+            <ejs-dropdownlist id="StorageLocationName" cssClass="e-outline" change="onChange" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
+                <e-dropdownlist-fields value="StorageLocationId" text="StorageLocationName"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
 
-            </div>
-            <div class="form-group">
-                <ejs-textbox id="StorageTypeId" readonly="true" cssClass="e-outline" placeholder="Storage Type" floatLabelType="Always"></ejs-textbox>
+        </div>
+        <div class="form-group" hidden>
+            <ejs-textbox id="StorageTypeId" readonly="true" cssClass="e-outline" placeholder="Storage Type" floatLabelType="Always"></ejs-textbox>
 
-            </div>
+        </div>*@
             <div class="form-group">
                 <input asp-for="ApprovedBy" class="form-control" hidden />
                 <span asp-validation-for="ApprovedBy" class="text-danger"></span>
@@ -160,8 +161,10 @@
             </e-aggregate-columns>
         </e-grid-aggregate>
     </e-grid-aggregates>
+   
     <e-grid-filtersettings type="Menu"></e-grid-filtersettings>
     <e-grid-columns>
+       
         <e-grid-column field="ReferenceCode" headerText="Ref Code" type="string" textAlign="Right" width="120" visible="false"></e-grid-column>
         <e-grid-column field="Remarks" headerText="Remarks" type="string" width="120"></e-grid-column>
         <e-grid-column field="CustomerId" headerText="Customer ID" type="string" width="120"></e-grid-column>
@@ -174,6 +177,7 @@
         <e-grid-column field="ActualWeight" headerText="Actual Weight" textAlign="Right" type="number" format="N2" width="120"></e-grid-column>
         <e-grid-column field="ReceivingTime" headerText="Receiving Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
         <e-grid-column field="EndTime" headerText="End Date" format='MM/dd/yyyy hh:mm a' textAlign="Left" width="180"></e-grid-column>
+        <e-grid-column field="LineNum" headerText="Line No." type="number" width="100"></e-grid-column>
     </e-grid-columns>
 </ejs-grid>
 
@@ -182,23 +186,29 @@
 
     document.addEventListener('DOMContentLoaded', function () {
 
-        var dropdown = document.getElementById('StorageLocationName').ej2_instances[0]; // Grid instance
-        var ajax = new ej.base.Ajax('/Storaging/GetStorageByLocationID', 'GET');
-        ajax.send();
-        ajax.onSuccess = function (data) {
-            dropdown.dataSource = JSON.parse(data);
-            dropdown.refresh();
-            dropdown.index = 0;
-        };
+        //var dropdown = document.getElementById('StorageLocationName').ej2_instances[0]; // Grid instance
+        //var ajax = new ej.base.Ajax('/Storaging/GetStorageByLocationID', 'GET');
+        //ajax.send();
+        //ajax.onSuccess = function (data) {
+        //    dropdown.dataSource = JSON.parse(data);
+        //    dropdown.refresh();
+        //    dropdown.index = 0;
+        //};
 
         var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+        //var grid = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
         var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
         ajax.send();
         ajax.onSuccess = function (data) {
             grid.dataSource = JSON.parse(data);
             grid.hideSpinner();
-            UpdateStorageLocation();
+            //console.log(grid.getSelectedRecords()[0].ReferenceCode);
+            //if (grid.getSelectedRecords().length > 0) {
+            //    UpdateStorageLocation();
+            //}
+            
         };
+        
     }, false);
 
     function onfiltering(e) {
@@ -214,7 +224,7 @@
     }
 
     function onChange(args) {
-        console.log(args.value);
+        //console.log(args.value);
         var options = {};
         options.url = '/Storaging/GetStorageByStorageLocationID/' + args.value;
         options.type = "GET";
@@ -344,18 +354,18 @@
 
     function UpdateStorageLocation() {
            
-        var obj = document.getElementById('Grid').ej2_instances[0];
+        var obj = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
             //if (obj.getSelectedRecords().length > 0) {
-                //var data = obj.getSelectedRecords();
-        console.log(obj.getRows().length);
-        if (obj.getRows().length > 0) {
+        
+        //console.log(obj.getSelectedRecords().length);
+        if (obj.getSelectedRecords().length > 0) {
             var i = 0;
             var boolsuccess = false;
             var message = '';
                
                     var storagerec = {};
                     storagerec.StorageTimeFrameId = "00000000-0000-0000-0000-000000000000";
-                    storagerec.RefCode = obj.getRows()[i].ReferenceCode;
+            storagerec.RefCode = obj.getSelectedRecords()[i].ReferenceCode;
                     storagerec.ReferenceNo = $('#Rrcode').val();
                     storagerec.Nature = $('#Nature').val();
                     storagerec.CustomerId = $('#CustomerId').val();

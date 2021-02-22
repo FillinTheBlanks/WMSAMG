@@ -524,7 +524,8 @@ namespace WMSAMG.Controllers
                     Qty = row.Field<decimal>("Qty"),
                     ActualWeight = row.Field<decimal>("ActualWeight"),
                     ReceivingTime = row.Field<Nullable<DateTime>>("ReceivingTime"),
-                    EndTime = row.Field<Nullable<DateTime>>("EndTime")
+                    EndTime = row.Field<Nullable<DateTime>>("EndTime"),
+                    LineNum = row.Field<int>("LineNum")
 
                 }).ToList();
 

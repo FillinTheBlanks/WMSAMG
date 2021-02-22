@@ -102,6 +102,7 @@
         <e-grid-column field="Rrcode" headerText="RR No." type="string" width="120" allowEditing="false"></e-grid-column>
         <e-grid-column field="StockId" headerText="Stock ID" type="string" visible="false" width="100"></e-grid-column>
         <e-grid-column field="StockSku" headerText="Stock SKU" type="string" width="140" allowEditing="false"></e-grid-column>
+        <e-grid-column field="Size" headerText="Size" type="string" width="140" allowEditing="false" visible="false"></e-grid-column>
         @*<e-grid-column field="StockPcsperPack" headerText="Size" type="number" width="140" allowEditing="false"></e-grid-column>*@
         <e-grid-column field="StockDescription" headerText="Description" type="string" width="180" allowEditing="false"></e-grid-column>
         <e-grid-column field="Qty" headerText="Qty" editType="numericedit" textAlign="Right" validationRules="@(new { required=true})" type="number" format="N2" width="140"></e-grid-column>
@@ -240,6 +241,7 @@
 
                     withdrawrec.StockId = obj.getSelectedRecords()[i].StockId;
                     withdrawrec.StockSku = obj.getSelectedRecords()[i].StockSku;
+                    withdrawrec.Size = String(obj.getSelectedRecords()[i].Size);
                     withdrawrec.StockPcsperPack = parseFloat(obj.getSelectedRecords()[i].StockPcsperPack);
                     withdrawrec.StockGroupId = obj.getSelectedRecords()[i].StockGroupId;
                     withdrawrec.Qty = parseFloat(obj.getSelectedRecords()[i].Qty);

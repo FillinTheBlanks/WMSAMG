@@ -43,9 +43,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Stocks" asp-action="Index" hidden>Stocks</a>
                             </li>
-                            <li class="nav-item">
+                            @*<li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="StoragingTicket">Storaging Ticket</a>
-                            </li>
+                            </li>*@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Receiving" asp-action="BlastingIn">Blast In</a>
                             </li>
@@ -58,6 +58,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Withdrawal" asp-action="Index">Withdraw Stocks</a>
                             </li>
+                            
+                        <li class="nav-item dropdown ">
+                            <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" data-toggle="dropdown">Report Ticket <span class="caret"></span></a>
+
+                            <ul class="dropdown-menu" role="menu">
+                                <li class="dropdown-item"><a class="nav-link" asp-controller="Home" asp-action="StoragingTicket">Storaging Ticket</a></li>
+                                <li class="dropdown-item"><a class="nav-link" asp-controller="Home" asp-action="WithdrawalTicket">Withdrawal Ticket</a></li>
+                            </ul>
+                        </li>
                         </ul>
                     </div>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"  id="navbarCollapse">

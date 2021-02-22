@@ -125,6 +125,7 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("EmployeeID", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
                     sqlCmd.Parameters.AddWithValue("IsSaved", 1);
                     sqlCmd.Parameters.AddWithValue("LineNum", tblStockWithdrawal.LineNum);
+                    sqlCmd.Parameters.AddWithValue("Size", tblStockWithdrawal.Size);
                     sqlCmd.ExecuteNonQuery();
                     message = " Saved Successfully!";
                 }
@@ -250,7 +251,8 @@ namespace WMSAMG.Controllers
                     StorageId = row.Field<Nullable<Guid>>("StorageID"),
                     StorageTypeId = row.Field<string>("StorageTypeID"),
                     Remarks = row.Field<string>("Remarks"),
-                    LineNum = row.Field<int>("LineNum")
+                    LineNum = row.Field<int>("LineNum"),
+                    Size = row.Field<string>("Size")
                 }).Where(c => c.StorageLocationId != null).OrderByDescending(c => c.TransactionDate).OrderBy(c => c.ActualWeight).ToList();
 
             return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());

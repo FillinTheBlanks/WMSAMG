@@ -99,5 +99,8 @@ namespace WMSAMG.Models.CSIS2017Models
         public DateTime? DateSchedule { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? TimeSchedule { get; set; }
+
+        public int? LineNum { get; set; }
+        
     }
 }

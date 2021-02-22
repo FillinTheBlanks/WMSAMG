@@ -81,5 +81,6 @@ namespace WMSAMG.Models.CSIS2017Models
 
         public string CustomerName { get; set; }
         public int LineNum { get; set; }
+        public string Size { get; set; }
     }
 }

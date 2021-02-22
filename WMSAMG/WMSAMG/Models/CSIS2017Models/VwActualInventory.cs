@@ -68,5 +68,6 @@ namespace WMSAMG.Models.CSIS2017Models
         [StringLength(500)]
         public string Remarks { get; set; }
         public int LineNum { get; set; }
+        public string Size { get; set; }
     }
 }

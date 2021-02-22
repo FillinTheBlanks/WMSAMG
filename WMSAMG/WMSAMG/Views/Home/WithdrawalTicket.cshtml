@@ -1,0 +1,80 @@
+﻿@model System.Data.DataTable
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Withdrawal Ticket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"] <a asp-action='AddorEdit' class="e-btn e-primary bg-success float-md-right" hidden>Create New</a> <ejs-button class="e-btn e-primary bg-success float-md-right" id="excel" content="Export To Excel" isPrimary="true"></ejs-button></h2>
+</div>
+
+        <ejs-pivotview id="PivotView" height="500" width="100%" showGroupingBar="true" showFieldList="true" allowExcelExport="true" showToolbar="true" showTooltip="true" allowGrouping="true" >
+            <e-datasourcesettings dataSource="((System.Data.DataTable)ViewBag.datasource)" expandAll="true" allowMemberFilter="true" enableSorting="true" showRowSubTotals="false" showColumnSubTotals="true" >
+                @*<e-filtersettings>
+                        <e-field name="CustomerName" type="Label" condition="Contains"></e-field>
+                        <e-field name="StorageName" type="Label" condition="Contains"></e-field>
+                        <e-field name="TransactionDate" type="Date" condition="After"></e-field>
+                    </e-filtersettings>*@
+                <e-formatsettings>
+                    <e-field name="TransactionDate" format="MM/dd/yyyy" type="date"></e-field>
+                </e-formatsettings>
+                <e-rows>
+                    <e-field name="Reference" showRemoveIcon="false"></e-field>
+                    <e-field name="CustomerName" showRemoveIcon="false"></e-field>
+                    @*<e-field name="StorageName" showRemoveIcon="false"></e-field>*@
+                    <e-field name="TransactionDate" showRemoveIcon="false"></e-field>
+                    <e-field name="Num" showRemoveIcon="false"></e-field>
+                </e-rows>
+                <e-columns>
+                    <e-field name="Mode" caption="IN/OUT" showRemoveIcon="false"></e-field>
+                    <e-field name="StockSKU" caption="Stocks" showRemoveIcon="false"></e-field>
+                    @*<e-field name="Size" caption="Size" showRemoveIcon="false"></e-field>*@
+                </e-columns>
+                <e-values>
+                    <e-field name="Qty" caption="Pcs" showRemoveIcon="false"></e-field>
+                    <e-field name="ActualWeight" caption="Kls" showRemoveIcon="false"></e-field>
+                </e-values>
+                <e-filters>
+                    <e-field name="Reference" showRemoveIcon="false"></e-field>
+                    <e-field name="CustomerName" caption="Customers" showRemoveIcon="false"></e-field>
+                    @*<e-field name="StorageName" caption="Storage" showRemoveIcon="false"></e-field>*@
+                    <e-field name="TransactionDate" caption="Date" showRemoveIcon="false"></e-field>
+                </e-filters>
+            </e-datasourcesettings>
+            <e-gridSettings rowHeight=60></e-gridSettings>
+        </ejs-pivotview>
+
+ 
+        <script type="text/javascript">
+            var pivotObj;
+            document.getElementById('excel').onclick = function () {
+                pivotObj = document.getElementById('PivotView').ej2_instances[0];
+                pivotObj.excelExport();
+            }
+
+            function memberFiltering(args) {
+                args.cancel = true;
+            }
+
+            function rowSelect() {
+                //var obj = document.getElementsByClassName('e-grid')[0].ej2_instances[0];
+                //alert(obj.getSelectedRecords()[0].StockSku);
+            }
+
+            //document.addEventListener('DOMContentLoaded', function () {
+
+
+            //    var dropdown = document.getElementById('StorageName').ej2_instances[0]; // Grid instance
+            //    var ajax = new ej.base.Ajax('/Storaging/GetStorageByLocationID', 'GET');
+            //    ajax.send();
+            //    ajax.onSuccess = function (data) {
+            //        dropdown.dataSource = JSON.parse(data);
+            //        dropdown.refresh();
+            //    };
+
+            //}, false);
+
+
+        </script>
