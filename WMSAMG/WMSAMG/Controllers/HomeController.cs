@@ -9,7 +9,7 @@ using WMSAMG.Models;
 namespace WMSAMG.Controllers
 {
 
-    [Authorize]
+    
     public class HomeController : Controller
     {
         //private readonly ILogger<HomeController> _logger;
@@ -24,6 +24,7 @@ namespace WMSAMG.Controllers
             _configuration = configuration;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             DataTable dt = new DataTable();
@@ -42,6 +43,7 @@ namespace WMSAMG.Controllers
 
         }
 
+        [Authorize]
         public IActionResult StoragingTicket()
         {
             DataTable dt = new DataTable();
@@ -60,6 +62,7 @@ namespace WMSAMG.Controllers
             return View(dt);
         }
 
+        [Authorize]
         public IActionResult WithdrawalTicket()
         {
             DataTable dt = new DataTable();
@@ -78,6 +81,7 @@ namespace WMSAMG.Controllers
             return View(dt);
         }
 
+        
         public IActionResult Privacy()
         {
             return View();

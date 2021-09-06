@@ -103,7 +103,7 @@ namespace WMSAMG.Controllers
         public IActionResult AddorEditBlastIn(string? id)
         {
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
-
+            
             if (!string.IsNullOrEmpty(id))
             {
                 if (id.Substring(0, 3) == "GSC" && ModelState.IsValid)
