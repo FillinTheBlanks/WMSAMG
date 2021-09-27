@@ -64,7 +64,7 @@ namespace WMSAMG.Controllers
 
         }
 
-        // GET: Receiving/Details/5
+        // GET: Receiving/AddorEdit/Guid or RefNo
         public IActionResult AddorEdit(string? id)
         {
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
@@ -100,6 +100,7 @@ namespace WMSAMG.Controllers
             return View(tblReceiving);
         }
 
+        // GET: Receiving/AddorEditBlastIn/Guid or RefNo
         public IActionResult AddorEditBlastIn(string? id)
         {
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
@@ -368,7 +369,7 @@ namespace WMSAMG.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_AllReceivingDetailbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", id);
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "ReferenceCode");
