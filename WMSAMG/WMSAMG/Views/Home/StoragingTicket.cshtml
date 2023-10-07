@@ -10,7 +10,7 @@
     <h2 class="text-left">@ViewData["Title"] <a asp-action='AddorEdit' class="e-btn e-primary bg-success float-md-right" hidden>Create New</a> <ejs-button class="e-btn e-primary bg-success float-md-right" id="excel" content="Export To Excel" isPrimary="true"></ejs-button></h2>
 </div>
 
-        <ejs-pivotview id="PivotView" height="500" width="100%" showGroupingBar="true" showFieldList="true" allowExcelExport="true" showToolbar="true" showTooltip="true" allowGrouping="true" >
+        <ejs-pivotview id="PivotView" height="600" width="100%" showGroupingBar="true" showFieldList="true" allowExcelExport="true" showToolbar="true" showTooltip="true" allowGrouping="true" >
             <e-datasourcesettings dataSource="((System.Data.DataTable)ViewBag.datasource)" expandAll="true" allowMemberFilter="true" enableSorting="true" showRowSubTotals="false" >
                 @*<e-filtersettings>
                         <e-field name="CustomerName" type="Label" condition="Contains"></e-field>

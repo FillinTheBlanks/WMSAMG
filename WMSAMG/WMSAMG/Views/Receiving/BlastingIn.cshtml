@@ -16,7 +16,7 @@
 
 </div>
 
-<ejs-grid id="Grid" dataSource="((System.Data.DataTable)ViewBag.datasource)" allowExcelExport="true" allowGrouping="true" allowResizing="true"
+<ejs-grid id="Grid" dataSource="((System.Data.DataTable)ViewBag.datasource)" enableAdaptiveUI="true" rowRenderingMode="Vertical" enableVirtualization="true" allowExcelExport="true" allowGrouping="true" allowResizing="true"
           allowFiltering="true" allowPaging="true" allowSorting="true" height="400" rowHeight="38" enableHover="false"
           toolbarClick="toolbarClick" toolbar="@(new List<string>() { "ExcelExport" })"
           contextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})">

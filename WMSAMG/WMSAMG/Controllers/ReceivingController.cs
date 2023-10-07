@@ -64,6 +64,8 @@ namespace WMSAMG.Controllers
 
         }
 
+        
+
         // GET: Receiving/AddorEdit/Guid or RefNo
         public IActionResult AddorEdit(string? id)
         {
@@ -322,6 +324,26 @@ namespace WMSAMG.Controllers
             }
 
             return View(tblReceivingDetail);
+
+        }
+
+        public IActionResult ColdStorage1()
+        {
+
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ActualInventoryByStorageName", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("CompanyID", "35a953cd-49b0-4db4-b5ec-2aa23733a5e2");
+                sqlDa.SelectCommand.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("StorageName", "COLD STORE 1");
+                sqlDa.Fill(dt);
+            }
+
+            ViewBag.datasource = dt;
+            return View();
 
         }
 

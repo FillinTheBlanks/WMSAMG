@@ -29,7 +29,7 @@
 <body>
     <header>
         <nav class="navbar navbar-inverse navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-       
+
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -38,27 +38,30 @@
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WMSAMG</a>
                 </div>
 
-                    <div class="navbar-collapse collapse" id="navbarCollapse">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Stocks" asp-action="Index" hidden>Stocks</a>
-                            </li>
-                            @*<li class="nav-item">
+                <div class="navbar-collapse collapse" id="navbarCollapse">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Stocks" asp-action="Index" hidden>Stocks</a>
+                        </li>
+                        @*<li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="StoragingTicket">Storaging Ticket</a>
                             </li>*@
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Receiving" asp-action="BlastingIn">Blast In</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Receiving" asp-action="Index">Blast Out</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Storaging" asp-action="Index">Storaging</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Withdrawal" asp-action="Index">Withdraw Stocks</a>
-                            </li>
-                            
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Receiving" asp-action="BlastingIn">Blast In</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Receiving" asp-action="Index">Blast Out</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Storaging" asp-action="Index">Storaging</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Withdrawal" asp-action="Index">Withdraw Stocks</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Storaging" asp-action="ColdStorage1">Cold Storage 1</a>
+                        </li>
+
                         <li class="nav-item dropdown ">
                             <a class="nav-link dropdown-toggle" role="button" aria-expanded="false" data-toggle="dropdown">Report Ticket <span class="caret"></span></a>
 
@@ -67,19 +70,22 @@
                                 <li class="dropdown-item"><a class="nav-link" asp-controller="Home" asp-action="WithdrawalTicket">Withdrawal Ticket</a></li>
                             </ul>
                         </li>
-                        </ul>
-                    </div>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"  id="navbarCollapse">
-                        <partial name="_LoginPartial.cshtml" />
-                    </div>
+                    </ul>
                 </div>
-</nav>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id="navbarCollapse">
+                    <partial name="_LoginPartial.cshtml" />
+                </div>
+            </div>
+        </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="inner">
+        <main role="main" class="pb-3" style="align-content:center;">
             @RenderBody()
         </main>
     </div>
+
+
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -97,6 +103,73 @@
     <script src="~/js/bootstrap-sortable.js"></script>
     <ejs-scripts></ejs-scripts>
     @RenderSection("Scripts", required: false)
-</body>
-</html>
 
+
+
+<script>
+
+    function getPosition(element) {
+        var xPosition = 0;
+        var yPosition = 0;
+
+        while (element) {
+            xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+            yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+            element = element.offsetParent;
+        }
+        return { x: xPosition, y: yPosition };
+    };
+
+    var addEvent = function (elem, type, eventHandle) {
+        if (elem == null || typeof (elem) == 'undefined') return;
+        if (elem.addEventListener) {
+            elem.addEventListener(type, eventHandle, false);
+        } else if (elem.attachEvent) {
+            elem.attachEvent("on" + type, eventHandle);
+        } else {
+            elem["on" + type] = eventHandle;
+        }
+    };
+
+    function moveFiltersOffScreen() {
+        var width = window.innerWidth;
+        var asideFilters = document.getElementsByClassName("inner");
+        console.log(width);
+        var offset = width - width * 2;
+        console.log(offset);
+        asideFilters[0].style["left"] = " offset + 'px'";
+        var position = getPosition(asideFilters[0]);
+        console.log(position);
+    }
+
+
+    addEvent(window, "resize", moveFiltersOffScreen);
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var asideFilters = document.getElementsByClassName("inner");
+        var listItems = document.getElementsByTagName("body");
+        console.log(listItems);
+        var touchControl = new Hammer(listItems[0]);
+        console.log(touchControl);
+        touchControl.on("panright", function (event) {
+            var element = document.getElementsByClassName("inner");
+            var elementResults = document.getElementsByClassName("inner-results");
+            element[0].style["transform"] = "translate3d(850px, 0px, 0px)";
+            element[0].style["-webkit-transform"] = "translate3d(850px, 0px, 0px)";
+            element[0].style["-moz-transform"] = "translate3d(850px, 0px, 0px)";
+            element[0].style["-ms-transform"] = "translate3d(850px, 0px, 0px)";
+            element[0].style["-o-transform"] = "translate3d(850px, 0px, 0px)";
+            element[0].style["-webkit-transition"] = "all .5s ease-out";
+            element[0].style["-moz-transition"] = "all .5s ease-out";
+            element[0].style["-ms-transition"] = "all .5s ease-out";
+            element[0].style["-o-transition"] = "all .5s ease-out";
+            element[0].style["transition"] = "all .5s ease-out";
+            var element = document.getElementsByClassName("inner");
+            var position = getPosition(element[0]);
+            console.log(position);
+            // elementResults[0].style["display"] = "none";
+        });
+    });
+    </script>
+    </body >
+</html >

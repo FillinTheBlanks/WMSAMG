@@ -92,6 +92,7 @@ div.login-logout-tab a.nav-link {
 
 div.card-content {
     padding: 10px 20px;
+    width: 100%;
 }
 
 div.login-form-icon {

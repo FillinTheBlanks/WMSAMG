@@ -1,0 +1,383 @@
+﻿@model System.Data.DataTable
+@{
+    ViewData["Title"] = "Cold Storage 1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"]</h2>
+</div>
+
+
+@*@for (var rack = 1; rack <= 4; rack++)
+    {
+        var rackname = "Rack " + rack.ToString();
+        var rackid = "Rack" + rack.ToString();
+        <div tabindex="0" class="e-card" id="basic_card">
+            <div class="e-card-header">
+                <div class="e-card-header-caption">
+                    <div class="e-card-header-title">@rackname</div>
+
+                </div>
+            </div>
+            <div class="e-card-content">
+                <div class="control-section">
+                    <div class="control_wrapper">
+                        <ejs-kanban id="@rackid" keyField="BayNo" dialogOpen="onDialogOpen" dialogClose="onDialogClose" created="onKanbanCreated">
+
+                            <e-kanban-columns>
+                                <e-kanban-column headerText="Bay 01" keyField="1"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 02" keyField="2"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 03" keyField="3"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 04" keyField="4"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 05" keyField="5"></e-kanban-column>
+                            </e-kanban-columns>
+                            <e-kanban-cardsettings headerField="ReferenceCode" template="#cardTemplate"></e-kanban-cardsettings>
+                            <e-kanban-swimlanesettings keyField="LevelNo" template="#swimlaneTemplate"></e-kanban-swimlanesettings>
+
+                        </ejs-kanban>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }*@
+
+<div tabindex="0" class="e-card" id="basic_card"  >
+    <div class="e-card-header">
+        <div class="e-card-header-caption">
+            <div class="e-card-header-title">This serves as a dynamic UI that represents Storage Rack Map Plan for Cold Storage 1.</div>
+
+        </div>
+    </div>
+    <div class="e-card-content" >
+        <div class="control-section">
+            <div class="control_wrapper">
+                <ejs-kanban id="Kanban" dataSource="((System.Data.DataTable)ViewBag.datasource)" keyField="RackToBay" allowDragAndDrop="true" enableTooltip="true" enableVirtualization="true" created="onKanbanCreated" dialogOpen="onDialogOpen" dialogClose="onDialogClose">
+
+                    <e-kanban-columns>
+                        <e-kanban-column headerText="1st Bay" keyField="Rack 1 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="2nd Bay" keyField="Rack 1 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="3rd Bay" keyField="Rack 1 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="4th Bay" keyField="Rack 1 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="5th Bay" keyField="Rack 1 Bay 5" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+
+                        <e-kanban-column headerText="1st Bay" keyField="Rack 2 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="2nd Bay" keyField="Rack 2 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="3rd Bay" keyField="Rack 2 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="4th Bay" keyField="Rack 2 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="5th Bay" keyField="Rack 2 Bay 5" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+
+                        <e-kanban-column headerText="1st Bay" keyField="Rack 3 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="2nd Bay" keyField="Rack 3 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="3rd Bay" keyField="Rack 3 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="4th Bay" keyField="Rack 3 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="5th Bay" keyField="Rack 3 Bay 5" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+
+                        <e-kanban-column headerText="1st Bay" keyField="Rack 4 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="2nd Bay" keyField="Rack 4 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="3rd Bay" keyField="Rack 4 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="4th Bay" keyField="Rack 4 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="5th Bay" keyField="Rack 4 Bay 5" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+
+                        <e-kanban-column headerText="Hallway 1" keyField="Hallway 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+
+                    </e-kanban-columns>
+                    <e-kanban-cardsettings headerField="ReferenceCode" template="#cardTemplate"></e-kanban-cardsettings>
+                    <e-kanban-swimlanesettings allowDragAndDrop="true" keyField="LevelNo" template="#swimlaneTemplate"></e-kanban-swimlanesettings>
+                    <e-kanban-dialogsettings template="#dialogTemplate"></e-kanban-dialogsettings>
+                    <e-kanban-stackedHeaders>
+                        @*<e-kanban-stackedHeader text="Area A" keyFields="Rack 1 Bay 1, Rack 1 Bay 2, Rack 1 Bay 3, Rack 1 Bay 4, Rack 1 Bay 5"></e-kanban-stackedHeader>*@
+                        <e-kanban-stackedHeader text="Rack 1" keyFields="Rack 1 Bay 1, Rack 1 Bay 2, Rack 1 Bay 3, Rack 1 Bay 4, Rack 1 Bay 5"></e-kanban-stackedHeader>
+                        <e-kanban-stackedHeader text="Rack 2" keyFields="Rack 2 Bay 1, Rack 2 Bay 2, Rack 2 Bay 3, Rack 2 Bay 4, Rack 2 Bay 5"></e-kanban-stackedHeader>
+                        <e-kanban-stackedHeader text="Rack 3" keyFields="Rack 3 Bay 1, Rack 3 Bay 2, Rack 3 Bay 3, Rack 3 Bay 4, Rack 3 Bay 5"></e-kanban-stackedHeader>
+                        <e-kanban-stackedHeader text="Rack 4" keyFields="Rack 4 Bay 1, Rack 4 Bay 2, Rack 4 Bay 3, Rack 4 Bay 4, Rack 4 Bay 5"></e-kanban-stackedHeader>
+                        <e-kanban-stackedHeader text="Hallway" keyFields="Hallway 1"></e-kanban-stackedHeader>
+                    </e-kanban-stackedHeaders>
+                </ejs-kanban>
+                    
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div tabindex="0" class="e-card" id="basic_card">
+    <div class="e-card-header">
+        <div class="e-card-header-caption">
+            <div class="e-card-header-title">Rack 2</div>
+
+        </div>
+    </div>
+    <div class="e-card-content">
+        <div class="control-section">
+            <div class="control_wrapper">
+                <ejs-kanban id="Kanban3" dataSource="((System.Data.DataTable)ViewBag.datasource)" keyField="RackToBay" allowDragAndDrop="true" enableTooltip="true" enableVirtualization="true" created="onKanbanCreated" dialogOpen="onDialogOpen" dialogClose="onDialogClose">
+
+                    <e-kanban-columns>
+                        
+                        <e-kanban-column headerText="Bay 01" keyField="Rack 2 Bay 1"></e-kanban-column>
+                        <e-kanban-column headerText="Bay 02" keyField="Rack 2 Bay 2"></e-kanban-column>
+                        <e-kanban-column headerText="Bay 03" keyField="Rack 2 Bay 3"></e-kanban-column>
+                        <e-kanban-column headerText="Bay 04" keyField="Rack 2 Bay 4"></e-kanban-column>
+                        <e-kanban-column headerText="Bay 05" keyField="Rack 2 Bay 5"></e-kanban-column>
+                    </e-kanban-columns>
+                    <e-kanban-cardsettings headerField="ReferenceCode" template="#cardTemplate"></e-kanban-cardsettings>
+                    <e-kanban-swimlanesettings allowDragAndDrop="true" keyField="LevelNo" template="#swimlaneTemplate"></e-kanban-swimlanesettings>
+                    <e-kanban-dialogsettings template="#dialogTemplate"></e-kanban-dialogsettings>
+                    <e-kanban-stackedHeaders>
+                      
+                        <e-kanban-stackedHeader text="Rack 3" keyFields="Rack 2 Bay 1, Rack 2 Bay 2, Rack 2 Bay 3, Rack 2 Bay 4, Rack 2 Bay 5"></e-kanban-stackedHeader>
+                    </e-kanban-stackedHeaders>
+                </ejs-kanban>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+<script id="swimlaneTemplate" type="text/x-jsrender">
+    <div class='swimlane-template e-swimlane-template-table'>
+        <div class="e-swimlane-row-text"><span>Level: ${textField}</span></div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    $(function () {
+       
+        $("#Kanban").ejKanban({
+            allowExternalDragAndDrop: true
+        });
+        $("#Kanban2").ejKanban({
+            allowExternalDragAndDrop: true
+        })
+    });
+</script>
+
+
+    <script id='dialogTemplate' type='text/x-template'>
+        <table>
+            <tbody>
+                <tr>
+                    <td class="e-label">StockDescription</td>
+                    <td>
+                        <input id="StockDescription" name="StockDescription" type="text" class="e-field" value="${StockDescription}" required />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</script>
+
+<script id="cardTemplate" type="text/x-template">
+        <div class='card-template'>
+            <div class='card-template-wrap'>
+                <table class='card-template-wrap'>
+                    <colgroup>
+                        <col style="width:200px">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td class='e-title'>
+                            <div class="e-card-stacked">
+                                <div class='e-card-header'>
+                                    <div class='e-card-header-caption'>
+                                        <div class='e-card-header-title e-tooltip-text'>${StockSKU} - ${StockDescription}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            </td>
+                        </tr>
+                        <tr><td>
+                            <div class="e-card-content" style="line-height:2.75em">
+                                <table class='card-template-wrap'>
+                                      <tbody>
+                                        </tr>
+                                        <tr class='e-tooltip-text'>
+                                            <td colspan="2"><div class='e-description'>${StorageLocationName}</div></td>
+                                        </tr>
+                                        <tr class="e-tooltip-text">
+                                            <td><div class='e-size e-tooltip-text'>${CustomerName}</div></td>
+                                            <td><div class='e-price e-tooltip-text'>${Qty}</div></td>
+                                        </tr>
+                                      </tbody>
+                                </table>
+                                </td></tr>
+                            </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script>
+    var kanbanObj;
+
+    function onKanbanCreated() {
+        kanbanObj = this;
+    }
+    function onDialogOpen() {
+
+    }
+    function onDialogClose() {
+
+    }
+
+    
+</script>
+
+
+<style type="text/css">
+    .swimlane-template {
+        font - size: 15px;
+        font-weight: 500;
+    }
+
+        .swimlane-template img {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+        }
+
+        .swimlane-template span {
+            padding - left: 10px;
+        }
+
+    .e-kanban .e-prepare,
+    .e-kanban .e-price {
+        text - align: right;
+    }
+
+    .e-kanban .e-card table {
+        table - layout: fixed;
+    }
+
+    .e-kanban .e-time {
+        display: inline-flex;
+    }
+
+    .e-kanban .e-size {
+        color: #b8860b
+    }
+
+    .e-kanban .e-date {
+        display: contents;
+    }
+
+    .e-kanban .e-kanban-date {
+        padding - left: 4px;
+    }
+
+    .e-kanban .e-mins {
+        padding - left: 3px;
+    }
+
+    .e-kanban .e-clock {
+        padding - top: 2px;
+    }
+
+        .e-kanban .e-clock::before {
+            content: '\e20c';
+            color: #ffa500;
+            font-size: 10px;
+        }
+
+    .e-kanban .e-done::before {
+        content: '\ea84';
+        color: #008000;
+        font-size: 16px;
+    }
+
+    .fabric .e-kanban .e-clock::before {
+        content: '\e97f';
+    }
+
+    .bootstrap .e-kanban .e-clock::before {
+        content: '\e93e';
+    }
+
+    .bootstrap4 .e-kanban .e-clock::before {
+        content: '\e7c7';
+    }
+
+    .bootstrap4 .e-kanban .e-done::before {
+        content: '\e7d9';
+    }
+
+    .highcontrast .e-kanban .e-clock::before {
+        content: '\e97f';
+    }
+
+    .e-kanban .card-template-wrap {
+        color: burlywood;
+        line-height: normal;
+        font-size: 12px;
+        width: 100%;
+    }
+
+        .e-kanban .card-template-wrap td {
+            background: none !important;
+            border: none !important;
+            height: auto !important;
+            line-height: 1.6;
+        }
+
+    .e-kanban .e-image img {
+        background: #ececec;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+    }
+
+    .e-kanban .e-image {
+        padding - right: 5px;
+        padding-left: 10px;
+    }
+
+    .e-kanban .card-header {
+        font - size: 15px;
+        font-weight: 500;
+        display: inline-block;
+    }
+
+    .e-kanban .e-card .card-content {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .e-kanban .e-description {
+        padding - top: 5px;
+        padding-bottom: 10px;
+    }
+
+    .e-kanban .e-card .e-done {
+        padding - top: 5px;
+        padding-bottom: 10px;
+        position: absolute;
+        right: 15px;
+    }
+
+    .e-kanban .e-readyText {
+        color: #008000;
+    }
+
+    .e-kanban .e-preparingText {
+        color: #9ACD32;
+        animation: blinker 1.5s linear infinite;
+    }
+
+    .e-kanban-dialog .e-kanban-form-wrapper table .e-label, .e-kanban-dialog .e-kanban-form-container table .e-label {
+        width: 80px;
+    }
+
+    .e-kanban .e-deliveredText {
+        padding - top: 5px;
+        color: #ff0000;
+    }
+
+    @@keyframes blinker {
+        50 % {
+            opacity: 0.5;
+        }
+    }
+</style>

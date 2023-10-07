@@ -69,5 +69,10 @@ namespace WMSAMG.Models.CSIS2017Models
         public string Remarks { get; set; }
         public int LineNum { get; set; }
         public string Size { get; set; }
+        
+        public string RackName { get; set; }
+        public int? LevelNo { get; set; }
+        public string BayNo { get; set; }
+        public string StorageToRack { get; set; }
     }
 }

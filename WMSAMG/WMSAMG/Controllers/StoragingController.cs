@@ -174,6 +174,26 @@ namespace WMSAMG.Controllers
             return (T?)obj;
         }
 
+        public IActionResult ColdStorage1()
+        {
+            
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ActualInventoryByStorageName", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("CompanyID", "35a953cd-49b0-4db4-b5ec-2aa23733a5e2");
+                sqlDa.SelectCommand.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("StorageName", "COLD STORE 1");
+                sqlDa.Fill(dt);
+            }
+
+            ViewBag.datasource = dt;
+            return View();
+            
+        }
+
         public JsonResult GetStorageByLocationID()
         {
 
@@ -269,5 +289,47 @@ namespace WMSAMG.Controllers
 
             return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());
         }
+    
+
+        public JsonResult GetActualInventorybyStoreRack(string id)
+        {
+            //string rname = "Rack 1";
+            DataTable dt = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ActualInventory", sqlConnection);
+                sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlDa.SelectCommand.Parameters.AddWithValue("CompanyID", "35a953cd-49b0-4db4-b5ec-2aa23733a5e2");
+                sqlDa.SelectCommand.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                sqlDa.SelectCommand.Parameters.AddWithValue("CustomerID", "");
+                sqlDa.Fill(dt);
+            }
+            List<VwActualInventory> actualInventories = dt.AsEnumerable().Select(row =>
+                new VwActualInventory
+                {
+                    Rrcode = row.Field<string>("RRCode"),
+                    ReferenceCode = row.Field<Guid>("ReferenceCode"),
+                    StockId = row.Field<Guid>("StockID"),
+                    StockSku = row.Field<string>("StockSKU"),
+                    StockPcsperPack = row.Field<decimal>("StockPcsperPack"),
+                    StockDescription = row.Field<string>("StockDescription"),
+                    Qty = row.Field<Decimal>("Qty"),
+                    ActualWeight = row.Field<Decimal>("ActualWeight"),
+                        //TransactionDate = row.Field<DateTime>("TransactionDate"),
+                    StorageName = row.Field<string>("StorageName"),
+                    StorageLocationName = row.Field<string>("StorageLocationName"),
+                    CustomerName = row.Field<string>("CustomerName"),
+                    Remarks = row.Field<string>("Remarks"),
+                    RackName = row.Field<string>("RackName"),
+                    LevelNo = row.Field<int>("LevelNo"),
+                    BayNo = row.Field<string>("BayNo"),
+                    StorageToRack = row.Field<string>("StorageToRack")
+                }).Where(c => c.StorageToRack == id).ToList();
+
+            return Json(actualInventories, new System.Text.Json.JsonSerializerOptions());
+        }
+
+        
     }
 }
