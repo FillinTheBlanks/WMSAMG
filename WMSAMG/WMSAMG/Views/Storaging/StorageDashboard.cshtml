@@ -1,0 +1,535 @@
+﻿@model System.Data.DataTable
+
+@{
+    ViewData["Title"] = @ViewBag.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left" >@ViewData["Title"]</h2>
+    <input type="hidden" id="HeaderTitle" value="@ViewData["Title"]" />
+</div>
+
+@*@for (var rack = 1; rack <= 4; rack++)
+    {
+        var rackname = "Rack " + rack.ToString();
+        var rackid = "Rack" + rack.ToString();
+        <div tabindex="0" class="e-card" id="basic_card">
+            <div class="e-card-header">
+                <div class="e-card-header-caption">
+                    <div class="e-card-header-title">@rackname</div>
+
+                </div>
+            </div>
+            <div class="e-card-content">
+                <div class="control-section">
+                    <div class="control_wrapper">
+                        <ejs-kanban id="@rackid" keyField="BayNo" dialogOpen="onDialogOpen" dialogClose="onDialogClose" created="onKanbanCreated">
+
+                            <e-kanban-columns>
+                                <e-kanban-column headerText="Bay 01" keyField="1"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 02" keyField="2"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 03" keyField="3"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 04" keyField="4"></e-kanban-column>
+                                <e-kanban-column headerText="Bay 05" keyField="5"></e-kanban-column>
+                            </e-kanban-columns>
+                            <e-kanban-cardsettings headerField="ReferenceCode" template="#cardTemplate"></e-kanban-cardsettings>
+                            <e-kanban-swimlanesettings keyField="LevelNo" template="#swimlaneTemplate"></e-kanban-swimlanesettings>
+
+                        </ejs-kanban>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }*@
+
+<div tabindex="0" class="e-card" id="basic_card">
+    <div class="e-card-header">
+        <div class="e-card-header-caption">
+            <div class="e-card-header-title">This serves as a dynamic UI that represents Storage Rack Map Plan for @ViewData["Title"].</div>
+
+        </div>
+    </div>
+
+    <div class="e-card-content">
+        <div class="control-section">
+            <div class="control_wrapper">
+                <ejs-kanban id="KanbanRack1" dataSource="((System.Data.DataTable)ViewBag.datasource)" externalDropId="KanbanRack1" keyField="RackToBay" allowDragAndDrop="true" enableTooltip="true" dragStop="onDragStop1" allowExternalDragAndDrop="true" created="onKanbanCreated" dialogOpen="onDialogOpen" dialogClose="onDialogClose">
+                    <e-kanban-columns>
+                        <e-kanban-column headerText="1st Bay" keyField="Rack 1 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="2nd Bay" keyField="Rack 1 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="3rd Bay" keyField="Rack 1 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="4th Bay" keyField="Rack 1 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+
+                        <e-kanban-column headerText="1st Bay" keyField="Rack 2 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="2nd Bay" keyField="Rack 2 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="3rd Bay" keyField="Rack 2 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                        <e-kanban-column headerText="4th Bay" keyField="Rack 2 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+
+                        <e-kanban-column headerText="ON-FLOOR Bay 1" keyField="ON-FLOOR Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    </e-kanban-columns>
+                    <e-kanban-cardsettings headerField="ReferenceCode" selectionType="Single" template="#cardTemplate" />
+                    <e-kanban-swimlanesettings allowDragAndDrop="true" keyField="LevelNo" textField="LevelNo" showEmptyRow="true" template="#swimlaneTemplate" />
+                    <e-kanban-dialogsettings template="#dialogTemplate" />
+                    <e-kanban-stackedHeaders>
+
+                        <e-kanban-stackedHeader text="Rack 1" keyFields="Rack 1 Bay 1, Rack 1 Bay 2, Rack 1 Bay 3, Rack 1 Bay 4, Rack 1 Bay 5"></e-kanban-stackedHeader>
+                        <e-kanban-stackedHeader text="Rack 2" keyFields="Rack 2 Bay 1, Rack 2 Bay 2, Rack 2 Bay 3, Rack 2 Bay 4, Rack 2 Bay 5"></e-kanban-stackedHeader>
+                        <e-kanban-stackedHeader text="ON-FLOOR" keyFields="ON-FLOOR Bay 1"></e-kanban-stackedHeader>
+                        
+                    </e-kanban-stackedHeaders>
+                </ejs-kanban>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+@*<div tabindex="0" class="e-card" id="basic_card">
+        <div class="e-card-header">
+            <div class="e-card-header-caption">
+                <div class="e-card-header-title">Rack 2</div>
+
+            </div>
+        </div>
+        <div class="e-card-content">
+            <div class="control-section">
+                <div class="control_wrapper">
+                    <ejs-kanban id="Kanban3" dataSource="((System.Data.DataTable)ViewBag.datasource)" keyField="RackToBay" allowDragAndDrop="true" enableTooltip="true" enableVirtualization="true" created="onKanbanCreated" dialogOpen="onDialogOpen" dialogClose="onDialogClose">
+
+                        <e-kanban-columns>
+
+                            <e-kanban-column headerText="Bay 01" keyField="Rack 2 Bay 1"></e-kanban-column>
+                            <e-kanban-column headerText="Bay 02" keyField="Rack 2 Bay 2"></e-kanban-column>
+                            <e-kanban-column headerText="Bay 03" keyField="Rack 2 Bay 3"></e-kanban-column>
+                            <e-kanban-column headerText="Bay 04" keyField="Rack 2 Bay 4"></e-kanban-column>
+                            <e-kanban-column headerText="Bay 05" keyField="Rack 2 Bay 5"></e-kanban-column>
+                        </e-kanban-columns>
+                        <e-kanban-cardsettings headerField="ReferenceCode" template="#cardTemplate"></e-kanban-cardsettings>
+                        <e-kanban-swimlanesettings allowDragAndDrop="true" keyField="LevelNo" template="#swimlaneTemplate"></e-kanban-swimlanesettings>
+                        <e-kanban-dialogsettings template="#dialogTemplate"></e-kanban-dialogsettings>
+                        <e-kanban-stackedHeaders>
+
+                            <e-kanban-stackedHeader text="Rack 3" keyFields="Rack 2 Bay 1, Rack 2 Bay 2, Rack 2 Bay 3, Rack 2 Bay 4, Rack 2 Bay 5"></e-kanban-stackedHeader>
+                        </e-kanban-stackedHeaders>
+                    </ejs-kanban>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+<script id="swimlaneTemplate" type="text/x-jsrender">
+    <div class='swimlane-template e-swimlane-template-table'>
+        <div class="e-swimlane-row-text"><span>Level: ${textField}</span></div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    (function () {
+
+        $("#KanbanRack1").ejKanban({
+            allowExternalDragAndDrop: true
+        });
+        //$("#KanbanRack2").ejKanban({
+        //    allowExternalDragAndDrop: true
+        //})
+    });
+</script>
+
+
+<script id='dialogTemplate' type='text/x-template'>
+    <table>
+        <tbody>
+            <tr>
+                <td class="e-label hidden">Reference</td>
+                <td class="hidden">
+                    <input id="ReferenceCode" name="ReferenceCode" type="text" class="e-field" value="${ReferenceCode}" required />
+
+                </td>
+                <td class="e-label">Stock SKU</td>
+                <td>
+                    <input id="StockSKU" name="StockSKU" type="text" class="e-field" value="${StockSKU}" required />
+
+                </td>
+            </tr>
+            <tr>
+                <td class="e-label">Stock Description</td>
+                <td>
+                    <input id="StockDescription" name="StockDescription" type="text" class="e-field" value="${StockDescription}" required />
+
+                </td>
+            </tr>
+            <tr>
+                <td class="e-label">Remarks</td>
+                <td>
+                    <input id="Remarks" name="Remarks" type="text" class="e-field" value="${Remarks}" required />
+
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script id="cardTemplate" type="text/x-template">
+        <div class='card-template'>
+            <div class='card-template-wrap'>
+                <table class='card-template-wrap'>
+                    <colgroup>
+                        <col style="width:400px">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td class='e-title'>
+
+                                <div class='e-card-header'>
+                                    <div class='e-card-header-caption'>
+                                        <div class='e-card-header-title e-tooltip-text'>${StockSKU}</div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class='e-title'>
+
+                                <div class='e-card-header'>
+                                    <div class='e-card-header-caption' >
+                                        <div class='e-card-header-title e-tooltip-text' style="font-weight:bold; font-size:16px">${StockDescription}</div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr><td>
+                            <div class="e-card-content" style="line-height:2.75em">
+                                <table class='card-template-wrap'>
+                                      <tbody>
+                                        </tr>
+                                        <tr class='e-tooltip-text'>
+                                            <td colspan="2"><div class='e-description'>${Qty} pcs- ${ActualWeight} ${UOM}</div></td>
+
+                                        </tr>
+                                        <tr class="e-tooltip-text">
+                                            <td><div class='e-size e-tooltip-text'>${CustomerName}</div></td>
+
+                                        </tr>
+                                        <tr class="e-tooltip-text">
+                                            <td><div class='e-size e-tooltip-text'>Remarks:</div></td>
+                                            <td><div class='e-price e-tooltip-text'>${Remarks}</div></td>
+                                        </tr>
+                                      </tbody>
+                                </table>
+                                </td></tr>
+                            </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script>
+    var kanbanObj;
+
+
+    function onKanbanCreated() {
+        kanbanObj = this;
+    }
+    function onDialogOpen(args) {
+        args.cancel = true;
+    }
+    function onDialogClose() {
+
+    }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    function onDragStop1(args) {
+
+        if (args.event.target) {
+            //console.log(args.data[0]);
+            //if (args.data[0].count > 0) {
+
+            //var boolsuccess = false;
+            var message = '';
+            /**/
+            var mainstorage = $('#HeaderTitle').val();
+    /**/
+
+    var storagerec = {};
+    storagerec.RackToBay = args.data[0].RackToBay;
+    storagerec.StorageTimeFrameId = args.data[0].ReferenceCode;
+    storagerec.LevelNo = parseInt(args.data[0].LevelNo);
+    storagerec.RefCode = args.data[0].ReferenceCode;
+    storagerec.ReferenceNo = args.data[0].RRCode;
+    storagerec.CustomerId = args.data[0].CustomerID;
+    storagerec.CustomerName = args.data[0].CustomerName;
+    storagerec.Nature = args.data[0].Nature;
+    storagerec.PayTypeInitial = args.data[0].PayTypeInitial;
+    storagerec.StockId = args.data[0].StockID;
+    storagerec.StorageLocationId = args.data[0].StorageLocationID;
+    storagerec.StorageId = args.data[0].StorageID;
+    storagerec.StockId = args.data[0].StockID;
+    storagerec.StorageTypeId = args.data[0].StorageTypeID;
+    storagerec.DateTimeFrameFrom = new Date();
+    storagerec.DateTimeFrameTo = new Date();
+    storagerec.Remarks = mainstorage;
+    storagerec.StorageName = args.data[0].StorageName;
+    storagerec.StorageLocationName = args.data[0].StorageLocationName;
+    storagerec.FixedRate = 0;
+    storagerec.HourlyRate = 0;
+
+    console.log(JSON.stringify(storagerec));
+    $.ajax({
+        type: 'POST',
+        url: '/Storaging/InsertRackToBay',
+        data: JSON.stringify(storagerec),
+        contentType: "application/json",
+        dataType: 'json',
+        success: function (data) {
+            //boolsuccess = true;
+            message = JSON.stringify(data);
+            console.log(data);
+        }
+    });
+    storagerec = null;
+    //}
+
+    if (boolsuccess = true) {
+        //alert(' Record/s Successfully Stored!');
+    }
+}
+}
+
+
+
+function onDragStop2(args) {
+var kanbanObjA = document.querySelector("#KanbanRack1").ej2_instances[0];
+var kanbanObjB = document.querySelector("#KanbanRack2").ej2_instances[0];
+
+if (ej.base.closest(args.event.target, '#KanbanRack1')) {
+    kanbanObjB.deleteCard(args.data);
+
+    args.data.forEach(function (card, i) {
+        var index = kanbanObjA.kanbanData.findIndex(function (colData) {
+
+            return colData[kanbanObjA.cardSettings.headerField] === card[kanbanObjA.cardSettings.headerField];
+        });
+        if (index !== -1) {
+            card[kanbanObjA.cardSettings.headerField] = Math.max.apply(Math, kanbanObjA.kanbanData.map(function (obj) { return parseInt(obj[kanbanObjA.cardSettings.headerField], 10); })) + ++i;
+        }
+    });
+
+    kanbanObjA.addCard(args.data, args.dropIndex);
+    args.cancel = true;
+
+}
+
+if (args.event.target) {
+    console.log(args.data[0]);
+
+}
+
+}
+</script>
+
+<style type="text/css">
+    .swimlane-template {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+        .swimlane-template img {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+        }
+
+        .swimlane-template span {
+            padding-left: 10px;
+        }
+
+    .e-kanban .e-prepare,
+    .e-kanban .e-price {
+        text-align: right;
+    }
+
+    .e-kanban .e-card table {
+        table-layout: auto;
+    }
+
+    .e-kanban .e-time {
+        display: inline-flex;
+    }
+
+    .e-kanban .e-size {
+        color: #ff0000
+    }
+
+    .e-kanban .e-date {
+        display: contents;
+    }
+
+    .e-kanban .e-kanban-date {
+        padding-left: 4px;
+    }
+
+    .e-kanban .e-mins {
+        padding-left: 3px;
+    }
+
+    .e-kanban .e-clock {
+        padding-top: 2px;
+    }
+
+        .e-kanban .e-clock::before {
+            content: '\e20c';
+            color: #ffa500;
+            font-size: 10px;
+        }
+
+    .e-kanban .e-done::before {
+        content: '\ea84';
+        color: #008000;
+        font-size: 16px;
+    }
+
+    .fabric .e-kanban .e-clock::before {
+        content: '\e97f';
+    }
+
+    .bootstrap .e-kanban .e-clock::before {
+        content: '\e93e';
+    }
+
+    .bootstrap4 .e-kanban .e-clock::before {
+        content: '\e7c7';
+    }
+
+    .bootstrap4 .e-kanban .e-done::before {
+        content: '\e7d9';
+    }
+
+    .highcontrast .e-kanban .e-clock::before {
+        content: '\e97f';
+    }
+
+    .e-kanban .card-template-wrap {
+        color: #0026ff;
+        line-height: normal;
+        font-size: 12px;
+        font-weight:500;
+        width: 100%;
+    }
+
+        .e-kanban .card-template-wrap td {
+            background: none !important;
+            border: none !important;
+            height: auto !important;
+            line-height: 1.6;
+        }
+
+    .e-kanban .e-image img {
+        background: #ececec;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+    }
+
+    .e-kanban .e-image {
+        padding-right: 5px;
+        padding-left: 10px;
+    }
+
+    .e-kanban .card-header {
+        font-size: 16px;
+        font-weight: 500;
+        display: inline-flex;
+    }
+
+    .e-kanban .e-card .card-content {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .e-kanban .e-description {
+        font-size: 14px;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+
+    .e-kanban .e-card .e-done {
+        padding-top: 5px;
+        padding-bottom: 10px;
+        position: absolute;
+        right: 15px;
+    }
+
+    .e-kanban .e-readyText {
+        color: #008000;
+    }
+
+    .e-kanban .e-preparingText {
+        color: #9ACD32;
+        animation: blinker 1.5s linear infinite;
+    }
+
+    .e-kanban-dialog .e-kanban-form-wrapper table .e-label, .e-kanban-dialog .e-kanban-form-container table .e-label {
+        width: 80px;
+    }
+
+    .e-kanban .e-deliveredText {
+        padding-top: 5px;
+        color: #ff0000;
+    }
+
+    .e-kanban .e-card-custom-footer {
+        display: flex;
+        padding: 0px 12px 12px;
+        line-height: 1;
+        height: 35px;
+    }
+
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Low.e-selection:hover,
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Low,
+    .e-kanban.e-rtl .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Low {
+        border-left: 3px solid #ffd600;
+    }
+
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.High.e-selection:hover,
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.High,
+    .e-kanban.e-rtl .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.High {
+        border-left: 3px solid #990099;
+    }
+
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Normal.e-selection:hover,
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Normal,
+    .e-kanban.e-rtl .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Normal {
+        border-left: 3px solid #66cc33;
+    }
+
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Critical.e-selection:hover,
+    .e-kanban .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Critical,
+    .e-kanban.e-rtl .e-kanban-content .e-content-row .e-content-cells .e-card-wrapper .e-card.Critical {
+        border-left: 3px solid #cc0000;
+    }
+
+    @@keyframes blinker {
+        50% {
+            opacity: 0.5;
+        }
+    }
+</style>
+
+

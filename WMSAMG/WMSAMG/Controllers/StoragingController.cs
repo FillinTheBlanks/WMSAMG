@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,8 +25,8 @@ namespace WMSAMG.Controllers
         }
 
 
-        // GET: Storaging
-        public IActionResult Index()
+    // GET: Storaging
+    public IActionResult Index()
         {
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
@@ -38,6 +39,7 @@ namespace WMSAMG.Controllers
                 sqlDa.SelectCommand.Parameters.AddWithValue("CustomerID", "");
                 sqlDa.Fill(dt);
             }
+            
             ViewBag.datasource = dt;
             return View(dt);
         }
@@ -109,6 +111,69 @@ namespace WMSAMG.Controllers
             return Json(message, new System.Text.Json.JsonSerializerOptions());
         }
 
+        [HttpPost]
+        [Route("Storaging/InsertRackToBay")]
+        //[ValidateAntiForgeryToken]
+        public JsonResult InsertRackToBay([FromBody] TblStorageTimeFrame tblStorageTimeFrame)
+        {
+            //if (id != tblStorageTimeFrame.StorageTimeFrameId)
+            //{
+            //{
+            //    return NotFound();
+            //}
+            string message = string.Empty;
+            if (ModelState.IsValid)
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
+                {
+                    sqlConnection.Open();
+                    SqlCommand sqlCmd = new SqlCommand("spUpdate_StorageLocationbyRackToBay", sqlConnection);
+                    sqlCmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    sqlCmd.Parameters.AddWithValue("RackToBay", tblStorageTimeFrame.RackToBay);
+                    sqlCmd.Parameters.AddWithValue("StorageTimeFrameID", tblStorageTimeFrame.StorageTimeFrameId);
+                    sqlCmd.Parameters.AddWithValue("LevelNo", tblStorageTimeFrame.LevelNo);
+                    sqlCmd.Parameters.AddWithValue("RefCode", tblStorageTimeFrame.RefCode);
+                    sqlCmd.Parameters.AddWithValue("RRCode", tblStorageTimeFrame.ReferenceNo);
+                    sqlCmd.Parameters.AddWithValue("Nature", tblStorageTimeFrame.Nature);
+                    sqlCmd.Parameters.AddWithValue("CustomerID", tblStorageTimeFrame.CustomerId);
+                    sqlCmd.Parameters.AddWithValue("StockID", tblStorageTimeFrame.StockId);
+                    sqlCmd.Parameters.AddWithValue("PayTypeInitial", tblStorageTimeFrame.PayTypeInitial);
+                    sqlCmd.Parameters.AddWithValue("StorageLocationID", tblStorageTimeFrame.StorageLocationId);
+                    sqlCmd.Parameters.AddWithValue("StorageID", tblStorageTimeFrame.StorageId);
+                    sqlCmd.Parameters.AddWithValue("StorageTypeID", tblStorageTimeFrame.StorageTypeId);
+                    sqlCmd.Parameters.AddWithValue("DateTimeFrameFrom", tblStorageTimeFrame.DateTimeFrameFrom);
+                    sqlCmd.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
+                    sqlCmd.Parameters.AddWithValue("Remarks", tblStorageTimeFrame.Remarks);
+                    sqlCmd.Parameters.AddWithValue("ApprovedBy", Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", "")));
+                    sqlCmd.ExecuteNonQuery();
+                    message = "Saved Successfully!";
+                }
+
+                //return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                
+                message = "Error on Model!";
+            }
+            //return View(tblStorageTimeFrame);
+            return Json(message, new System.Text.Json.JsonSerializerOptions());
+        }
+
+        public List<SelectListItem> PopulateLevels()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            for(int i = 1; i < 5; i++) { 
+                    items.Add(new SelectListItem
+                    {
+                        Text = i.ToString(),
+                        Value = i.ToString()
+                    });
+
+            }
+            return items;
+        }
+
         // GET: Storaging/Delete/5
         public IActionResult Delete(Guid? id)
         {
@@ -174,9 +239,34 @@ namespace WMSAMG.Controllers
             return (T?)obj;
         }
 
-        public IActionResult ColdStorage1()
+        public IActionResult StorageDashboard(int id)
         {
-            
+            string StorageName = "";
+
+            switch (id) {
+                case 1:
+                    StorageName = "COLD STORE 1";
+                    break;
+                case 2:
+                    StorageName = "COLD STORE 2";
+                    break;
+                case 3:
+                    StorageName = "COLD STORE 3";
+                    break;
+                case 4:
+                    StorageName = "COLD STORE 4";
+                    break;
+                case 5:
+                    StorageName = "COLD STORE 5";
+                    break;
+                case 6:
+                    StorageName = "COLD STORE 6";
+                    break;
+                default:
+                    StorageName = "COLD STORE 1";
+                    break;
+            }
+
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
@@ -185,13 +275,12 @@ namespace WMSAMG.Controllers
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("CompanyID", "35a953cd-49b0-4db4-b5ec-2aa23733a5e2");
                 sqlDa.SelectCommand.Parameters.AddWithValue("LocationID", "aea95735-24df-40a2-9132-5cbff7595bb9");
-                sqlDa.SelectCommand.Parameters.AddWithValue("StorageName", "COLD STORE 1");
+                sqlDa.SelectCommand.Parameters.AddWithValue("StorageName", StorageName);
                 sqlDa.Fill(dt);
             }
-
+            ViewBag.Title = StorageName;
             ViewBag.datasource = dt;
             return View();
-            
         }
 
         public JsonResult GetStorageByLocationID()

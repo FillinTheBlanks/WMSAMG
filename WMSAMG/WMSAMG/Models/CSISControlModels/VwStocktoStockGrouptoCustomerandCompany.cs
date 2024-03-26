@@ -13,6 +13,8 @@ namespace WMSAMG.Models.CSISControlModels
         public string StockSku { get; set; }
         [StringLength(200)]
         public string StockDescription { get; set; }
+        [StringLength(300)]
+        public string LongDescription { get; set; }
         [Column(TypeName = "money")]
         public decimal? StockPackperCase { get; set; }
         [Column(TypeName = "money")]
@@ -26,14 +28,14 @@ namespace WMSAMG.Models.CSISControlModels
         [Column("StockGroupID")]
         public Guid? StockGroupId { get; set; }
         [StringLength(50)]
-        public string StockGroupCategory { get; set; }
+        public string? StockGroupCategory { get; set; }
         [StringLength(50)]
-        public string StockGroupSpecie { get; set; }
+        public string? StockGroupSpecie { get; set; }
         [Column("CustomerID")]
         [StringLength(50)]
-        public string CustomerId { get; set; }
+        public string? CustomerId { get; set; }
         [StringLength(100)]
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
         [StringLength(100)]
         public string CustomerAddress { get; set; }
         [Column("CompanyID")]

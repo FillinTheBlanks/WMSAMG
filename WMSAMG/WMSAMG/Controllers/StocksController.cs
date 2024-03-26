@@ -37,11 +37,14 @@ namespace WMSAMG.Controllers
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "StockSKU");
                 sqlDa.Fill(dt);
             }
+            ViewBag.datasource = dt;
             return View(dt);
         }
 
         public JsonResult GetStockBySKU(string Id)
         {
+            if (Id == string.Empty)
+            { Id = ""; }
 
             DataTable dt = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("AuthContextConnection")))
@@ -61,6 +64,7 @@ namespace WMSAMG.Controllers
                     StockSku = row.Field<string>("StockSKU"),
                     DefaultQty = row.Field<int>("DefaultQty"),
                     StockDescription = row.Field<string>("StockDescription"),
+                    LongDescription = row.Field<string>("StockDescription") + " (" + row.Field<string>("CustomerName") + ")",
                     CustomerId = row.Field<string>("CustomerID"),
                     CustomerName = row.Field<string>("CustomerName"),
                     CompanyId = row.Field<Guid>("CompanyId"),
@@ -72,7 +76,8 @@ namespace WMSAMG.Controllers
                     StockPackperCase = row.Field<decimal>("StockPackperCase"),
                     StockWeightinKilosperCase = row.Field<decimal>("StockWeightinKilosperCase"),
                     StockWeightinKilosperPack = row.Field<decimal>("StockWeightinKilosperPack")
-                }).Where(m => m.StockSku == Id.ToUpper().Trim()).ToList();
+                }).ToList();
+        //}).Where(m => m.StockSku Id.ToUpper().Trim()).ToList();
             //string JSONString = string.Empty;
             //JSONString = JsonConvert.SerializeObject(dt);
 

@@ -67,7 +67,7 @@ namespace WMSAMG.Controllers
         
 
         // GET: Receiving/AddorEdit/Guid or RefNo
-        public IActionResult AddorEdit(string? id)
+        public IActionResult AddorEdit(string id)
         {
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
 
@@ -103,7 +103,7 @@ namespace WMSAMG.Controllers
         }
 
         // GET: Receiving/AddorEditBlastIn/Guid or RefNo
-        public IActionResult AddorEditBlastIn(string? id)
+        public IActionResult AddorEditBlastIn(string id)
         {
             TblReceivingDetail tblReceiving = new TblReceivingDetail();
             
@@ -515,7 +515,7 @@ namespace WMSAMG.Controllers
             return RrCode;
         }
 
-        public JsonResult GetRecordsbyRRNo(string? Id)
+        public JsonResult GetRecordsbyRRNo(string Id)
         {
             if (Id is null)
             {
@@ -557,7 +557,7 @@ namespace WMSAMG.Controllers
 
         }
 
-        public JsonResult GetRecordsbyRRNoBlastIn(string? Id)
+        public JsonResult GetRecordsbyRRNoBlastIn(string Id)
         {
             if (Id is null)
             {

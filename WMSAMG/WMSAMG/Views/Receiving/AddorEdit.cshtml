@@ -59,8 +59,12 @@
             </div>
 
             <div class="form-inline form-group">
-                <ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);" width="75%">  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button></ejs-textbox>
+                @*<ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);" width="75%">  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button></ejs-textbox>
 
+        <span asp-validation-for="StockSku" class="text-danger"></span>*@
+                <ejs-dropdownlist id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" change="onChangeStockSKU" popupHeight="220px" width="75%" allowFiltering="true" filtering="onfilteringStockSKU">
+                    <e-dropdownlist-fields value="StockSku" text="LongDescription"></e-dropdownlist-fields>
+                </ejs-dropdownlist>  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button>
                 <span asp-validation-for="StockSku" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -208,6 +212,14 @@
             //}
             
         };
+
+        var dropdown = document.getElementById('StockSku').ej2_instances[0];
+        var ajax = new ej.base.Ajax('/Stocks/GetStockBySKU/' + $('#StockSku').val(), 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            dropdown.dataSource = JSON.parse(data);
+            dropdown.refresh();
+        };
         
     }, false);
 
@@ -245,6 +257,58 @@
             $("#msg").html("Error while calling the Web API!");
         };
         $.ajax(options);
+    }
+
+    function onChangeStockSKU(args) {
+        console.log(args.value);
+        var options = {};
+        options.url = '/Stocks/GetStockBySKU/' + args.value;
+        options.type = "GET";
+        options.dataType = "json";
+        options.success = function (data) {
+            console.log(data);
+            data.forEach(function (element) {
+                $('#StockDescription').val(element.StockDescription);
+                $('#StockId').val(element.StockId);
+                $('#StockSku').val(element.StockSku);
+                $('#StockGroupId').val(element.StockGroupId);
+                $('#CustomerId').val(element.CustomerId);
+                $('#CustomerName').val(element.CustomerName);
+                $('#CompanyId').val(element.CompanyId);
+                $('#CompanyName').val(element.CompanyName);
+                $('#PayTypeInitial').val(element.PayTypeInitial);
+                $('#LocationId').val(element.LocationId);
+                $('#LocationInitial').val(element.LocationInitial);
+                $('#StockPcsperPack').val(element.StockPcsperPack);
+                $('#StockPackperCase').val(element.StockPackperCase);
+                $('#StockWeightinKilosperCase').val(element.StockWeightinKilosperCase);
+                $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
+                $('#Uom').val('Kls');
+                $('#PalletNo').val('');
+
+                $('#Qty').val(parseInt(element.DefaultQty));
+                $('#isSaved').val(1);
+                $('#Size').val('1-1');
+                $('#Qty').focus();
+                return;
+            });
+        };
+        options.error = function () {
+            $("#msg").html("Error while calling the Web API!");
+        };
+        $.ajax(options);
+    }
+
+    function onfilteringStockSKU(e) {
+        var CBObj = document.getElementById("StockSku").ej2_instances[0];
+        // load overall data when search key empty.
+        if (e.text == '')
+            e.updateData(CBObj.dataSource);
+        else {
+            var query = new ej.data.Query().from('StockSku').select(['StockSku']);
+            query = (e.text !== '') ? query.where('StockSku', 'contains', e.text, true) : query;
+            e.updateData(CBObj.dataSource, query);
+        }
     }
 
     function SearchSKU() {
@@ -365,7 +429,7 @@
                
                     var storagerec = {};
                     storagerec.StorageTimeFrameId = "00000000-0000-0000-0000-000000000000";
-            storagerec.RefCode = obj.getSelectedRecords()[i].ReferenceCode;
+                    storagerec.RefCode = obj.getSelectedRecords()[i].ReferenceCode;
                     storagerec.ReferenceNo = $('#Rrcode').val();
                     storagerec.Nature = $('#Nature').val();
                     storagerec.CustomerId = $('#CustomerId').val();

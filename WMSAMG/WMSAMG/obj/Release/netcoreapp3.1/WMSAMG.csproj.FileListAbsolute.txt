@@ -249,6 +249,6 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\WMSAMG.d
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\WMSAMG.pdb
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\WMSAMG.genruntimeconfig.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\Razor\Views\Receiving\ColdStorage1-old.cshtml.g.cs
-D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\Razor\Views\Storaging\ColdStorage1.cshtml.g.cs
-D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\Razor\Views\Receiving\ColdStorage1.cshtml.g.cs
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Release\netcoreapp3.1\Razor\Views\Storaging\StorageDashboard.cshtml.g.cs

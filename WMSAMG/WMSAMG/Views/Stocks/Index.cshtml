@@ -1,15 +1,65 @@
 ﻿@*@model IEnumerable<WMSAMG.Models.CSISControlModels.TblStock>*@
+@using Microsoft.AspNetCore.Identity
+@using WMSAMG.Areas.Identity.Data
+
 @model System.Data.DataTable
+@inject SignInManager<WMSAMGUser> SignInManager
+@inject UserManager<WMSAMGUser> UserManager
+
 @{
     ViewData["Title"] = "List of Stocks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="jumbotron">
-    <h1 class="text-center">@ViewData["Title"]</h1>
+
+<div class="jumbotron-fluid bg-light">
+    <h2 class="text-left">@ViewData["Title"] <a asp-action='AddorEdit' class="e-btn e-primary bg-success float-md-right">Create New</a></h2>
+
 </div>
 
+<ejs-grid id="Grid" dataSource="((System.Data.DataTable)ViewBag.datasource)" allowExcelExport="true" allowGrouping="true" allowResizing="true"
+          allowFiltering="true" allowPaging="true" allowSorting="true" height="400" rowHeight="38" enableHover="false"
+          toolbarClick="toolbarClick" toolbar="@(new List<string>() { "ExcelExport" })"
+          contextMenuItems="@(new List<object>() { "AutoFit", "AutoFitAll", "SortAscending", "SortDescending","Copy", "Edit", "Delete", "Save", "Cancel","PdfExport", "ExcelExport", "CsvExport", "FirstPage", "PrevPage","LastPage", "NextPage"})">
+    
+    <e-grid-pagesettings pageSize="15"></e-grid-pagesettings>
+    <e-grid-editSettings allowAdding="false" allowDeleting="false" allowEditing="false"></e-grid-editSettings>
+    <e-grid-columns>
+        <e-grid-column field="StockID" headerText="Manage" template="<a href='/Stocks/AddorEdit/${StockID}'>Update</a> <a href='/Stocks/Delete/${StockID}' hidden>Delete</a>" textAlign="Center" type="string" width="110"></e-grid-column>
+        <e-grid-column field="StockSKU" headerText="SKU" type="string" textAlign="Right" width="120" ></e-grid-column>
+        <e-grid-column field="StockDescription" headerText="Description" type="string" textAlign="Left" width="180"></e-grid-column>
+        <e-grid-column field="StockGroupCategory" headerText="Category" type="string" textAlign="Left" width="120"></e-grid-column>
+        <e-grid-column field="StockPcsperPack" headerText="Pcs in Pack" type="number" width="90"></e-grid-column>
+        <e-grid-column field="StockPackperCase" headerText="Pack in Case" type="number" width="90"></e-grid-column>
+        <e-grid-column field="StockWeightinKilosperPack" headerText="Wt in Kls/Pack" type="number" width="120" visible="false"></e-grid-column>
+        <e-grid-column field="StockWeightinKilosperCase" headerText="Wt in Kls/Case" type="number" width="120"></e-grid-column>
+        <e-grid-column field="ShelfLifeinDays" headerText="Shelf Life" type="string" width="80"></e-grid-column>
+        <e-grid-column field="CustomerName" headerText="Customer Name" type="string" width="140"></e-grid-column>
+        <e-grid-column field="CompanyInitial" headerText="Company" textAlign="Right" type="string" width="90"></e-grid-column>
+        <e-grid-column field="Status" headerText="Status" type="string" width="100"></e-grid-column>
+    </e-grid-columns>
 
-<table class="table table-bordered">
+</ejs-grid>
+
+<script>
+    function toolbarClick(args) {
+        var gridObj = document.getElementById("Grid").ej2_instances[0];
+        if (args.item.id === 'Grid_excelexport') {
+            gridObj.excelExport();
+        }
+    }
+
+    function load() {
+        var grid = document.getElementById('Grid').ej2_instances[0];
+        var rowHeight = grid.getRowHeight();  //height of the each row
+        var gridHeight = grid.height;  //grid height
+        var pageSize = 15;   //initial page size
+        var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
+        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+    }
+</script>
+
+
+@*<table class="table table-bordered">
     <thead class="thead-light">
         <tr>
             <th>
@@ -48,50 +98,51 @@
             <th>
                 <a asp-action="AddorEdit">Create New</a>
             </th>
-          
+
         </tr>
     </thead>
     <tbody>
-@for (int i=0; i < Model.Rows.Count; i++) {
-        <tr>
-            <td>
-                @Model.Rows[i]["StockSKU"]
-            </td>
-            <td>
-                @Model.Rows[i]["StockDescription"]
-            </td>
-            <td>
-                @Model.Rows[i]["StockGroupCategory"]
-            </td>
-            <td hidden>
-                @Model.Rows[i]["StockPcsperPack"]
-            </td>
-            <td hidden>
-                @Model.Rows[i]["StockPackperCase"]
-            </td>
-            <td hidden>
-                @Model.Rows[i]["StockWeightinKilosperPack"]
-            </td>
-            <td hidden>
-                @Model.Rows[i]["StockWeightinKilosperCase"]
-            </td>
-            <td>
-                @Model.Rows[i]["ShelfLifeinDays"]
-            </td>
-            <td>
-                @Model.Rows[i]["CustomerName"]
-            </td>
-            <td>
-                @Model.Rows[i]["CompanyInitial"]
-            </td>
-            <td>
-                @Model.Rows[i]["StockStatus"]
-            </td>
-            <td>
-                <a asp-action="AddorEdit" asp-route-id="@Model.Rows[i]["StockID"]">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@Model.Rows[i]["StockID"]">Delete</a>
-            </td>
-        </tr>
-}
+        @for (int i = 0; i < Model.Rows.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Model.Rows[i]["StockSKU"]
+                </td>
+                <td>
+                    @Model.Rows[i]["StockDescription"]
+                </td>
+                <td>
+                    @Model.Rows[i]["StockGroupCategory"]
+                </td>
+                <td hidden>
+                    @Model.Rows[i]["StockPcsperPack"]
+                </td>
+                <td hidden>
+                    @Model.Rows[i]["StockPackperCase"]
+                </td>
+                <td hidden>
+                    @Model.Rows[i]["StockWeightinKilosperPack"]
+                </td>
+                <td hidden>
+                    @Model.Rows[i]["StockWeightinKilosperCase"]
+                </td>
+                <td>
+                    @Model.Rows[i]["ShelfLifeinDays"]
+                </td>
+                <td>
+                    @Model.Rows[i]["CustomerName"]
+                </td>
+                <td>
+                    @Model.Rows[i]["CompanyInitial"]
+                </td>
+                <td>
+                    @Model.Rows[i]["StockStatus"]
+                </td>
+                <td>
+                    <a asp-action="AddorEdit" asp-route-id="@Model.Rows[i]["StockID"]">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@Model.Rows[i]["StockID"]">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
-</table>
+</table>*@

@@ -981,3 +981,6 @@ D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csp
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.genruntimeconfig.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\WMSAMG.csprojAssemblyReference.cache
 D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Home\WithdrawalTicket.cshtml.g.cs
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Receiving\ColdStorage1-old.cshtml.g.cs
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Receiving\ColdStorage1.cshtml.g.cs
+D:\Repos\FillinTheBlanks\WMSAMG\WMSAMG\WMSAMG\obj\Debug\netcoreapp3.1\Razor\Views\Storaging\ColdStorage1.cshtml.g.cs

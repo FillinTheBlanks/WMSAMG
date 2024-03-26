@@ -11,26 +11,72 @@
 
 
 
-
-    <div class="e-card-content">
-        <div class="control-section">
-            <div class="control_wrapper">
-                <ejs-kanban id="Rack1" dataSource="((System.Data.DataTable)ViewBag.datasource)" keyField="RackToBay">
-
-                    <e-kanban-columns>
-                        <e-kanban-column headerText="Bay 01" keyField="Rack 1 Bay 1,1"></e-kanban-column>
-                        <e-kanban-column headerText="Bay 02" keyField="Rack 1 Bay 2,2"></e-kanban-column>
-                        <e-kanban-column headerText="Bay 03" keyField="Rack 1 Bay 3,3"></e-kanban-column>
-                        <e-kanban-column headerText="Bay 04" keyField="Rack 1 Bay 4,4"></e-kanban-column>
-                        <e-kanban-column headerText="Bay 05" keyField="Rack 1 Bay 5,5"></e-kanban-column>
-                    </e-kanban-columns>
-                    <e-kanban-cardsettings headerField="RRCode" template="#cardTemplate"></e-kanban-cardsettings>
-                    <e-kanban-swimlanesettings keyField="LevelNo" template="#swimlaneTemplate"></e-kanban-swimlanesettings>
-
-                </ejs-kanban>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Kanban A</h4>
+            <ejs-kanban id="kanbanA" keyField="RackToBay" dataSource="((System.Data.DataTable)ViewBag.datasource)" externalDropId="@ViewBag.externalDropIdA" dragStop="onDragStopA">
+                <e-kanban-columns>
+                    <e-kanban-column headerText="1st Bay" keyField="Rack 1 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="2nd Bay" keyField="Rack 1 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="3rd Bay" keyField="Rack 1 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="4th Bay" keyField="Rack 1 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="5th Bay" keyField="Rack 1 Bay 5" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                </e-kanban-columns>
+                <e-kanban-cardsettings headerField="ReferenceCode" contentField="StockDescription"></e-kanban-cardsettings>
+            </ejs-kanban>
+        </div>
+        <div class="col-md-6">
+            <h4>Kanban B</h4>
+            <ejs-kanban id="kanbanB" keyField="RackToBay" dataSource="((System.Data.DataTable)ViewBag.datasource)" externalDropId="@ViewBag.externalDropIdB" dragStop="onDragStopB">
+                <e-kanban-columns>
+                    <e-kanban-column headerText="1st Bay" keyField="Rack 1 Bay 1" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="2nd Bay" keyField="Rack 1 Bay 2" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="3rd Bay" keyField="Rack 1 Bay 3" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="4th Bay" keyField="Rack 1 Bay 4" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                    <e-kanban-column headerText="5th Bay" keyField="Rack 1 Bay 5" showItemCount="false" allowToggle="true" isExpanded="true"></e-kanban-column>
+                </e-kanban-columns>
+                <e-kanban-cardsettings headerField="ReferenceCode" contentField="StockDescription"></e-kanban-cardsettings>
+            </ejs-kanban>
         </div>
     </div>
+</div>
+<script>
+    function onDragStopA(args) {
+        var kanbanObjA = document.querySelector("#kanbanA").ej2_instances[0];
+        var kanbanObjB = document.querySelector("#kanbanB").ej2_instances[0];
+        if (ej.base.closest(args.event.target, '#kanbanB')) {
+            kanbanObjA.deleteCard(args.data);
+            args.data.forEach(function (card, i) {
+                var index = kanbanObjB.kanbanData.findIndex(function (colData) {
+                    return colData[kanbanObjB.cardSettings.headerField] === card[kanbanObjB.cardSettings.headerField];
+                });
+                if (index !== -1) {
+                    card[kanbanObjB.cardSettings.headerField] = Math.max.apply(Math, kanbanObjB.kanbanData.map(function (obj) { return parseInt(obj[kanbanObjB.cardSettings.headerField], 10); })) + ++i;
+                }
+            });
+            kanbanObjB.addCard(args.data, args.dropIndex);
+            args.cancel = true;
+        }
+    }
+    function onDragStopB(args) {
+        var kanbanObjA = document.querySelector("#kanbanA").ej2_instances[0];
+        var kanbanObjB = document.querySelector("#kanbanB").ej2_instances[0];
+        if (ej.base.closest(args.event.target, '#kanbanA')) {
+            kanbanObjB.deleteCard(args.data);
+            args.data.forEach(function (card, i) {
+                var index = kanbanObjA.kanbanData.findIndex(function (colData) {
+                    return colData[kanbanObjA.cardSettings.headerField] === card[kanbanObjA.cardSettings.headerField];
+                });
+                if (index !== -1) {
+                    card[kanbanObjA.cardSettings.headerField] = Math.max.apply(Math, kanbanObjA.kanbanData.map(function (obj) { return parseInt(obj[kanbanObjA.cardSettings.headerField], 10); })) + ++i;
+                }
+            });
+            kanbanObjA.addCard(args.data, args.dropIndex);
+            args.cancel = true;
+        }
+    }
+</script>
 
 
 <script id="swimlaneTemplate" type="text/x-jsrender">
@@ -80,7 +126,7 @@
                                       <tbody>
                                         </tr>
                                         <tr class='e-tooltip-text'>
-                                            <td colspan="2"><div class='e-description'>${StorageLocationName}</div></td>
+                                            <td colspan="2"><div class='e-description'>${Qty} pcs / ${Actual Weight} ${UOM}</div></td>
                                         </tr>
                                         <tr class="e-tooltip-text">
                                             <td><div class='e-size e-tooltip-text'>${CustomerName}</div></td>

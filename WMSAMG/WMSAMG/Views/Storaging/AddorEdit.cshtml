@@ -1,5 +1,11 @@
 ﻿@model WMSAMG.Models.CSIS2017Models.TblStorageTimeFrame
 @using Syncfusion.EJ2
+@using Microsoft.AspNetCore.Identity
+@using WMSAMG.Areas.Identity.Data
+
+
+@inject SignInManager<WMSAMGUser> SignInManager
+@inject UserManager<WMSAMGUser> UserManager
 
 @{
     ViewData["Title"] = "Update Storage Location";
@@ -42,11 +48,11 @@
                 <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-            <ejs-dropdownlist id="StorageName" ejs-for="StorageName" cssClass="e-outline" change="onChangeS" placeholder="Storage Name" popupHeight="220px" allowFiltering="true" filtering="onfilteringS">
-                <e-dropdownlist-fields value="StorageId" text="StorageName"></e-dropdownlist-fields>
-            </ejs-dropdownlist>
-            <span asp-validation-for="StorageName" class="text-danger"></span>
-        </div>*@
+                    <ejs-dropdownlist id="StorageName" ejs-for="StorageName" cssClass="e-outline" change="onChangeS" placeholder="Storage Name" popupHeight="220px" allowFiltering="true" filtering="onfilteringS">
+                        <e-dropdownlist-fields value="StorageId" text="StorageName"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                    <span asp-validation-for="StorageName" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <ejs-dropdownlist id="StorageLocationName" ejs-for="StorageLocationName" cssClass="e-outline" change="onChange" placeholder="Storage Location" popupHeight="220px" allowFiltering="true" filtering="onfiltering">
                     <e-dropdownlist-fields value="StorageLocationId" text="StorageLocationName"></e-dropdownlist-fields>
@@ -154,7 +160,7 @@
     }
 
     function onChange(args) {
-        console.log(args.value);
+        //console.log(args.value);
         var options = {};
         options.url = '/Storaging/GetStorageByStorageLocationID/' + args.value;
         options.type = "GET";
@@ -216,11 +222,14 @@
 
                     //storagerec.StorageId = $('#StorageId').val();
                     //storagerec.StorageTypeId = $('#StorageTypeId').val();
-                    storagerec.DateTimeFrameFrom = new Date($('#DateTimeFrameFrom').val());
+                    //console.log($('#DateTimeFrameFrom').val());
+                    storagerec.DateTimeFrameFrom = new Date(Date.parse($('#DateTimeFrameFrom').val()));
                     storagerec.DateTimeFrameTo = new Date(null);
                     storagerec.FixedRate = parseFloat($('#FixedRate').val());
                     storagerec.HourlyRate = parseFloat($('#HourlyRate').val());
-                    console.log(JSON.stringify(storagerec));
+                    storagerec.RackToBay = "";
+                    storagerec.LevelNo = 0;
+                    //console.log(JSON.stringify(storagerec));
                     $.ajax({
                         type: 'POST',
                         url: '/Storaging/InsertTimeFrame',
@@ -230,7 +239,7 @@
                         success: function (data) {
                             //boolsuccess = true;
                             message = JSON.stringify(data);
-                            console.log(data);
+                            //console.log(data);
                         }
                     });
                     storagerec = null;

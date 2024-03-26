@@ -53,8 +53,13 @@
                 <span asp-validation-for="StockId" class="text-danger"></span>
             </div>
             <div class="form-inline form-group">
-                <ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);" width="75%">  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button></ejs-textbox>
+                @*<ejs-textbox id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" floatLabelType="Auto" onkeypress="keypresshandle(event);" width="75%">  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button></ejs-textbox>
 
+        <span asp-validation-for="StockSku" class="text-danger"></span>*@
+                @*<ejs-dropdownlist id="StockSku" ejs-for="StockSku" cssClass="e-outline" change="onChange" placeholder="SKU" popupHeight="220px" allowFiltering="true" filtering="onfiltering">*@
+                <ejs-dropdownlist id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" change="onChange" popupHeight="220px" width="75%" allowFiltering="true" filtering="onfiltering">
+                    <e-dropdownlist-fields value="StockSku" text="LongDescription"></e-dropdownlist-fields>
+                </ejs-dropdownlist>  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button>
                 <span asp-validation-for="StockSku" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -65,7 +70,6 @@
                 <ejs-textbox id="Size" ejs-for="Size" cssClass="e-outline" placeholder="Size" floatLabelType="Always"></ejs-textbox>
                 <span asp-validation-for="Size" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <ejs-numerictextbox id="Qty" ejs-for="Qty" cssClass="e-outline" placeholder="Quantity" min="1" floatLabelType="Always"></ejs-numerictextbox>
                 <span asp-validation-for="Qty" class="text-danger"></span>
@@ -163,6 +167,7 @@
     </e-grid-columns>
 </ejs-grid>
 
+<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -174,7 +179,18 @@
             grid.dataSource = JSON.parse(data);
             grid.hideSpinner();
         };
+
+        var dropdown = document.getElementById('StockSku').ej2_instances[0];
+        var ajax = new ej.base.Ajax('/Stocks/GetStockBySKU/' + $('#StockSku').val(), 'GET');
+        ajax.send();
+        ajax.onSuccess = function (data) {
+            dropdown.dataSource = JSON.parse(data);
+            dropdown.refresh();
+        };
+
     }, false);
+
+    
 
 </script>
 
@@ -190,13 +206,13 @@
         }
 
 
-        $('#StockDescription').ready(function () {
+        $('#StockSku').ready(function () {
             var options = {};
             options.url = '/Stocks/GetStockBySKU/' + str;
             options.type = "GET";
             options.dataType = "json";
             options.success = function (data) {
-                console.log(data);
+             
                 data.forEach(function (element) {
 
                     $('#StockDescription').val(element.StockDescription);
@@ -216,7 +232,7 @@
                     $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
                     $('#Uom').val('Kls');
                     $('#PalletNo').val('');
-                    
+                  
                     $('#Qty').val(parseInt(element.DefaultQty));
                     $('#isSaved').val(1);
                     $('#Size').val('1-1');
@@ -238,7 +254,7 @@
                     //$('#Remarks').val('');
                 });
             };
-            
+          
             options.error = function () {
                 $("#msg").html("Error while calling the Web API!");
             };
@@ -258,7 +274,59 @@
         if (e.keyCode === 13) {
             e.preventDefault();
             SearchSKU();
+    
+        }
+    }
 
+    function onChange(args) {
+        console.log(args.value);
+        var options = {};
+        options.url = '/Stocks/GetStockBySKU/' + args.value;
+        options.type = "GET";
+        options.dataType = "json";
+        options.success = function (data) {
+            console.log(data);
+            data.forEach(function (element) {
+                $('#StockDescription').val(element.StockDescription);
+                $('#StockId').val(element.StockId);
+                $('#StockSku').val(element.StockSku);
+                $('#StockGroupId').val(element.StockGroupId);
+                $('#CustomerId').val(element.CustomerId);
+                $('#CustomerName').val(element.CustomerName);
+                $('#CompanyId').val(element.CompanyId);
+                $('#CompanyName').val(element.CompanyName);
+                $('#PayTypeInitial').val(element.PayTypeInitial);
+                $('#LocationId').val(element.LocationId);
+                $('#LocationInitial').val(element.LocationInitial);
+                $('#StockPcsperPack').val(element.StockPcsperPack);
+                $('#StockPackperCase').val(element.StockPackperCase);
+                $('#StockWeightinKilosperCase').val(element.StockWeightinKilosperCase);
+                $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
+                $('#Uom').val('Kls');
+                $('#PalletNo').val('');
+
+                $('#Qty').val(parseInt(element.DefaultQty));
+                $('#isSaved').val(1);
+                $('#Size').val('1-1');
+                $('#Qty').focus();
+                return;
+            });
+        };
+        options.error = function () {
+            $("#msg").html("Error while calling the Web API!");
+        };
+        $.ajax(options);
+    }
+
+    function onfiltering(e) {
+        var CBObj = document.getElementById("StockSku").ej2_instances[0];
+        // load overall data when search key empty.
+        if (e.text == '')
+            e.updateData(CBObj.dataSource);
+        else {
+            var query = new ej.data.Query().from('StockSku').select(['StockSku']);
+            query = (e.text !== '') ? query.where('StockSku', 'contains', e.text, true) : query;
+            e.updateData(CBObj.dataSource, query);
         }
     }
 
@@ -360,18 +428,18 @@
         }, 100);
     }
 
-    document.getElementById('Grid').addEventListener('DOMSubtreeModified', function () {
-        if (dReady && stTime && isDataChanged) {
-            var msgEle = document.getElementById('msg');
-            var val = (performance.now() - stTime).toFixed(0);
-            stTime = null;
-            dtTime = false;
-            dReady = false;
-            isDataChanged = false;
-            msgEle.innerHTML = 'Load Time: ' + "<b>" + val + "</b>" + '<b>ms</b>';
-            msgEle.classList.remove('e-hide');
-        }
-    });
+    //document.getElementById('Grid').addEventListener('DOMSubtreeModified', function () {
+    //    if (dReady && stTime && isDataChanged) {
+    //        var msgEle = document.getElementById('msg');
+    //        var val = (performance.now() - stTime).toFixed(0);
+    //        stTime = null;
+    //        dtTime = false;
+    //        dReady = false;
+    //        isDataChanged = false;
+    //        msgEle.innerHTML = 'Load Time: ' + "<b>" + val + "</b>" + '<b>ms</b>';
+    //        msgEle.classList.remove('e-hide');
+    //    }
+    //});
     //#endregion
 </script>
 
