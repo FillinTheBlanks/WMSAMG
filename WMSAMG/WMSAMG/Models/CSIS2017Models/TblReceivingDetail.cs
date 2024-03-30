@@ -60,7 +60,6 @@ namespace WMSAMG.Models.CSIS2017Models
         [Required]
         public DateTime? ReceivingTime { get; set; }
         [Column(TypeName = "datetime")]
-        [Required]
         public DateTime? EndTime { get; set; }
         [Column(TypeName = "money")]
         public decimal? StockWeightinKilosperPack { get; set; }

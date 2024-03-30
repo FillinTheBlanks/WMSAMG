@@ -116,7 +116,7 @@ namespace WMSAMG.Models.CSISControlModels
             modelBuilder.Entity<TblEmployee>(entity =>
             {
                 entity.HasIndex(e => new { e.EmployeeId, e.EmployeeFname, e.EmployeeMname, e.EmployeeLname, e.EnrollNo, e.AttGroup })
-                    .HasName("NonClusteredIndex-20191224-120906");
+                    .HasDatabaseName("NonClusteredIndex-20191224-120906");
 
                 entity.Property(e => e.EmployeeId).HasDefaultValueSql("(newid())");
 

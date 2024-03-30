@@ -64,7 +64,7 @@ namespace WMSAMG.Controllers
                     StockSku = row.Field<string>("StockSKU"),
                     DefaultQty = row.Field<int>("DefaultQty"),
                     StockDescription = row.Field<string>("StockDescription"),
-                    LongDescription = row.Field<string>("StockDescription") + " (" + row.Field<string>("CustomerName") + ")",
+                    LongDescription = row.Field<string>("StockDescription") + " (" + row.Field<string>("CustomerName") + ")- " + row.Field<string>("StockSKU"),
                     CustomerId = row.Field<string>("CustomerID"),
                     CustomerName = row.Field<string>("CustomerName"),
                     CompanyId = row.Field<Guid>("CompanyId"),

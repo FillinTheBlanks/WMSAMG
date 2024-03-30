@@ -223,41 +223,41 @@
         
     }, false);
 
-    function onfiltering(e) {
-        var CBObj = document.getElementById("StorageLocationName").ej2_instances[0];
-        // load overall data when search key empty.
-        if (e.text == '')
-            e.updateData(CBObj.dataSource);
-        else {
-            var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationId']);
-            query = (e.text !== '') ? query.where('StorageLocationName', 'contains', e.text, true) : query;
-            e.updateData(CBObj.dataSource, query);
-        }
-    }
+    //function onfiltering(e) {
+    //    var CBObj = document.getElementById("StorageLocationName").ej2_instances[0];
+    //    // load overall data when search key empty.
+    //    if (e.text == '')
+    //        e.updateData(CBObj.dataSource);
+    //    else {
+    //        var query = new ej.data.Query().from('StorageLocationName').select(['StorageLocationName', 'StorageLocationId']);
+    //        query = (e.text !== '') ? query.where('StorageLocationName', 'contains', e.text, true) : query;
+    //        e.updateData(CBObj.dataSource, query);
+    //    }
+    //}
 
-    function onChange(args) {
-        //console.log(args.value);
-        var options = {};
-        options.url = '/Storaging/GetStorageByStorageLocationID/' + args.value;
-        options.type = "GET";
-        options.dataType = "json";
-        options.success = function (data) {
-            data.forEach(function (element) {
-                //$('#StorageName').val(element.StorageName);
-                $('#StorageLocationId').val(element.StorageLocationId);
-                $('#StorageId').val(element.StorageId);
-                $('#StorageTypeId').val(element.StorageTypeId);
-                $('#FixedRate').val(element.FixedRate);
-                $('#HourlyRate').val(element.HourlyRate);
-                //$("#DateTimeFrameFrom").val(getDateTime(0));
-                return;
-            });
-        };
-        options.error = function () {
-            $("#msg").html("Error while calling the Web API!");
-        };
-        $.ajax(options);
-    }
+    //function onChange(args) {
+    //    //console.log(args.value);
+    //    var options = {};
+    //    options.url = '/Storaging/GetStorageByStorageLocationID/' + args.value;
+    //    options.type = "GET";
+    //    options.dataType = "json";
+    //    options.success = function (data) {
+    //        data.forEach(function (element) {
+    //            //$('#StorageName').val(element.StorageName);
+    //            $('#StorageLocationId').val(element.StorageLocationId);
+    //            $('#StorageId').val(element.StorageId);
+    //            $('#StorageTypeId').val(element.StorageTypeId);
+    //            $('#FixedRate').val(element.FixedRate);
+    //            $('#HourlyRate').val(element.HourlyRate);
+    //            //$("#DateTimeFrameFrom").val(getDateTime(0));
+    //            return;
+    //        });
+    //    };
+    //    options.error = function () {
+    //        $("#msg").html("Error while calling the Web API!");
+    //    };
+    //    $.ajax(options);
+    //}
 
     function onChangeStockSKU(args) {
         console.log(args.value);
@@ -266,7 +266,7 @@
         options.type = "GET";
         options.dataType = "json";
         options.success = function (data) {
-            console.log(data);
+            //console.log(data);
             data.forEach(function (element) {
                 $('#StockDescription').val(element.StockDescription);
                 $('#StockId').val(element.StockId);
@@ -305,8 +305,9 @@
         if (e.text == '')
             e.updateData(CBObj.dataSource);
         else {
-            var query = new ej.data.Query().from('StockSku').select(['StockSku']);
-            query = (e.text !== '') ? query.where('StockSku', 'contains', e.text, true) : query;
+            console.log(e.text);
+            var query = new ej.data.Query().from('StockSku').select(['StockSku','LongDescription']).take(10);
+            query = (e.text !== '') ? query.where('LongDescription', 'contains', e.text, true) : query;
             e.updateData(CBObj.dataSource, query);
         }
     }
@@ -476,91 +477,91 @@
     }
 
     //#region DateTime Formatter
-    function getDateTime(addHour) {
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = now.getMonth() + 1;
-        var day = now.getDate();
-        var hour = now.getHours() + addHour;
-        var minute = now.getMinutes();
-        var second = now.getSeconds();
-        if (month.toString().length == 1) {
-            month = '0' + month;
-        }
-        if (day.toString().length == 1) {
-            day = '0' + day;
-        }
-        if (hour.toString().length == 1) {
-            hour = '0' + hour;
-        }
-        if (minute.toString().length == 1) {
-            minute = '0' + minute;
-        }
-        if (second.toString().length == 1) {
-            second = '0' + second;
-        }
-        //var dateTime = day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + second;
-        var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
-        return dateTime;
-    }
+    //function getDateTime(addHour) {
+    //    var now = new Date();
+    //    var year = now.getFullYear();
+    //    var month = now.getMonth() + 1;
+    //    var day = now.getDate();
+    //    var hour = now.getHours() + addHour;
+    //    var minute = now.getMinutes();
+    //    var second = now.getSeconds();
+    //    if (month.toString().length == 1) {
+    //        month = '0' + month;
+    //    }
+    //    if (day.toString().length == 1) {
+    //        day = '0' + day;
+    //    }
+    //    if (hour.toString().length == 1) {
+    //        hour = '0' + hour;
+    //    }
+    //    if (minute.toString().length == 1) {
+    //        minute = '0' + minute;
+    //    }
+    //    if (second.toString().length == 1) {
+    //        second = '0' + second;
+    //    }
+    //    //var dateTime = day + '/' + month + '/' + year + ' ' + hour + ':' + minute + ':' + second;
+    //    var dateTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+    //    return dateTime;
+    //}
 
-    var dReady = false;
-    var theme;
-    var dtTime = false;
-    var isDataBound = false;
-    var isDataChanged = true;
-    var intervalFun;
-    var clrIntervalFun;
-    var clrIntervalFun1;
-    var clrIntervalFun2;
-    var dropSlectedIndex = null;
-    var stTime;
-    stTime = performance.now();
+    //var dReady = false;
+    //var theme;
+    //var dtTime = false;
+    //var isDataBound = false;
+    //var isDataChanged = true;
+    //var intervalFun;
+    //var clrIntervalFun;
+    //var clrIntervalFun1;
+    //var clrIntervalFun2;
+    //var dropSlectedIndex = null;
+    //var stTime;
+    //stTime = performance.now();
 
-    function startTimer(args) {
-        clearTimeout(clrIntervalFun);
-        clearInterval(intervalFun);
-        dtTime = true;
-    }
-    function valueChange() {
-        var grid = document.getElementById("Grid").ej2_instances[0];
-        this.closePopup();
-        grid.showSpinner();
-        dropSlectedIndex = null;
-        var index = this.value;
-        clearTimeout(clrIntervalFun2);
+    //function startTimer(args) {
+    //    clearTimeout(clrIntervalFun);
+    //    clearInterval(intervalFun);
+    //    dtTime = true;
+    //}
+    //function valueChange() {
+    //    var grid = document.getElementById("Grid").ej2_instances[0];
+    //    this.closePopup();
+    //    grid.showSpinner();
+    //    dropSlectedIndex = null;
+    //    var index = this.value;
+    //    clearTimeout(clrIntervalFun2);
 
-        var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
-        var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
-        ajax.send();
+    //    var grid = document.getElementById('Grid').ej2_instances[0]; // Grid instance
+    //    var ajax = new ej.base.Ajax('/Receiving/GetRecordsbyRRNo/' + $('#Rrcode').val(), 'GET');
+    //    ajax.send();
 
-        clrIntervalFun2 = setTimeout(function () {
-            isDataChanged = true;
-            stTime = null;
-            var contentElement = grid.contentModule.getPanel().firstChild;
-            contentElement.scrollLeft = 0;
-            contentElement.scrollTop = 0;
-            grid.pageSettings.currentPage = 1;
-            stTime = performance.now();
-            ajax.onSuccess = function (data) {
-                grid.dataSource = JSON.parse(data);
-                grid.hideSpinner();
-            };
-        }, 100);
-    }
+    //    clrIntervalFun2 = setTimeout(function () {
+    //        isDataChanged = true;
+    //        stTime = null;
+    //        var contentElement = grid.contentModule.getPanel().firstChild;
+    //        contentElement.scrollLeft = 0;
+    //        contentElement.scrollTop = 0;
+    //        grid.pageSettings.currentPage = 1;
+    //        stTime = performance.now();
+    //        ajax.onSuccess = function (data) {
+    //            grid.dataSource = JSON.parse(data);
+    //            grid.hideSpinner();
+    //        };
+    //    }, 100);
+    //}
 
-    document.getElementById('Grid').addEventListener('DOMSubtreeModified', function () {
-        if (dReady && stTime && isDataChanged) {
-            var msgEle = document.getElementById('msg');
-            var val = (performance.now() - stTime).toFixed(0);
-            stTime = null;
-            dtTime = false;
-            dReady = false;
-            isDataChanged = false;
-            msgEle.innerHTML = 'Load Time: ' + "<b>" + val + "</b>" + '<b>ms</b>';
-            msgEle.classList.remove('e-hide');
-        }
-    });
+    //document.getElementById('Grid').addEventListener('DOMSubtreeModified', function () {
+    //    if (dReady && stTime && isDataChanged) {
+    //        var msgEle = document.getElementById('msg');
+    //        var val = (performance.now() - stTime).toFixed(0);
+    //        stTime = null;
+    //        dtTime = false;
+    //        dReady = false;
+    //        isDataChanged = false;
+    //        msgEle.innerHTML = 'Load Time: ' + "<b>" + val + "</b>" + '<b>ms</b>';
+    //        msgEle.classList.remove('e-hide');
+    //    }
+    //});
     //#endregion
 </script>
 

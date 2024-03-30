@@ -33,7 +33,7 @@ namespace WMSAMG.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_BlastingInbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "aea95735-24df-40a2-9132-5cbff7595bb9");
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "LocationID");
@@ -53,7 +53,7 @@ namespace WMSAMG.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_BlastingInbyFilter", sqlConnection);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", "aea95735-24df-40a2-9132-5cbff7595bb9");
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "LocationID");
@@ -146,7 +146,8 @@ namespace WMSAMG.Controllers
         public IActionResult AddorEdit([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,CustomerName,PayTypeInitial,StockId,StockSku,StockDescription,Size,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
         {
             string Rrcode = tblReceivingDetail.Rrcode;
-            DateTime? ReceivingTime = tblReceivingDetail.ReceivingTime;
+            DateTime? ReceivingTime = (DateTime)tblReceivingDetail.ReceivingTime;
+            DateTime EndTime = DateTime.Now;
             string Remarks = tblReceivingDetail.Remarks;
             //int successindx = 0;
             if (!ModelState.IsValid)
@@ -179,8 +180,8 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("Qty", tblReceivingDetail.Qty);
                     sqlCmd.Parameters.AddWithValue("ActualWeight", tblReceivingDetail.ActualWeight);
                     sqlCmd.Parameters.AddWithValue("UOM", tblReceivingDetail.Uom);
-                    sqlCmd.Parameters.AddWithValue("ReceivingTime", tblReceivingDetail.ReceivingTime);
-                    sqlCmd.Parameters.AddWithValue("EndTime", tblReceivingDetail.EndTime);
+                    sqlCmd.Parameters.AddWithValue("ReceivingTime", ReceivingTime);
+                    sqlCmd.Parameters.AddWithValue("EndTime", EndTime);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperPack", tblReceivingDetail.StockWeightinKilosperPack);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperCase", tblReceivingDetail.StockWeightinKilosperCase);
                     sqlCmd.Parameters.AddWithValue("PalletNo", "");
@@ -192,7 +193,7 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("Remarks", tblReceivingDetail.Remarks);
                     sqlCmd.Parameters.AddWithValue("ApprovedBy", tblReceivingDetail.EmployeeId);
                     sqlCmd.Parameters.AddWithValue("EmployeeID", tblReceivingDetail.EmployeeId);
-                    sqlCmd.Parameters.AddWithValue("isSaved", 1);
+                    sqlCmd.Parameters.AddWithValue("isSaved", 0);
                     sqlCmd.ExecuteNonQuery();
                 }
                 if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
@@ -226,6 +227,7 @@ namespace WMSAMG.Controllers
                 tblReceivingDetail.ApprovedBy = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceivingDetail.EmployeeId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier).Replace(" ", ""));
                 tblReceivingDetail.CarrierReferenceCode = Guid.Empty;
+                
             }
 
             return View(tblReceivingDetail);
@@ -240,7 +242,8 @@ namespace WMSAMG.Controllers
         public IActionResult AddorEditBlastIn([Bind("ReferenceCode,Rrcode,CarrierReferenceCode,CustomerId,CustomerName,PayTypeInitial,StockId,StockSku,StockDescription,Size,StockGroupId,StockPcsperPack,StockPackperCase,Qty,ActualWeight,Uom,ReceivingTime,EndTime,StockWeightinKilosperPack,StockWeightinKilosperCase,PalletNo,CompanyId,StorageLocationId,StorageId,StorageTypeId,TransactionDate,LocationId,Nature,Source,Remarks,ApprovedBy,EmployeeId,EmployeeDate,IsSaved")] TblReceivingDetail tblReceivingDetail)
         {
             string Rrcode = tblReceivingDetail.Rrcode;
-            DateTime? ReceivingTime = tblReceivingDetail.ReceivingTime;
+            DateTime? ReceivingTime = (DateTime)tblReceivingDetail.ReceivingTime;
+            DateTime EndTime = DateTime.Now;
             string Remarks = tblReceivingDetail.Remarks;
             //int successindx = 0;
             if (!ModelState.IsValid)
@@ -273,8 +276,8 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("Qty", tblReceivingDetail.Qty);
                     sqlCmd.Parameters.AddWithValue("ActualWeight", tblReceivingDetail.ActualWeight);
                     sqlCmd.Parameters.AddWithValue("UOM", tblReceivingDetail.Uom);
-                    sqlCmd.Parameters.AddWithValue("ReceivingTime", tblReceivingDetail.ReceivingTime);
-                    sqlCmd.Parameters.AddWithValue("EndTime", tblReceivingDetail.EndTime);
+                    sqlCmd.Parameters.AddWithValue("ReceivingTime", ReceivingTime);
+                    sqlCmd.Parameters.AddWithValue("EndTime", EndTime);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperPack", tblReceivingDetail.StockWeightinKilosperPack);
                     sqlCmd.Parameters.AddWithValue("StockWeightinKilosperCase", tblReceivingDetail.StockWeightinKilosperCase);
                     sqlCmd.Parameters.AddWithValue("PalletNo", "");
@@ -286,7 +289,7 @@ namespace WMSAMG.Controllers
                     sqlCmd.Parameters.AddWithValue("Remarks", tblReceivingDetail.Remarks);
                     sqlCmd.Parameters.AddWithValue("ApprovedBy", tblReceivingDetail.EmployeeId);
                     sqlCmd.Parameters.AddWithValue("EmployeeID", tblReceivingDetail.EmployeeId);
-                    sqlCmd.Parameters.AddWithValue("isSaved", 0);
+                    sqlCmd.Parameters.AddWithValue("isSaved", 1);
                     sqlCmd.ExecuteNonQuery();
                 }
                 if (!string.IsNullOrEmpty(tblReceivingDetail.ReferenceCode.ToString()))
@@ -405,6 +408,7 @@ namespace WMSAMG.Controllers
                     tblReceiving.CustomerName = dt.Rows[0]["CustomerName"].ToString();
                     tblReceiving.PayTypeInitial = dt.Rows[0]["PayTypeInitial"].ToString();
                     tblReceiving.StockId = (Guid)dt.Rows[0]["StockID"];
+                    tblReceiving.Size = dt.Rows[0]["Size"].ToString();
                     tblReceiving.StockGroupId = (Guid)dt.Rows[0]["StockGroupID"];
                     tblReceiving.StockSku = dt.Rows[0]["StockSKU"].ToString();
                     tblReceiving.StockDescription = dt.Rows[0]["StockDescription"].ToString();
@@ -525,7 +529,7 @@ namespace WMSAMG.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_BlastingInbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", Id);
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "RRCode");
@@ -567,7 +571,7 @@ namespace WMSAMG.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DataContextConnection")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_BlastingInbyFilter", sqlConnection);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("spSelect_ReceivingDetailbyFilter", sqlConnection);
                 sqlDa.SelectCommand.CommandType = System.Data.CommandType.StoredProcedure;
                 sqlDa.SelectCommand.Parameters.AddWithValue("TextFilter", Id);
                 sqlDa.SelectCommand.Parameters.AddWithValue("ColumnName", "RRCode");
@@ -589,7 +593,8 @@ namespace WMSAMG.Controllers
                     Qty = row.Field<decimal>("Qty"),
                     ActualWeight = row.Field<decimal>("ActualWeight"),
                     ReceivingTime = row.Field<Nullable<DateTime>>("ReceivingTime"),
-                    EndTime = row.Field<Nullable<DateTime>>("EndTime")
+                    EndTime = row.Field<Nullable<DateTime>>("EndTime"),
+                    LineNum = row.Field<int>("LineNum")
 
                 }).ToList();
 

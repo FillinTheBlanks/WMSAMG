@@ -278,7 +278,9 @@ namespace WMSAMG.Controllers
                 sqlDa.SelectCommand.Parameters.AddWithValue("StorageName", StorageName);
                 sqlDa.Fill(dt);
             }
+            //ViewBag.selectLevels = PopulateLevels();
             ViewBag.Title = StorageName;
+            ViewBag.StoreId = id;
             ViewBag.datasource = dt;
             return View();
         }

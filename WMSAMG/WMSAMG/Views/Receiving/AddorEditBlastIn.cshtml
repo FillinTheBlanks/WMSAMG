@@ -57,7 +57,7 @@
 
         <span asp-validation-for="StockSku" class="text-danger"></span>*@
                 @*<ejs-dropdownlist id="StockSku" ejs-for="StockSku" cssClass="e-outline" change="onChange" placeholder="SKU" popupHeight="220px" allowFiltering="true" filtering="onfiltering">*@
-                <ejs-dropdownlist id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" change="onChange" popupHeight="220px" width="75%" allowFiltering="true" filtering="onfiltering">
+                <ejs-dropdownlist id="StockSku" ejs-for="StockSku" cssClass="e-outline" placeholder="SKU" change="onChange" popupHeight="220px" width="75%" allowFiltering="true" filtering="onfilteringStockSKU">
                     <e-dropdownlist-fields value="StockSku" text="LongDescription"></e-dropdownlist-fields>
                 </ejs-dropdownlist>  ||  <ejs-button id="StockSkuAccept" cssClass="e-info" content="Search" action="button" onclick="SearchSKU();"></ejs-button>
                 <span asp-validation-for="StockSku" class="text-danger"></span>
@@ -167,7 +167,7 @@
     </e-grid-columns>
 </ejs-grid>
 
-<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+@*<script type="text/javascript" src="//code.jquery.com/jquery-1.10.2.min.js"></script>*@
 <script type="text/javascript">
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -212,7 +212,7 @@
             options.type = "GET";
             options.dataType = "json";
             options.success = function (data) {
-             
+
                 data.forEach(function (element) {
 
                     $('#StockDescription').val(element.StockDescription);
@@ -232,7 +232,7 @@
                     $('#StockWeightinKilosperPack').val(element.StockWeightinKilosperPack);
                     $('#Uom').val('Kls');
                     $('#PalletNo').val('');
-                  
+
                     $('#Qty').val(parseInt(element.DefaultQty));
                     $('#isSaved').val(1);
                     $('#Size').val('1-1');
@@ -254,7 +254,7 @@
                     //$('#Remarks').val('');
                 });
             };
-          
+
             options.error = function () {
                 $("#msg").html("Error while calling the Web API!");
             };
@@ -274,18 +274,18 @@
         if (e.keyCode === 13) {
             e.preventDefault();
             SearchSKU();
-    
+
         }
     }
 
     function onChange(args) {
-        console.log(args.value);
+        //console.log(args.value);
         var options = {};
         options.url = '/Stocks/GetStockBySKU/' + args.value;
         options.type = "GET";
         options.dataType = "json";
         options.success = function (data) {
-            console.log(data);
+            //console.log(data);
             data.forEach(function (element) {
                 $('#StockDescription').val(element.StockDescription);
                 $('#StockId').val(element.StockId);
@@ -318,14 +318,15 @@
         $.ajax(options);
     }
 
-    function onfiltering(e) {
+    function onfilteringStockSKU(e) {
         var CBObj = document.getElementById("StockSku").ej2_instances[0];
         // load overall data when search key empty.
         if (e.text == '')
             e.updateData(CBObj.dataSource);
         else {
-            var query = new ej.data.Query().from('StockSku').select(['StockSku']);
-            query = (e.text !== '') ? query.where('StockSku', 'contains', e.text, true) : query;
+            console.log(e.text);
+            var query = new ej.data.Query().from('StockSku').select(['StockSku', 'LongDescription']).take(10);
+            query = (e.text !== '') ? query.where('LongDescription', 'contains', e.text, true) : query;
             e.updateData(CBObj.dataSource, query);
         }
     }
@@ -355,7 +356,7 @@
     }
 
     //#region DateTime Formatter
-    function getDateTime(addHour) {
+    @*function getDateTime(addHour) {
         var now = new Date();
         var year = now.getFullYear();
         var month = now.getMonth() + 1;
@@ -440,7 +441,7 @@
     //        msgEle.classList.remove('e-hide');
     //    }
     //});
-    //#endregion
+    //#endregion*@
 </script>
 
 
